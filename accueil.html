@@ -129,26 +129,32 @@
             font-weight: bold;
         }
 
-        /* Fenêtre Chat Meta IA */
-        #chat-ia {
+        /* Modales communes Chat IA & Messagerie */
+        .chat-box-modal {
             display: none;
             flex-direction: column;
             width: 100%;
             max-width: 650px;
             height: 480px;
             background-color: #26273b;
-            border: 1px solid #00d2d3;
             border-radius: 12px;
             margin-top: 20px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
             overflow: hidden;
         }
 
+        #chat-ia {
+            border: 1px solid #00d2d3;
+        }
+
+        #chat-entraide {
+            border: 1px solid #ff9f43;
+        }
+
         .chat-header {
             background-color: #1e1e2e;
             padding: 12px 16px;
             font-weight: bold;
-            color: #00d2d3;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -161,6 +167,10 @@
             color: #a4b0be;
             font-size: 20px;
             cursor: pointer;
+        }
+
+        .close-chat-btn:hover {
+            color: #ee5253;
         }
 
         .chat-messages {
@@ -196,6 +206,34 @@
             border-bottom-right-radius: 2px;
         }
 
+        /* Styles bulles messagerie groupe */
+        .msg-group-other {
+            background-color: #343650;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .msg-group-me {
+            background-color: #ff9f43;
+            color: #1e1e2e;
+            font-weight: 500;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg-author {
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 3px;
+            opacity: 0.85;
+        }
+
+        .msg-time {
+            font-size: 10px;
+            margin-left: 6px;
+            opacity: 0.7;
+        }
+
         .chat-input-zone {
             display: flex;
             border-top: 1px solid #3d3f58;
@@ -215,8 +253,18 @@
             font-size: 14px;
         }
 
-        .chat-input-zone button {
+        .btn-send-ia {
             background-color: #00d2d3;
+            color: #1e1e2e;
+            border: none;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .btn-send-group {
+            background-color: #ff9f43;
             color: #1e1e2e;
             border: none;
             font-weight: bold;
@@ -339,7 +387,7 @@
             margin-top: auto;
         }
 
-        /* 📱 Adaptation Téléphone */
+        /* 📱 Adaptation Mobile */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -368,7 +416,7 @@
                 padding: 12px 10px;
                 border-bottom: none;
                 border-right: 1px solid #3d3f58;
-                font-size: 14px;
+                font-size: 13px;
                 flex: 1;
             }
 
@@ -389,7 +437,7 @@
                 width: 95%;
             }
 
-            #chat-ia {
+            .chat-box-modal {
                 height: 420px;
             }
 
@@ -423,8 +471,9 @@
     <!-- Barre latérale Gauche -->
     <div class="sidebar-left">
         <div>
-            <button class="left-btn" onclick="alert('Ouverture de Notebook')">Notebook</button>
-            <button class="left-btn" onclick="ouvrirChatIA()">Meta IA 🤖</button>
+            <!-- Remplacement du Notebook par la Messagerie -->
+            <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
+            <button class="left-btn" onclick="ouvrirChatIA()">🤖 Meta IA</button>
         </div>
         <button class="settings-btn" title="Paramètres" onclick="alert('Paramètres')">⚙</button>
     </div>
@@ -433,22 +482,35 @@
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
 
-        <!-- Chat Meta IA -->
-        <div id="chat-ia">
+        <!-- 1. Fenêtre Messagerie Entraide (entre élèves) -->
+        <div id="chat-entraide" class="chat-box-modal">
             <div class="chat-header">
-                <span>🤖 Meta IA - Assistant</span>
-                <button class="close-chat-btn" onclick="fermerChatIA()">✕</button>
+                <span style="color: #ff9f43;">💬 Salon d'entraide & révisions</span>
+                <button class="close-chat-btn" onclick="fermerFenetres()">✕</button>
             </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="msg msg-ia">Salut ! Je suis ton assistant scolaire. Pose-moi une question sur tes cours ou tes devoirs !</div>
-            </div>
+            <div class="chat-messages" id="group-messages"></div>
             <div class="chat-input-zone">
-                <input type="text" id="user-input" placeholder="Pose ta question ici..." onkeydown="siToucheEntree(event)">
-                <button onclick="envoyerMessage()">Envoyer</button>
+                <input type="text" id="group-input" placeholder="Pose ta question au groupe..." onkeydown="siToucheEntreeGroupe(event)">
+                <button class="btn-send-group" onclick="envoyerMessageGroupe()">Envoyer</button>
             </div>
         </div>
 
-        <!-- Panneau Admin -->
+        <!-- 2. Fenêtre Meta IA -->
+        <div id="chat-ia" class="chat-box-modal">
+            <div class="chat-header">
+                <span style="color: #00d2d3;">🤖 Meta IA - Assistant</span>
+                <button class="close-chat-btn" onclick="fermerFenetres()">✕</button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="msg msg-ia">Salut ! Je suis ton assistant scolaire. Pose-moi une question sur tes cours ou tes exercices !</div>
+            </div>
+            <div class="chat-input-zone">
+                <input type="text" id="user-input" placeholder="Pose ta question ici..." onkeydown="siToucheEntreeIA(event)">
+                <button class="btn-send-ia" onclick="envoyerMessageIA()">Envoyer</button>
+            </div>
+        </div>
+
+        <!-- 3. Panneau Admin -->
         <div id="admin-panel">
             <h3>Panel Admin</h3>
             <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code à 4 chiffres :</p>
@@ -459,7 +521,7 @@
         </div>
     </div>
 
-    <!-- Barre latérale Droite (Catégories et sous-matières) -->
+    <!-- Barre latérale Droite -->
     <div class="sidebar-right">
         <div class="top-icons">
             <div class="profile-badge" id="icone-profil" title="Profil">Moi</div>
@@ -470,7 +532,7 @@
             <button onclick="ouvrirAdmin()">Panel Admin</button>
         </div>
 
-        <!-- 1. Catégorie Langue -->
+        <!-- Langue -->
         <button class="right-item" onclick="toggleMenu('menu-langues')" style="color: #00d2d3; font-weight: bold;">
             Langue ▾
         </button>
@@ -481,7 +543,7 @@
             <button class="sub-item" onclick="ouvrirMatiere('Latin-Grec')">🏛️ Latin / Grec</button>
         </div>
 
-        <!-- 2. Catégorie Science -->
+        <!-- Science -->
         <button class="right-item" onclick="toggleMenu('menu-sciences')" style="color: #ff9f43; font-weight: bold;">
             Science ▾
         </button>
@@ -492,7 +554,7 @@
             <button class="sub-item" onclick="ouvrirMatiere('Technologie')">💻 Technologie</button>
         </div>
 
-        <!-- 3. Catégorie Culture -->
+        <!-- Culture -->
         <button class="right-item" onclick="toggleMenu('menu-culture')" style="color: #1dd1a1; font-weight: bold;">
             Culture ▾
         </button>
@@ -509,74 +571,97 @@
     <script>
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
-        // Pseudo
-        const pseudo = localStorage.getItem("utilisateur_pseudo");
-        if (pseudo) {
-            document.getElementById("icone-profil").textContent = pseudo.slice(0, 3).toUpperCase();
-            document.getElementById("icone-profil").title = pseudo;
+        // Pseudo de l'élève
+        const monPseudo = localStorage.getItem("utilisateur_pseudo") || "Moi";
+        document.getElementById("icone-profil").textContent = monPseudo.slice(0, 3).toUpperCase();
+        document.getElementById("icone-profil").title = monPseudo;
+
+        // Gestion de l'affichage
+        function fermerFenetres() {
+            document.getElementById("chat-ia").style.display = "none";
+            document.getElementById("chat-entraide").style.display = "none";
+            document.getElementById("admin-panel").style.display = "none";
         }
 
-        // Dérouler/enrouler un sous-menu précis
-        function toggleMenu(idMenu) {
-            const menu = document.getElementById(idMenu);
-            const estOuvert = (menu.style.display === "block");
-            
-            // Ferme les autres sous-menus
-            document.querySelectorAll(".sub-menu").forEach(m => m.style.display = "none");
-            
-            // Ouvre celui cliqué s'il était fermé
-            menu.style.display = estOuvert ? "none" : "block";
-        }
-
-        // Ouvrir la page cours.html avec la matière sélectionnée
-        function ouvrirMatiere(matiere) {
-            window.location.href = `cours.html?matiere=${encodeURIComponent(matiere)}`;
-        }
-
-        // Admin
-        function toggleMenuAdmin() {
-            const menu = document.getElementById("dropdown-menu");
-            menu.style.display = (menu.style.display === "block") ? "none" : "block";
-        }
-
-        function ouvrirAdmin() {
-            fermerChatIA();
-            document.getElementById("dropdown-menu").style.display = "none";
-            document.getElementById("admin-panel").style.display = "block";
+        function ouvrirMessagerie() {
+            fermerFenetres();
+            document.getElementById("chat-entraide").style.display = "flex";
+            document.getElementById("group-input").focus();
+            chargerMessagesGroupe();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function validerPin() {
-            const code = document.getElementById("code-pin").value;
-            const reponse = document.getElementById("message-pin");
-            if (code === "1234") {
-                reponse.style.color = "#1dd1a1";
-                reponse.innerHTML = "✅ Connecté en administrateur !";
-            } else {
-                reponse.style.color = "#ee5253";
-                reponse.innerHTML = "❌ Code faux !";
-            }
-        }
-
-        // Chat IA
         function ouvrirChatIA() {
-            document.getElementById("admin-panel").style.display = "none";
+            fermerFenetres();
             document.getElementById("chat-ia").style.display = "flex";
             document.getElementById("user-input").focus();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function fermerChatIA() {
-            document.getElementById("chat-ia").style.display = "none";
+        function ouvrirAdmin() {
+            fermerFenetres();
+            document.getElementById("dropdown-menu").style.display = "none";
+            document.getElementById("admin-panel").style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function siToucheEntree(event) {
-            if (event.key === "Enter") {
-                envoyerMessage();
+        /* --- LOGIQUE MESSAGERIE ENTRE NOUS --- */
+        function chargerMessagesGroupe() {
+            const conteneur = document.getElementById("group-messages");
+            const historique = JSON.parse(localStorage.getItem("messages_entraide") || "[]");
+
+            if (historique.length === 0) {
+                conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
+                    Bienvenue sur le salon d'entraide ! Pose tes questions ici pour réviser à plusieurs.
+                </div>`;
+                return;
             }
+
+            conteneur.innerHTML = "";
+            historique.forEach(m => {
+                const estMoi = (m.pseudo === monPseudo);
+                const bulle = document.createElement("div");
+                bulle.className = "msg " + (estMoi ? "msg-group-me" : "msg-group-other");
+                bulle.innerHTML = `
+                    <div class="msg-author">${m.pseudo} <span class="msg-time">${m.heure}</span></div>
+                    <div>${m.texte}</div>
+                `;
+                conteneur.appendChild(bulle);
+            });
+
+            conteneur.scrollTop = conteneur.scrollHeight;
         }
 
-        async function envoyerMessage() {
+        function siToucheEntreeGroupe(event) {
+            if (event.key === "Enter") envoyerMessageGroupe();
+        }
+
+        function envoyerMessageGroupe() {
+            const input = document.getElementById("group-input");
+            const texte = input.value.trim();
+            if (texte === "") return;
+
+            const maintenant = new Date();
+            const heure = maintenant.getHours().toString().padStart(2, '0') + ":" + maintenant.getMinutes().toString().padStart(2, '0');
+
+            const historique = JSON.parse(localStorage.getItem("messages_entraide") || "[]");
+            historique.push({
+                pseudo: monPseudo,
+                texte: texte,
+                heure: heure
+            });
+
+            localStorage.setItem("messages_entraide", JSON.stringify(historique));
+            input.value = "";
+            chargerMessagesGroupe();
+        }
+
+        /* --- LOGIQUE META IA --- */
+        function siToucheEntreeIA(event) {
+            if (event.key === "Enter") envoyerMessageIA();
+        }
+
+        async function envoyerMessageIA() {
             const input = document.getElementById("user-input");
             const texte = input.value.trim();
             if (texte === "") return;
@@ -625,6 +710,35 @@
             }
 
             box.scrollTop = box.scrollHeight;
+        }
+
+        /* --- MENUS & NAVIGATION --- */
+        function toggleMenu(idMenu) {
+            const menu = document.getElementById(idMenu);
+            const estOuvert = (menu.style.display === "block");
+            document.querySelectorAll(".sub-menu").forEach(m => m.style.display = "none");
+            menu.style.display = estOuvert ? "none" : "block";
+        }
+
+        function ouvrirMatiere(matiere) {
+            window.location.href = `cours.html?matiere=${encodeURIComponent(matiere)}`;
+        }
+
+        function toggleMenuAdmin() {
+            const menu = document.getElementById("dropdown-menu");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+
+        function validerPin() {
+            const code = document.getElementById("code-pin").value;
+            const reponse = document.getElementById("message-pin");
+            if (code === "1234") {
+                reponse.style.color = "#1dd1a1";
+                reponse.innerHTML = "✅ Connecté en administrateur !";
+            } else {
+                reponse.style.color = "#ee5253";
+                reponse.innerHTML = "❌ Code faux !";
+            }
         }
     </script>
 
