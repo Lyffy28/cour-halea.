@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cour-halea - Inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e2e;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+            margin: 0;
+        }
+        h1 {
+            color: #00d2d3;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 18px;
+            color: #c8d6e5;
+            margin-bottom: 30px;
+        }
+        .form-box {
+            background-color: #2b2c40;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-box h2 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            color: #ff9f43;
+            text-align: center;
+        }
+        label {
+            font-size: 14px;
+            text-align: left;
+            color: #c8d6e5;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #484b6a;
+            background-color: #1e1e2e;
+            color: #ffffff;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input:focus {
+            border-color: #00d2d3;
+        }
+        button {
+            background-color: #ff9f43;
+            color: #ffffff;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: 0.2s;
+        }
+        button:hover {
+            background-color: #ee5253;
+        }
+        #message-erreur {
+            color: #ee5253;
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Cour-halea</h1>
+    <p>Site pour réviser tes cours correctement.</p>
+
+    <div class="form-box">
+        <h2>Créer un compte</h2>
+        <div>
+            <label for="pseudo">Prénom ou pseudo</label>
+            <input type="text" id="pseudo" placeholder="Ex : Thomas" required>
+        </div>
+        <div>
+            <label for="email">Adresse e-mail</label>
+            <input type="email" id="email" placeholder="nom@exemple.com" required>
+        </div>
+        <div>
+            <label for="mdp">Mot de passe</label>
+            <input type="password" id="mdp" placeholder="••••••••" required>
+        </div>
+        <button onclick="validerInscription()">S'inscrire</button>
+        <div id="message-erreur"></div>
+    </div>
+
+    <script>
+        function validerInscription() {
+            const pseudo = document.getElementById("pseudo").value;
+            const email = document.getElementById("email").value;
+            const mdp = document.getElementById("mdp").value;
+            const erreur = document.getElementById("message-erreur");
+
+            if (!pseudo || !email || !mdp) {
+                erreur.textContent = "Merci de remplir tous les champs.";
+                return;
+            }
+
+            localStorage.setItem("utilisateur_pseudo", pseudo);
+            window.location.href = "accueil.html";
+        }
+    </script>
+
+</body>
+</html>
