@@ -28,21 +28,47 @@
             border-radius: 12px;
             padding: 30px;
             width: 100%;
-            max-width: 380px;
+            max-width: 400px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.4);
             text-align: center;
         }
 
         h1 {
             color: #00d2d3;
-            font-size: 24px;
-            margin-bottom: 8px;
+            font-size: 26px;
+            margin-bottom: 5px;
         }
 
         p.subtitle {
             color: #a4b0be;
             font-size: 14px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #1e1e2e;
+            border: 1px solid #3d3f58;
+            overflow: hidden;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: none;
+            color: #a4b0be;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tab-btn.active {
+            background-color: #00d2d3;
+            color: #1e1e2e;
         }
 
         .input-group {
@@ -57,6 +83,8 @@
             font-size: 13px;
             color: #c8d6e5;
             font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
         }
 
         input {
@@ -75,7 +103,7 @@
             border-color: #00d2d3;
         }
 
-        .btn-connexion {
+        .btn-submit {
             width: 100%;
             background-color: #00d2d3;
             color: #1e1e2e;
@@ -88,12 +116,20 @@
             transition: 0.2s;
         }
 
-        .btn-connexion:hover {
+        .btn-submit:hover {
             background-color: #01a3a4;
         }
 
         .error-msg {
             color: #ee5253;
+            font-size: 13px;
+            margin-top: 12px;
+            min-height: 18px;
+            font-weight: bold;
+        }
+
+        .success-msg {
+            color: #1dd1a1;
             font-size: 13px;
             margin-top: 12px;
             min-height: 18px;
@@ -105,53 +141,157 @@
 
     <div class="login-card">
         <h1>Cour-halea</h1>
-        <p class="subtitle">Plateforme d'études & de révisions</p>
+        <p class="subtitle">Espace d'études & de révisions</p>
 
-        <form id="form-login" onsubmit="validerConnexion(event)">
+        <!-- Onglets -->
+        <div class="tabs">
+            <button class="tab-btn active" id="btn-tab-connexion" onclick="changerOnglet('connexion')">Connexion</button>
+            <button class="tab-btn" id="btn-tab-inscription" onclick="changerOnglet('inscription')">Créer un compte</button>
+        </div>
+
+        <form id="auth-form" onsubmit="gererSoumission(event)">
             <div class="input-group">
                 <div>
                     <label for="pseudo">Pseudo</label>
-                    <input type="text" id="pseudo" placeholder="Ex: Max" required autocomplete="username">
+                    <input type="text" id="pseudo" placeholder="Ton pseudo" required autocomplete="username">
                 </div>
+
                 <div>
                     <label for="email">Adresse E-mail</label>
                     <input type="email" id="email" placeholder="exemple@mail.com" required autocomplete="email">
                 </div>
+
+                <div>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
             </div>
 
-            <button type="submit" class="btn-connexion">Se connecter</button>
-            <div class="error-msg" id="message-erreur"></div>
+            <button type="submit" class="btn-submit" id="btn-action">Se connecter</button>
+            <div class="error-msg" id="msg-erreur"></div>
+            <div class="success-msg" id="msg-succes"></div>
         </form>
     </div>
 
     <script>
-        function validerConnexion(event) {
+        // Si l'utilisateur est déjà connecté, aller directement à l'accueil
+        if (localStorage.getItem("utilisateur_pseudo")) {
+            window.location.href = "accueil.html";
+        }
+
+        let modeActuel = "connexion";
+
+        function changerOnglet(mode) {
+            modeActuel = mode;
+            const btnConnexion = document.getElementById("btn-tab-connexion");
+            const btnInscription = document.getElementById("btn-tab-inscription");
+            const btnAction = document.getElementById("btn-action");
+            const msgErreur = document.getElementById("msg-erreur");
+            const msgSucces = document.getElementById("msg-succes");
+
+            msgErreur.textContent = "";
+            msgSucces.textContent = "";
+
+            if (mode === "connexion") {
+                btnConnexion.classList.add("active");
+                btnInscription.classList.remove("active");
+                btnAction.textContent = "Se connecter";
+                btnAction.style.backgroundColor = "#00d2d3";
+            } else {
+                btnInscription.classList.add("active");
+                btnConnexion.classList.remove("active");
+                btnAction.textContent = "S'inscrire";
+                btnAction.style.backgroundColor = "#1dd1a1";
+            }
+        }
+
+        function recupererComptes() {
+            return JSON.parse(localStorage.getItem("comptes_utilisateurs") || "[]");
+        }
+
+        function sauvegarderComptes(comptes) {
+            localStorage.setItem("comptes_utilisateurs", JSON.stringify(comptes));
+        }
+
+        function gererSoumission(event) {
             event.preventDefault();
 
             const pseudo = document.getElementById("pseudo").value.trim();
-            const email = document.getElementById("email").value.trim();
-            const zoneErreur = document.getElementById("message-erreur");
+            const email = document.getElementById("email").value.trim().toLowerCase();
+            const password = document.getElementById("password").value;
+            const msgErreur = document.getElementById("msg-erreur");
+            const msgSucces = document.getElementById("msg-succes");
 
-            zoneErreur.textContent = "";
+            msgErreur.textContent = "";
+            msgSucces.textContent = "";
 
             if (pseudo.length < 2) {
-                zoneErreur.textContent = "Le pseudo doit comporter au moins 2 caractères.";
+                msgErreur.textContent = "Le pseudo doit comporter au moins 2 caractères.";
                 return;
             }
 
-            // Expression régulière de contrôle d'adresse e-mail standard
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
-                zoneErreur.textContent = "Veuillez entrer une adresse e-mail valide (ex: contact@domaine.com).";
+                msgErreur.textContent = "Veuillez entrer une adresse e-mail valide.";
                 return;
             }
 
-            // Enregistrement des données de l'utilisateur connecté
-            localStorage.setItem("utilisateur_pseudo", pseudo);
-            localStorage.setItem("utilisateur_email", email.toLowerCase());
+            if (password.length < 4) {
+                msgErreur.textContent = "Le mot de passe doit comporter au moins 4 caractères.";
+                return;
+            }
 
-            // Redirection vers l'accueil
-            window.location.href = "accueil.html";
+            let comptes = recupererComptes();
+
+            // Inscription
+            if (modeActuel === "inscription") {
+                const pseudoExiste = comptes.some(c => c.pseudo.toLowerCase() === pseudo.toLowerCase());
+                if (pseudoExiste) {
+                    msgErreur.textContent = "Ce pseudo est déjà utilisé.";
+                    return;
+                }
+
+                const emailExiste = comptes.some(c => c.email.toLowerCase() === email);
+                if (emailExiste) {
+                    msgErreur.textContent = "Cette adresse e-mail possède déjà un compte.";
+                    return;
+                }
+
+                comptes.push({
+                    pseudo: pseudo,
+                    email: email,
+                    password: password
+                });
+
+                sauvegarderComptes(comptes);
+
+                msgSucces.textContent = "Compte créé ! Tu peux maintenant te connecter.";
+                setTimeout(() => {
+                    changerOnglet("connexion");
+                    document.getElementById("password").value = "";
+                }, 1000);
+                return;
+            }
+
+            // Connexion
+            if (modeActuel === "connexion") {
+                const compteValide = comptes.find(c => 
+                    c.pseudo.toLowerCase() === pseudo.toLowerCase() &&
+                    c.email.toLowerCase() === email &&
+                    c.password === password
+                );
+
+                if (!compteValide) {
+                    msgErreur.textContent = "Combinaison incorrecte (pseudo, e-mail et mot de passe doivent correspondre).";
+                    return;
+                }
+
+                // Session active
+                localStorage.setItem("utilisateur_pseudo", compteValide.pseudo);
+                localStorage.setItem("utilisateur_email", compteValide.email);
+
+                window.location.href = "accueil.html";
+            }
         }
     </script>
 

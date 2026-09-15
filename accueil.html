@@ -386,6 +386,7 @@
             flex-direction: column;
             overflow-y: auto;
             flex-shrink: 0;
+            position: relative;
         }
 
         .top-icons {
@@ -394,6 +395,7 @@
             align-items: center;
             padding: 12px 5px;
             border-bottom: 1px solid #3d3f58;
+            position: relative;
         }
 
         .profile-badge {
@@ -408,6 +410,61 @@
             font-weight: bold;
             font-size: 13px;
             cursor: pointer;
+            transition: 0.2s;
+            user-select: none;
+        }
+
+        .profile-badge:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 10px rgba(0, 210, 211, 0.5);
+        }
+
+        /* Menu flottant du Profil pour se déconnecter */
+        .profile-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 10px;
+            right: 10px;
+            background-color: #1e1e2e;
+            border: 1px solid #00d2d3;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            z-index: 100;
+            text-align: center;
+        }
+
+        .profile-menu .info-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #00d2d3;
+            word-break: break-word;
+        }
+
+        .profile-menu .info-email {
+            font-size: 11px;
+            color: #a4b0be;
+            margin-top: 4px;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+
+        .btn-logout {
+            background-color: #ee5253;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .btn-logout:hover {
+            background-color: #c0392b;
         }
 
         .hamburger-btn {
@@ -593,7 +650,7 @@
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
 
-        <!-- 1. Fenêtre Amis & Demandes personnelles -->
+        <!-- 1. Fenêtre Amis & Demandes -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
                 <span style="color: #1dd1a1;">👥 Demandes & Amis</span>
@@ -613,7 +670,7 @@
             </div>
         </div>
 
-        <!-- 2. Salon de Messagerie Privé entre amis -->
+        <!-- 2. Salon de Messagerie -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
                 <span style="color: #ff9f43;">💬 Salon d'entraide (Amis mutuels)</span>
@@ -655,13 +712,20 @@
     <!-- Barre latérale Droite -->
     <div class="sidebar-right">
         <div class="top-icons">
-            <div class="profile-badge" id="icone-profil" title="Profil">Moi</div>
+            <!-- Rond du profil qui ouvre la déconnexion -->
+            <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon compte">Moi</div>
             <button class="hamburger-btn" onclick="toggleMenuAdmin()">☰</button>
+        </div>
+
+        <!-- Petite fenêtre du profil avec le bouton Déconnexion -->
+        <div class="profile-menu" id="menu-profil">
+            <div class="info-name" id="nom-utilisateur">Pseudo</div>
+            <div class="info-email" id="email-utilisateur">email@domaine.com</div>
+            <button class="btn-logout" onclick="seDeconnecter()">🚪 Se déconnecter</button>
         </div>
 
         <div class="admin-dropdown" id="dropdown-menu">
             <button onclick="ouvrirAdmin()">Panel Admin</button>
-            <button onclick="seDeconnecter()" style="background-color: #ee5253; color: white; margin-top: 8px;">Se déconnecter</button>
         </div>
 
         <!-- Langue -->
@@ -701,12 +765,27 @@
     <script>
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
-        // Utilisateur actif
-        const monPseudo = localStorage.getItem("utilisateur_pseudo") || "Anonyme";
-        document.getElementById("icone-profil").textContent = monPseudo.slice(0, 3).toUpperCase();
-        document.getElementById("icone-profil").title = monPseudo;
+        // Vérification de sécurité : si non connecté, redirection vers index.html
+        const monPseudo = localStorage.getItem("utilisateur_pseudo");
+        const monEmail = localStorage.getItem("utilisateur_email") || "";
 
-        // Déconnexion
+        if (!monPseudo) {
+            window.location.href = "index.html";
+        }
+
+        // Remplir les initiales et infos du compte
+        document.getElementById("icone-profil").textContent = monPseudo.slice(0, 2).toUpperCase();
+        document.getElementById("nom-utilisateur").textContent = monPseudo;
+        document.getElementById("email-utilisateur").textContent = monEmail;
+
+        // Ouvrir / fermer le menu profil quand on clique sur le rond
+        function toggleMenuProfil() {
+            const menu = document.getElementById("menu-profil");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+            document.getElementById("dropdown-menu").style.display = "none";
+        }
+
+        // Action de déconnexion
         function seDeconnecter() {
             localStorage.removeItem("utilisateur_pseudo");
             localStorage.removeItem("utilisateur_email");
@@ -718,10 +797,10 @@
             document.getElementById("chat-entraide").style.display = "none";
             document.getElementById("friends-panel").style.display = "none";
             document.getElementById("admin-panel").style.display = "none";
+            document.getElementById("menu-profil").style.display = "none";
         }
 
-        /* --- SYSTÈME DE DEMANDES D'AMIS PAR COMPTE --- */
-        // Clé unique des amis pour chaque compte : "amis_Pseudo"
+        /* --- SYSTÈME DE DEMANDES D'AMIS --- */
         function getCleAmis(pseudo = monPseudo) {
             return "amis_" + pseudo.toLowerCase();
         }
@@ -799,7 +878,6 @@
         }
 
         function accepterDemande(demandeur) {
-            // Ajouter mutuellement dans les listes des 2 comptes
             let mesAmis = recupererMesAmis();
             if (!mesAmis.includes(demandeur)) {
                 mesAmis.push(demandeur);
@@ -812,7 +890,6 @@
                 localStorage.setItem(getCleAmis(demandeur), JSON.stringify(sesAmis));
             }
 
-            // Supprimer la demande du registre
             let toutes = recupererToutesDemandes();
             toutes = toutes.filter(d => !(d.demandeur.toLowerCase() === demandeur.toLowerCase() && d.destinataire.toLowerCase() === monPseudo.toLowerCase()));
             sauvegarderToutesDemandes(toutes);
@@ -840,7 +917,6 @@
         function actualiserPanneauAmis() {
             verifierNotifications();
 
-            // 1. Demandes reçues pour mon compte
             const toutes = recupererToutesDemandes();
             const mesDemandes = toutes.filter(d => d.destinataire.toLowerCase() === monPseudo.toLowerCase() && d.statut === "en_attente");
             const boxDemandes = document.getElementById("demandes-list");
@@ -863,7 +939,6 @@
                 });
             }
 
-            // 2. Mes amis confirmés
             const mesAmis = recupererMesAmis();
             const boxAmis = document.getElementById("friends-list");
 
@@ -897,7 +972,6 @@
             const historique = JSON.parse(localStorage.getItem("messages_entraide") || "[]");
             const mesAmis = recupererMesAmis();
 
-            // Filtrage : uniquement mes messages OU les messages de personnes que j'ai en ami ET qui m'ont en ami
             const messagesAutorises = historique.filter(m => {
                 if (m.pseudo === monPseudo) return true;
                 return mesAmis.some(a => a.toLowerCase() === m.pseudo.toLowerCase());
@@ -1032,6 +1106,7 @@
         function toggleMenuAdmin() {
             const menu = document.getElementById("dropdown-menu");
             menu.style.display = (menu.style.display === "block") ? "none" : "block";
+            document.getElementById("menu-profil").style.display = "none";
         }
 
         function ouvrirAdmin() {
@@ -1053,7 +1128,6 @@
             }
         }
 
-        // Vérification des notifications de demandes au chargement
         verifierNotifications();
     </script>
 
