@@ -20,7 +20,7 @@
             overflow: hidden;
         }
 
-        /* 1. Colonne gauche (PC) */
+        /* 1. Colonne gauche */
         .sidebar-left {
             width: 90px;
             background-color: #26273b;
@@ -52,13 +52,36 @@
             color: #00d2d3;
         }
 
+        .bottom-left-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .add-friend-btn {
+            background: none;
+            border: none;
+            border-top: 1px solid #3d3f58;
+            color: #1dd1a1;
+            padding: 16px 0;
+            font-size: 26px;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .add-friend-btn:hover {
+            background-color: #343650;
+            color: #10ac84;
+        }
+
         .settings-btn {
             background: none;
             border: none;
             border-top: 1px solid #3d3f58;
             color: #c8d6e5;
-            padding: 20px 0;
-            font-size: 24px;
+            padding: 16px 0;
+            font-size: 20px;
             cursor: pointer;
             text-align: center;
             width: 100%;
@@ -91,7 +114,35 @@
             border-color: #00d2d3;
         }
 
-        /* Fenêtre Admin */
+        /* Modales */
+        .modal-box {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            max-width: 650px;
+            height: 480px;
+            background-color: #26273b;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        #chat-ia {
+            border: 1px solid #00d2d3;
+        }
+
+        #chat-entraide {
+            border: 1px solid #ff9f43;
+        }
+
+        #friends-panel {
+            border: 1px solid #1dd1a1;
+            height: auto;
+            max-height: 480px;
+            padding-bottom: 15px;
+        }
+
         #admin-panel {
             display: none;
             background-color: #2b2c40;
@@ -118,39 +169,6 @@
             outline: none;
         }
 
-        .btn-admin {
-            background-color: #ff9f43;
-            color: #1e1e2e;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 15px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* Modales communes Chat IA & Messagerie */
-        .chat-box-modal {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            max-width: 650px;
-            height: 480px;
-            background-color: #26273b;
-            border-radius: 12px;
-            margin-top: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
-            overflow: hidden;
-        }
-
-        #chat-ia {
-            border: 1px solid #00d2d3;
-        }
-
-        #chat-entraide {
-            border: 1px solid #ff9f43;
-        }
-
         .chat-header {
             background-color: #1e1e2e;
             padding: 12px 16px;
@@ -161,7 +179,7 @@
             border-bottom: 1px solid #3d3f58;
         }
 
-        .close-chat-btn {
+        .close-btn {
             background: none;
             border: none;
             color: #a4b0be;
@@ -169,7 +187,7 @@
             cursor: pointer;
         }
 
-        .close-chat-btn:hover {
+        .close-btn:hover {
             color: #ee5253;
         }
 
@@ -206,7 +224,6 @@
             border-bottom-right-radius: 2px;
         }
 
-        /* Styles bulles messagerie groupe */
         .msg-group-other {
             background-color: #343650;
             align-self: flex-start;
@@ -253,9 +270,7 @@
             font-size: 14px;
         }
 
-        .btn-send-ia {
-            background-color: #00d2d3;
-            color: #1e1e2e;
+        .btn-send {
             border: none;
             font-weight: bold;
             padding: 8px 16px;
@@ -263,17 +278,66 @@
             cursor: pointer;
         }
 
-        .btn-send-group {
-            background-color: #ff9f43;
+        /* Panneau Amis */
+        .friends-body {
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .friends-input-zone {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .friends-input-zone input {
+            flex: 1;
+            background-color: #1e1e2e;
+            border: 1px solid #484b6a;
+            padding: 10px;
+            border-radius: 8px;
+            color: #ffffff;
+            outline: none;
+        }
+
+        .btn-add-submit {
+            background-color: #1dd1a1;
             color: #1e1e2e;
             border: none;
             font-weight: bold;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 10px 15px;
+            border-radius: 8px;
             cursor: pointer;
         }
 
-        /* 3. Colonne droite (PC) */
+        .friends-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .friend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1e1e2e;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #3d3f58;
+        }
+
+        .btn-del-friend {
+            background-color: #ee5253;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* 3. Colonne droite */
         .sidebar-right {
             width: 170px;
             background-color: #26273b;
@@ -381,12 +445,6 @@
             padding-left: 20px;
         }
 
-        .add-btn {
-            font-size: 24px;
-            color: #00d2d3;
-            margin-top: auto;
-        }
-
         /* 📱 Adaptation Mobile */
         @media (max-width: 768px) {
             body {
@@ -405,7 +463,7 @@
                 order: 1;
             }
 
-            .sidebar-left div {
+            .sidebar-left > div:first-child {
                 display: flex;
                 flex: 1;
             }
@@ -420,8 +478,20 @@
                 flex: 1;
             }
 
+            .bottom-left-group {
+                flex-direction: row;
+            }
+
+            .add-friend-btn {
+                width: 50px;
+                padding: 10px 0;
+                border-top: none;
+                border-left: 1px solid #3d3f58;
+                font-size: 20px;
+            }
+
             .settings-btn {
-                width: 60px;
+                width: 50px;
                 padding: 10px 0;
                 border-top: none;
                 border-left: 1px solid #3d3f58;
@@ -437,7 +507,7 @@
                 width: 95%;
             }
 
-            .chat-box-modal {
+            .modal-box {
                 height: 420px;
             }
 
@@ -458,11 +528,6 @@
                 padding: 14px 20px;
                 font-size: 15px;
             }
-
-            .add-btn {
-                margin-top: 0;
-                padding: 15px 0;
-            }
         }
     </style>
 </head>
@@ -471,52 +536,71 @@
     <!-- Barre latérale Gauche -->
     <div class="sidebar-left">
         <div>
-            <!-- Remplacement du Notebook par la Messagerie -->
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
             <button class="left-btn" onclick="ouvrirChatIA()">🤖 Meta IA</button>
         </div>
-        <button class="settings-btn" title="Paramètres" onclick="alert('Paramètres')">⚙</button>
+        
+        <div class="bottom-left-group">
+            <!-- Bouton + en bas à gauche pour gérer les amis -->
+            <button class="add-friend-btn" title="Ajouter un ami" onclick="ouvrirGestionAmis()">✚</button>
+            <button class="settings-btn" title="Paramètres" onclick="alert('Paramètres')">⚙</button>
+        </div>
     </div>
 
     <!-- Centre de l'écran -->
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
 
-        <!-- 1. Fenêtre Messagerie Entraide (entre élèves) -->
-        <div id="chat-entraide" class="chat-box-modal">
+        <!-- 1. Fenêtre Amis (ouverte avec le bouton +) -->
+        <div id="friends-panel" class="modal-box">
             <div class="chat-header">
-                <span style="color: #ff9f43;">💬 Salon d'entraide & révisions</span>
-                <button class="close-chat-btn" onclick="fermerFenetres()">✕</button>
+                <span style="color: #1dd1a1;">👥 Mes Amis de Révision</span>
+                <button class="close-btn" onclick="fermerFenetres()">✕</button>
+            </div>
+            <div class="friends-body">
+                <div class="friends-input-zone">
+                    <input type="text" id="friend-pseudo-input" placeholder="Pseudo exact de ton ami...">
+                    <button class="btn-add-submit" onclick="ajouterAmi()">Ajouter</button>
+                </div>
+                <ul class="friends-list" id="friends-list"></ul>
+            </div>
+        </div>
+
+        <!-- 2. Salon de Messagerie (filtré par amis) -->
+        <div id="chat-entraide" class="modal-box">
+            <div class="chat-header">
+                <span style="color: #ff9f43;">💬 Salon d'entraide (Amis uniquement)</span>
+                <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="chat-messages" id="group-messages"></div>
             <div class="chat-input-zone">
-                <input type="text" id="group-input" placeholder="Pose ta question au groupe..." onkeydown="siToucheEntreeGroupe(event)">
-                <button class="btn-send-group" onclick="envoyerMessageGroupe()">Envoyer</button>
+                <input type="text" id="group-input" placeholder="Message aux amis..." onkeydown="if(event.key==='Enter') envoyerMessageGroupe()">
+                <button class="btn-send" style="background-color: #ff9f43; color: #1e1e2e;" onclick="envoyerMessageGroupe()">Envoyer</button>
             </div>
         </div>
 
-        <!-- 2. Fenêtre Meta IA -->
-        <div id="chat-ia" class="chat-box-modal">
+        <!-- 3. Assistant Meta IA -->
+        <div id="chat-ia" class="modal-box">
             <div class="chat-header">
                 <span style="color: #00d2d3;">🤖 Meta IA - Assistant</span>
-                <button class="close-chat-btn" onclick="fermerFenetres()">✕</button>
+                <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="chat-messages" id="chat-messages">
-                <div class="msg msg-ia">Salut ! Je suis ton assistant scolaire. Pose-moi une question sur tes cours ou tes exercices !</div>
+                <div class="msg msg-ia">Salut ! Je suis ton assistant scolaire. Pose-moi une question sur tes cours !</div>
             </div>
             <div class="chat-input-zone">
-                <input type="text" id="user-input" placeholder="Pose ta question ici..." onkeydown="siToucheEntreeIA(event)">
-                <button class="btn-send-ia" onclick="envoyerMessageIA()">Envoyer</button>
+                <input type="text" id="user-input" placeholder="Pose ta question ici..." onkeydown="if(event.key==='Enter') envoyerMessageIA()">
+                <button class="btn-send" style="background-color: #00d2d3; color: #1e1e2e;" onclick="envoyerMessageIA()">Envoyer</button>
             </div>
         </div>
 
-        <!-- 3. Panneau Admin -->
+        <!-- 4. Panneau Admin -->
         <div id="admin-panel">
             <h3>Panel Admin</h3>
             <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code à 4 chiffres :</p>
             <input type="password" id="code-pin" maxlength="4" placeholder="••••">
             <br>
-            <button class="btn-admin" onclick="validerPin()">Accéder</button>
+            <button style="background-color: #ff9f43; color: #1e1e2e; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="validerPin()">Accéder</button>
             <p id="message-pin" style="margin-top: 12px; font-weight: bold; font-size: 14px;"></p>
         </div>
     </div>
@@ -564,25 +648,91 @@
             <button class="sub-item" onclick="ouvrirMatiere('EMC')">⚖️ EMC</button>
             <button class="sub-item" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques / Musique</button>
         </div>
-
-        <button class="right-item add-btn" title="Ajouter un cours" onclick="alert('Ajouter un nouveau cours')">✚</button>
     </div>
 
     <script>
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
-        // Pseudo de l'élève
         const monPseudo = localStorage.getItem("utilisateur_pseudo") || "Moi";
         document.getElementById("icone-profil").textContent = monPseudo.slice(0, 3).toUpperCase();
         document.getElementById("icone-profil").title = monPseudo;
 
-        // Gestion de l'affichage
         function fermerFenetres() {
             document.getElementById("chat-ia").style.display = "none";
             document.getElementById("chat-entraide").style.display = "none";
+            document.getElementById("friends-panel").style.display = "none";
             document.getElementById("admin-panel").style.display = "none";
         }
 
+        /* --- GESTION DES AMIS (Bouton +) --- */
+        function ouvrirGestionAmis() {
+            fermerFenetres();
+            document.getElementById("friends-panel").style.display = "flex";
+            afficherListeAmis();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function recupererAmis() {
+            return JSON.parse(localStorage.getItem("mes_amis") || "[]");
+        }
+
+        function sauvegarderAmis(amis) {
+            localStorage.setItem("mes_amis", JSON.stringify(amis));
+        }
+
+        function ajouterAmi() {
+            const input = document.getElementById("friend-pseudo-input");
+            const ami = input.value.trim();
+
+            if (!ami) return;
+            if (ami.toLowerCase() === monPseudo.toLowerCase()) {
+                alert("Tu ne peux pas t'ajouter toi-même en ami !");
+                return;
+            }
+
+            let amis = recupererAmis();
+            if (amis.includes(ami)) {
+                alert(ami + " est déjà dans ta liste d'amis.");
+                return;
+            }
+
+            amis.push(ami);
+            sauvegarderAmis(amis);
+            input.value = "";
+            afficherListeAmis();
+        }
+
+        function supprimerAmi(index) {
+            let amis = recupererAmis();
+            amis.splice(index, 1);
+            sauvegarderAmis(amis);
+            afficherListeAmis();
+        }
+
+        function afficherListeAmis() {
+            const amis = recupererAmis();
+            const liste = document.getElementById("friends-list");
+
+            if (amis.length === 0) {
+                liste.innerHTML = `<li style="color: #a4b0be; font-size: 13px; text-align: center; padding: 10px;">
+                    Aucun ami ajouté. Ajoute tes camarades pour pouvoir échanger !
+                </li>`;
+                return;
+            }
+
+            liste.innerHTML = "";
+            amis.forEach((ami, index) => {
+                const li = document.createElement("li");
+                li.className = "friend-item";
+                li.innerHTML = `
+                    <span>👤 <strong>${ami}</strong></span>
+                    <button class="btn-del-friend" onclick="supprimerAmi(${index})">Retirer</button>
+                `;
+                liste.appendChild(li);
+            });
+        }
+
+        /* --- MESSAGERIE SÉCURISÉE (Amis uniquement) --- */
         function ouvrirMessagerie() {
             fermerFenetres();
             document.getElementById("chat-entraide").style.display = "flex";
@@ -591,34 +741,30 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function ouvrirChatIA() {
-            fermerFenetres();
-            document.getElementById("chat-ia").style.display = "flex";
-            document.getElementById("user-input").focus();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function ouvrirAdmin() {
-            fermerFenetres();
-            document.getElementById("dropdown-menu").style.display = "none";
-            document.getElementById("admin-panel").style.display = "block";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        /* --- LOGIQUE MESSAGERIE ENTRE NOUS --- */
         function chargerMessagesGroupe() {
             const conteneur = document.getElementById("group-messages");
             const historique = JSON.parse(localStorage.getItem("messages_entraide") || "[]");
+            const mesAmis = recupererAmis();
 
-            if (historique.length === 0) {
+            // Filtrage : uniquement mes messages ET ceux provenant de mes amis
+            const messagesAutorises = historique.filter(m => m.pseudo === monPseudo || mesAmis.includes(m.pseudo));
+
+            if (mesAmis.length === 0) {
+                conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #ff9f43;">
+                    ⚠️ Tu n'as aucun ami ajouté. Clique sur le bouton ✚ en bas à gauche pour ajouter un camarade, sinon personne ne pourra te lire ni te parler !
+                </div>`;
+                return;
+            }
+
+            if (messagesAutorises.length === 0) {
                 conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
-                    Bienvenue sur le salon d'entraide ! Pose tes questions ici pour réviser à plusieurs.
+                    Aucun message de tes amis pour l'instant. Envoie un premier mot !
                 </div>`;
                 return;
             }
 
             conteneur.innerHTML = "";
-            historique.forEach(m => {
+            messagesAutorises.forEach(m => {
                 const estMoi = (m.pseudo === monPseudo);
                 const bulle = document.createElement("div");
                 bulle.className = "msg " + (estMoi ? "msg-group-me" : "msg-group-other");
@@ -632,11 +778,13 @@
             conteneur.scrollTop = conteneur.scrollHeight;
         }
 
-        function siToucheEntreeGroupe(event) {
-            if (event.key === "Enter") envoyerMessageGroupe();
-        }
-
         function envoyerMessageGroupe() {
+            const mesAmis = recupererAmis();
+            if (mesAmis.length === 0) {
+                alert("Ajoute au moins un ami via le bouton ✚ avant d'envoyer un message !");
+                return;
+            }
+
             const input = document.getElementById("group-input");
             const texte = input.value.trim();
             if (texte === "") return;
@@ -656,9 +804,12 @@
             chargerMessagesGroupe();
         }
 
-        /* --- LOGIQUE META IA --- */
-        function siToucheEntreeIA(event) {
-            if (event.key === "Enter") envoyerMessageIA();
+        /* --- CHAT IA --- */
+        function ouvrirChatIA() {
+            fermerFenetres();
+            document.getElementById("chat-ia").style.display = "flex";
+            document.getElementById("user-input").focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         async function envoyerMessageIA() {
@@ -691,7 +842,7 @@
                     },
                     body: JSON.stringify({
                         contents: [{
-                            parts: [{ text: "Tu es un tuteur scolaire pour le site Cour-halea. Réponds clairement et précisément : " + texte }]
+                            parts: [{ text: "Tu es un tuteur scolaire pour le site Cour-halea. Réponds clairement : " + texte }]
                         }]
                     })
                 });
@@ -706,13 +857,13 @@
                     msgIA.textContent = "Désolé, aucune réponse reçue.";
                 }
             } catch (err) {
-                msgIA.textContent = "Erreur de connexion. Vérifie ta connexion internet.";
+                msgIA.textContent = "Erreur de connexion.";
             }
 
             box.scrollTop = box.scrollHeight;
         }
 
-        /* --- MENUS & NAVIGATION --- */
+        /* --- MENUS --- */
         function toggleMenu(idMenu) {
             const menu = document.getElementById(idMenu);
             const estOuvert = (menu.style.display === "block");
@@ -727,6 +878,13 @@
         function toggleMenuAdmin() {
             const menu = document.getElementById("dropdown-menu");
             menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+
+        function ouvrirAdmin() {
+            fermerFenetres();
+            document.getElementById("dropdown-menu").style.display = "none";
+            document.getElementById("admin-panel").style.display = "block";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function validerPin() {
