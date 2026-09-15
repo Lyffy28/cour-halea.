@@ -67,7 +67,6 @@
             font-weight: bold;
             font-size: 14px;
             cursor: pointer;
-            text-decoration: none;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -216,16 +215,17 @@
             color: #c8d6e5;
         }
 
-        /* Section des leçons enregistrées */
+        /* Section Masquée par défaut : accessible UNIQUEMENT via le bouton */
         .saved-section {
+            display: none;
             width: 100%;
             max-width: 960px;
-            margin-top: 30px;
+            margin-top: 25px;
             background-color: #26273b;
-            border: 1px solid #3d3f58;
+            border: 2px solid #ff9f43;
             border-radius: 12px;
             padding: 20px;
-            scroll-margin-top: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
 
         .saved-header {
@@ -238,15 +238,15 @@
         }
 
         .saved-title {
-            color: #00d2d3;
+            color: #ff9f43;
             font-size: 18px;
             font-weight: bold;
         }
 
         .badge-count {
             background-color: #1e1e2e;
-            color: #ff9f43;
-            border: 1px solid #ff9f43;
+            color: #00d2d3;
+            border: 1px solid #00d2d3;
             padding: 3px 10px;
             border-radius: 12px;
             font-size: 12px;
@@ -317,43 +317,44 @@
     <header>
         <div class="nav-group">
             <a href="accueil.html" class="back-btn">← Accueil</a>
-            <button class="lessons-btn" onclick="allerAuxLecons()">
-                📖 Mes leçons (<span id="nb-lecons-btn">0</span>)
+            <!-- Le SEUL bouton pour ouvrir ou cacher tes leçons enregistrées -->
+            <button class="lessons-btn" onclick="toggleAffichageLecons()">
+                📖 Mes leçons (<span id="nb-lecons-btn">0</span>) ▾
             </button>
         </div>
         <h1 id="titre-matiere">Matière</h1>
     </header>
 
     <div class="container">
-        <!-- 1. Formulaire leçon -->
+        <!-- 1. Formulaire pour prendre la photo directement -->
         <div class="card">
-            <h2>1. Nouveau cours</h2>
+            <h2>1. Prendre une photo du cours</h2>
             
             <label class="upload-area" for="photo-input">
-                <p id="label-upload">📷 Prendre ou importer une photo du cours</p>
+                <p id="label-upload">📷 Clique ici pour prendre ou charger la photo</p>
                 <img id="image-preview" class="preview-img" alt="Aperçu">
             </label>
             <input type="file" id="photo-input" accept="image/*" capture="environment" style="display:none;" onchange="afficherApercu(event)">
 
-            <p style="font-size: 12px; color: #a4b0be; text-align: center;">- OU tape / colle ton texte ici -</p>
-            <textarea id="cours-texte" placeholder="Écris du vocabulaire, des formules ou ta leçon..."></textarea>
+            <p style="font-size: 12px; color: #a4b0be; text-align: center;">- OU ajoute des précisions textuelles -</p>
+            <textarea id="cours-texte" placeholder="Écris du vocabulaire, des phrases ou des règles en plus..."></textarea>
 
             <button class="btn-action" id="btn-generer" onclick="genererFiche()">⚡ Créer la fiche de révision</button>
         </div>
 
-        <!-- 2. Résultat + Enregistrement direct -->
+        <!-- 2. Fiche créée par l'IA + Bouton d'enregistrement -->
         <div class="card">
-            <h2>2. Fiche générée par l'IA</h2>
-            <div id="fiche-resultat">Ajoute une photo ou écris ton cours à gauche, puis lance la création.</div>
+            <h2>2. Fiche de révision par l'IA</h2>
+            <div id="fiche-resultat">Prends ta photo à gauche puis clique sur "Créer la fiche de révision".</div>
 
             <button class="btn-save" id="btn-save" onclick="sauvegarderFiche()">
-                💾 Enregistrer cette leçon dans <span id="label-save-matiere"></span>
+                💾 Enregistrer la leçon dans <span id="label-save-matiere"></span>
             </button>
             <p id="save-confirmation" style="color: #1dd1a1; font-weight: bold; font-size: 13px; text-align: center;"></p>
         </div>
     </div>
 
-    <!-- 3. Section dédiée des leçons enregistrées -->
+    <!-- 3. Section des leçons : VISIBLE UNIQUEMENT après clic sur "Mes leçons" -->
     <div class="saved-section" id="section-lecons">
         <div class="saved-header">
             <span class="saved-title" id="saved-title">📚 Leçons enregistrées</span>
@@ -365,14 +366,11 @@
     <script>
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
-        // Récupérer la matière sélectionnée (ex: Espagnol, Anglais, Maths...)
+        // Détection stricte de la matière (Espagnol, Anglais, Maths, etc.)
         const params = new URLSearchParams(window.location.search);
         const matiereActuelle = params.get("matiere") || "Général";
-        
-        // Clé unique et isolée par matière dans le stockage
         const cleStockage = "fiches_" + matiereActuelle;
 
-        // Mise en place des textes
         document.getElementById("titre-matiere").textContent = "Matière : " + matiereActuelle;
         document.getElementById("saved-title").textContent = "📚 Leçons enregistrées en " + matiereActuelle;
         document.getElementById("label-save-matiere").textContent = matiereActuelle;
@@ -381,12 +379,18 @@
         let mimeTypeImage = null;
         let dernierTexteFiche = "";
 
-        // Faire défiler directement jusqu'à la liste des leçons
-        function allerAuxLecons() {
-            document.getElementById("section-lecons").scrollIntoView({ behavior: "smooth" });
+        // Afficher ou cacher la zone des leçons
+        function toggleAffichageLecons() {
+            const section = document.getElementById("section-lecons");
+            if (section.style.display === "block") {
+                section.style.display = "none";
+            } else {
+                section.style.display = "block";
+                section.scrollIntoView({ behavior: "smooth" });
+            }
         }
 
-        // Aperçu de l'image
+        // Aperçu de la photo
         function afficherApercu(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -405,11 +409,11 @@
             reader.readAsDataURL(file);
         }
 
-        // Génération IA
+        // Création de la fiche par l'IA
         async function genererFiche() {
             const texteSaisi = document.getElementById("cours-texte").value.trim();
             if (!base64Image && texteSaisi === "") {
-                alert("Merci d'ajouter une photo ou de taper du texte de cours !");
+                alert("Ajoute une photo ou écris du texte de cours !");
                 return;
             }
 
@@ -419,17 +423,17 @@
 
             btnGen.disabled = true;
             btnSave.style.display = "none";
-            resDiv.textContent = "⏳ L'IA analyse ton cours et génère la fiche de révision...";
+            resDiv.textContent = "⏳ L'IA analyse ton cours et génère la fiche...";
             document.getElementById("save-confirmation").textContent = "";
 
             try {
                 const prompt = `Tu es un professeur tuteur expert en : ${matiereActuelle}.
-À partir du document fourni (image ou texte), crée une fiche de révision parfaitement claire et structurée :
-1. Titre précis de la leçon
-2. Notions essentielles & vocabulaire ou règles incontournables
-3. Ce qu'il faut mémoriser par cœur
-4. 3 questions / réponses rapides pour s'auto-évaluer.
-Notes supplémentaires de l'élève : ${texteSaisi}`;
+À partir du document fourni (photo ou notes), génère une fiche de révision complète et facile à mémoriser :
+1. Titre clair du cours
+2. Notions essentielles & vocabulaire ou règles clés
+3. Points indispensables à retenir par cœur
+4. 3 questions / réponses rapides pour réviser.
+Notes supplémentaires : ${texteSaisi}`;
 
                 let parts = [{ text: prompt }];
 
@@ -460,7 +464,7 @@ Notes supplémentaires de l'élève : ${texteSaisi}`;
                 } else if (data.error) {
                     resDiv.textContent = "Erreur : " + data.error.message;
                 } else {
-                    resDiv.textContent = "Impossible de générer la fiche.";
+                    resDiv.textContent = "Impossible de lire le document.";
                 }
             } catch (err) {
                 resDiv.textContent = "Erreur de connexion. Vérifie ton réseau internet.";
@@ -469,14 +473,13 @@ Notes supplémentaires de l'élève : ${texteSaisi}`;
             }
         }
 
-        // Sauvegarde cloisonnée dans la matière actuelle
+        // Enregistrement STRICT dans la matière courante
         function sauvegarderFiche() {
             if (!dernierTexteFiche) return;
 
             const existantes = JSON.parse(localStorage.getItem(cleStockage) || "[]");
             const date = new Date().toLocaleDateString("fr-FR");
 
-            // Extraire la première ligne pour donner un titre propre
             const premierLigne = dernierTexteFiche.split("\n")[0].replace(/[#*]/g, "").trim();
             const titre = premierLigne.length > 3 ? premierLigne : ("Leçon du " + date);
 
@@ -487,16 +490,15 @@ Notes supplémentaires de l'élève : ${texteSaisi}`;
             });
 
             localStorage.setItem(cleStockage, JSON.stringify(existantes));
-            document.getElementById("save-confirmation").textContent = `✅ Leçon sauvegardée uniquement dans ${matiereActuelle} !`;
-            
-            // Masquer le bouton une fois sauvegardé pour éviter les doublons
+            document.getElementById("save-confirmation").textContent = `✅ Leçon sauvegardée dans ${matiereActuelle} !`;
             document.getElementById("btn-save").style.display = "none";
             
-            afficherFichesSauvegardees();
+            // Mise à jour du compteur et de la liste
+            mettreAJourCompteurEtListe();
         }
 
-        // Afficher seulement les fiches de la matière courante
-        function afficherFichesSauvegardees() {
+        // Rafraîchir les données de la matière courante
+        function mettreAJourCompteurEtListe() {
             const existantes = JSON.parse(localStorage.getItem(cleStockage) || "[]");
             const box = document.getElementById("liste-fiches");
             const countBtn = document.getElementById("nb-lecons-btn");
@@ -506,7 +508,7 @@ Notes supplémentaires de l'élève : ${texteSaisi}`;
             badgeTotal.textContent = existantes.length + (existantes.length > 1 ? " leçons" : " leçon");
 
             if (existantes.length === 0) {
-                box.innerHTML = `<div class="empty-msg">Aucune leçon enregistrée pour l'instant en ${matiereActuelle}.</div>`;
+                box.innerHTML = `<div class="empty-msg">Aucune leçon enregistrée en ${matiereActuelle}.</div>`;
                 return;
             }
 
@@ -532,11 +534,11 @@ Notes supplémentaires de l'élève : ${texteSaisi}`;
             let existantes = JSON.parse(localStorage.getItem(cleStockage) || "[]");
             existantes.splice(index, 1);
             localStorage.setItem(cleStockage, JSON.stringify(existantes));
-            afficherFichesSauvegardees();
+            mettreAJourCompteurEtListe();
         }
 
-        // Chargement au démarrage
-        afficherFichesSauvegardees();
+        // Initialiser le compteur sans afficher la liste au démarrage
+        mettreAJourCompteurEtListe();
     </script>
 
 </body>
