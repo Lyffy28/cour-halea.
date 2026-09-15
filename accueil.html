@@ -541,7 +541,6 @@
         </div>
         
         <div class="bottom-left-group">
-            <!-- Bouton + en bas à gauche pour gérer les amis -->
             <button class="add-friend-btn" title="Ajouter un ami" onclick="ouvrirGestionAmis()">✚</button>
             <button class="settings-btn" title="Paramètres" onclick="alert('Paramètres')">⚙</button>
         </div>
@@ -551,7 +550,7 @@
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
 
-        <!-- 1. Fenêtre Amis (ouverte avec le bouton +) -->
+        <!-- 1. Fenêtre Amis -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
                 <span style="color: #1dd1a1;">👥 Mes Amis de Révision</span>
@@ -566,7 +565,7 @@
             </div>
         </div>
 
-        <!-- 2. Salon de Messagerie (filtré par amis) -->
+        <!-- 2. Salon de Messagerie -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
                 <span style="color: #ff9f43;">💬 Salon d'entraide (Amis uniquement)</span>
@@ -612,8 +611,10 @@
             <button class="hamburger-btn" onclick="toggleMenuAdmin()">☰</button>
         </div>
 
+        <!-- Menu déroulant avec Admin et Déconnexion -->
         <div class="admin-dropdown" id="dropdown-menu">
             <button onclick="ouvrirAdmin()">Panel Admin</button>
+            <button onclick="seDeconnecter()" style="background-color: #ee5253; color: white; margin-top: 8px;">Se déconnecter</button>
         </div>
 
         <!-- Langue -->
@@ -656,6 +657,12 @@
         const monPseudo = localStorage.getItem("utilisateur_pseudo") || "Moi";
         document.getElementById("icone-profil").textContent = monPseudo.slice(0, 3).toUpperCase();
         document.getElementById("icone-profil").title = monPseudo;
+
+        // Déconnexion
+        function seDeconnecter() {
+            localStorage.removeItem("utilisateur_pseudo");
+            window.location.href = "index.html";
+        }
 
         function fermerFenetres() {
             document.getElementById("chat-ia").style.display = "none";
@@ -746,7 +753,6 @@
             const historique = JSON.parse(localStorage.getItem("messages_entraide") || "[]");
             const mesAmis = recupererAmis();
 
-            // Filtrage : uniquement mes messages ET ceux provenant de mes amis
             const messagesAutorises = historique.filter(m => m.pseudo === monPseudo || mesAmis.includes(m.pseudo));
 
             if (mesAmis.length === 0) {
