@@ -3,121 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cour-halea - Inscription</title>
+    <title>Cour-halea - Connexion</title>
     <style>
-        body {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
+        }
+
+        body {
             background-color: #1e1e2e;
             color: #ffffff;
+            min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            padding-top: 40px;
-            margin: 0;
+            justify-content: center;
+            padding: 20px;
         }
+
+        .login-card {
+            background-color: #26273b;
+            border: 1px solid #3d3f58;
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
         h1 {
             color: #00d2d3;
-            font-size: 36px;
-            margin-bottom: 10px;
+            font-size: 24px;
+            margin-bottom: 8px;
         }
-        p {
-            font-size: 18px;
-            color: #c8d6e5;
-            margin-bottom: 30px;
+
+        p.subtitle {
+            color: #a4b0be;
+            font-size: 14px;
+            margin-bottom: 25px;
         }
-        .form-box {
-            background-color: #2b2c40;
-            padding: 25px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            width: 300px;
+
+        .input-group {
             display: flex;
             flex-direction: column;
             gap: 15px;
-        }
-        .form-box h2 {
-            margin: 0 0 10px 0;
-            font-size: 22px;
-            color: #ff9f43;
-            text-align: center;
-        }
-        label {
-            font-size: 14px;
+            margin-bottom: 20px;
             text-align: left;
-            color: #c8d6e5;
         }
+
+        label {
+            font-size: 13px;
+            color: #c8d6e5;
+            font-weight: bold;
+        }
+
         input {
             width: 100%;
-            padding: 10px;
-            border-radius: 6px;
+            padding: 12px;
+            border-radius: 8px;
             border: 1px solid #484b6a;
             background-color: #1e1e2e;
             color: #ffffff;
-            box-sizing: border-box;
+            font-size: 15px;
             outline: none;
+            transition: 0.2s;
         }
+
         input:focus {
             border-color: #00d2d3;
         }
-        button {
-            background-color: #ff9f43;
-            color: #ffffff;
-            padding: 12px;
+
+        .btn-connexion {
+            width: 100%;
+            background-color: #00d2d3;
+            color: #1e1e2e;
             border: none;
-            border-radius: 6px;
+            padding: 13px;
+            border-radius: 8px;
             font-size: 16px;
-            cursor: pointer;
             font-weight: bold;
-            margin-top: 10px;
+            cursor: pointer;
             transition: 0.2s;
         }
-        button:hover {
-            background-color: #ee5253;
+
+        .btn-connexion:hover {
+            background-color: #01a3a4;
         }
-        #message-erreur {
+
+        .error-msg {
             color: #ee5253;
+            font-size: 13px;
+            margin-top: 12px;
+            min-height: 18px;
             font-weight: bold;
-            text-align: center;
-            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Cour-halea</h1>
-    <p>Site pour réviser tes cours correctement.</p>
+    <div class="login-card">
+        <h1>Cour-halea</h1>
+        <p class="subtitle">Plateforme d'études & de révisions</p>
 
-    <div class="form-box">
-        <h2>Créer un compte</h2>
-        <div>
-            <label for="pseudo">Prénom ou pseudo</label>
-            <input type="text" id="pseudo" placeholder="Ex : Thomas" required>
-        </div>
-        <div>
-            <label for="email">Adresse e-mail</label>
-            <input type="email" id="email" placeholder="nom@exemple.com" required>
-        </div>
-        <div>
-            <label for="mdp">Mot de passe</label>
-            <input type="password" id="mdp" placeholder="••••••••" required>
-        </div>
-        <button onclick="validerInscription()">S'inscrire</button>
-        <div id="message-erreur"></div>
+        <form id="form-login" onsubmit="validerConnexion(event)">
+            <div class="input-group">
+                <div>
+                    <label for="pseudo">Pseudo</label>
+                    <input type="text" id="pseudo" placeholder="Ex: Max" required autocomplete="username">
+                </div>
+                <div>
+                    <label for="email">Adresse E-mail</label>
+                    <input type="email" id="email" placeholder="exemple@mail.com" required autocomplete="email">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-connexion">Se connecter</button>
+            <div class="error-msg" id="message-erreur"></div>
+        </form>
     </div>
 
     <script>
-        function validerInscription() {
-            const pseudo = document.getElementById("pseudo").value;
-            const email = document.getElementById("email").value;
-            const mdp = document.getElementById("mdp").value;
-            const erreur = document.getElementById("message-erreur");
+        function validerConnexion(event) {
+            event.preventDefault();
 
-            if (!pseudo || !email || !mdp) {
-                erreur.textContent = "Merci de remplir tous les champs.";
+            const pseudo = document.getElementById("pseudo").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const zoneErreur = document.getElementById("message-erreur");
+
+            zoneErreur.textContent = "";
+
+            if (pseudo.length < 2) {
+                zoneErreur.textContent = "Le pseudo doit comporter au moins 2 caractères.";
                 return;
             }
 
+            // Expression régulière de contrôle d'adresse e-mail standard
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                zoneErreur.textContent = "Veuillez entrer une adresse e-mail valide (ex: contact@domaine.com).";
+                return;
+            }
+
+            // Enregistrement des données de l'utilisateur connecté
             localStorage.setItem("utilisateur_pseudo", pseudo);
+            localStorage.setItem("utilisateur_email", email.toLowerCase());
+
+            // Redirection vers l'accueil
             window.location.href = "accueil.html";
         }
     </script>

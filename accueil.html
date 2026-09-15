@@ -68,11 +68,25 @@
             text-align: center;
             width: 100%;
             transition: 0.2s;
+            position: relative;
         }
 
         .add-friend-btn:hover {
             background-color: #343650;
             color: #10ac84;
+        }
+
+        .notif-badge {
+            display: none;
+            position: absolute;
+            top: 8px;
+            right: 15px;
+            background-color: #ee5253;
+            color: white;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
         }
 
         .settings-btn {
@@ -139,7 +153,7 @@
         #friends-panel {
             border: 1px solid #1dd1a1;
             height: auto;
-            max-height: 480px;
+            max-height: 520px;
             padding-bottom: 15px;
         }
 
@@ -278,10 +292,11 @@
             cursor: pointer;
         }
 
-        /* Panneau Amis */
+        /* Panneau Amis & Demandes */
         .friends-body {
             padding: 15px;
             overflow-y: auto;
+            max-height: 420px;
         }
 
         .friends-input-zone {
@@ -310,6 +325,15 @@
             cursor: pointer;
         }
 
+        .section-subtitle {
+            font-size: 13px;
+            color: #ff9f43;
+            margin: 15px 0 8px 0;
+            font-weight: bold;
+            border-bottom: 1px solid #3d3f58;
+            padding-bottom: 4px;
+        }
+
         .friends-list {
             list-style: none;
             display: flex;
@@ -322,16 +346,32 @@
             justify-content: space-between;
             align-items: center;
             background-color: #1e1e2e;
-            padding: 10px 15px;
+            padding: 10px 12px;
             border-radius: 8px;
             border: 1px solid #3d3f58;
         }
 
-        .btn-del-friend {
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-accept {
+            background-color: #1dd1a1;
+            color: #1e1e2e;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn-refuse, .btn-del-friend {
             background-color: #ee5253;
             color: white;
             border: none;
-            padding: 4px 8px;
+            padding: 5px 10px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
@@ -541,7 +581,10 @@
         </div>
         
         <div class="bottom-left-group">
-            <button class="add-friend-btn" title="Ajouter un ami" onclick="ouvrirGestionAmis()">✚</button>
+            <button class="add-friend-btn" title="Amis & Demandes" onclick="ouvrirGestionAmis()">
+                ✚
+                <span class="notif-badge" id="badge-demandes">0</span>
+            </button>
             <button class="settings-btn" title="Paramètres" onclick="alert('Paramètres')">⚙</button>
         </div>
     </div>
@@ -550,30 +593,35 @@
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
 
-        <!-- 1. Fenêtre Amis -->
+        <!-- 1. Fenêtre Amis & Demandes personnelles -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
-                <span style="color: #1dd1a1;">👥 Mes Amis de Révision</span>
+                <span style="color: #1dd1a1;">👥 Demandes & Amis</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="friends-body">
                 <div class="friends-input-zone">
-                    <input type="text" id="friend-pseudo-input" placeholder="Pseudo exact de ton ami...">
-                    <button class="btn-add-submit" onclick="ajouterAmi()">Ajouter</button>
+                    <input type="text" id="friend-pseudo-input" placeholder="Pseudo exact du destinataire...">
+                    <button class="btn-add-submit" onclick="envoyerDemandeAmi()">Demander</button>
                 </div>
+
+                <div class="section-subtitle">📩 Demandes reçues pour toi</div>
+                <ul class="friends-list" id="demandes-list"></ul>
+
+                <div class="section-subtitle">🤝 Amis confirmés</div>
                 <ul class="friends-list" id="friends-list"></ul>
             </div>
         </div>
 
-        <!-- 2. Salon de Messagerie -->
+        <!-- 2. Salon de Messagerie Privé entre amis -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
-                <span style="color: #ff9f43;">💬 Salon d'entraide (Amis uniquement)</span>
+                <span style="color: #ff9f43;">💬 Salon d'entraide (Amis mutuels)</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="chat-messages" id="group-messages"></div>
             <div class="chat-input-zone">
-                <input type="text" id="group-input" placeholder="Message aux amis..." onkeydown="if(event.key==='Enter') envoyerMessageGroupe()">
+                <input type="text" id="group-input" placeholder="Écrire un message..." onkeydown="if(event.key==='Enter') envoyerMessageGroupe()">
                 <button class="btn-send" style="background-color: #ff9f43; color: #1e1e2e;" onclick="envoyerMessageGroupe()">Envoyer</button>
             </div>
         </div>
@@ -611,7 +659,6 @@
             <button class="hamburger-btn" onclick="toggleMenuAdmin()">☰</button>
         </div>
 
-        <!-- Menu déroulant avec Admin et Déconnexion -->
         <div class="admin-dropdown" id="dropdown-menu">
             <button onclick="ouvrirAdmin()">Panel Admin</button>
             <button onclick="seDeconnecter()" style="background-color: #ee5253; color: white; margin-top: 8px;">Se déconnecter</button>
@@ -654,13 +701,15 @@
     <script>
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
-        const monPseudo = localStorage.getItem("utilisateur_pseudo") || "Moi";
+        // Utilisateur actif
+        const monPseudo = localStorage.getItem("utilisateur_pseudo") || "Anonyme";
         document.getElementById("icone-profil").textContent = monPseudo.slice(0, 3).toUpperCase();
         document.getElementById("icone-profil").title = monPseudo;
 
         // Déconnexion
         function seDeconnecter() {
             localStorage.removeItem("utilisateur_pseudo");
+            localStorage.removeItem("utilisateur_email");
             window.location.href = "index.html";
         }
 
@@ -671,75 +720,170 @@
             document.getElementById("admin-panel").style.display = "none";
         }
 
-        /* --- GESTION DES AMIS (Bouton +) --- */
+        /* --- SYSTÈME DE DEMANDES D'AMIS PAR COMPTE --- */
+        // Clé unique des amis pour chaque compte : "amis_Pseudo"
+        function getCleAmis(pseudo = monPseudo) {
+            return "amis_" + pseudo.toLowerCase();
+        }
+
+        function recupererMesAmis() {
+            return JSON.parse(localStorage.getItem(getCleAmis()) || "[]");
+        }
+
+        function recupererToutesDemandes() {
+            return JSON.parse(localStorage.getItem("demandes_amis_system") || "[]");
+        }
+
+        function sauvegarderToutesDemandes(liste) {
+            localStorage.setItem("demandes_amis_system", JSON.stringify(liste));
+            verifierNotifications();
+        }
+
         function ouvrirGestionAmis() {
             fermerFenetres();
             document.getElementById("friends-panel").style.display = "flex";
-            afficherListeAmis();
+            actualiserPanneauAmis();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function recupererAmis() {
-            return JSON.parse(localStorage.getItem("mes_amis") || "[]");
+        function verifierNotifications() {
+            const toutes = recupererToutesDemandes();
+            const pourMoi = toutes.filter(d => d.destinataire.toLowerCase() === monPseudo.toLowerCase() && d.statut === "en_attente");
+            const badge = document.getElementById("badge-demandes");
+            if (pourMoi.length > 0) {
+                badge.textContent = pourMoi.length;
+                badge.style.display = "inline-block";
+            } else {
+                badge.style.display = "none";
+            }
         }
 
-        function sauvegarderAmis(amis) {
-            localStorage.setItem("mes_amis", JSON.stringify(amis));
-        }
-
-        function ajouterAmi() {
+        function envoyerDemandeAmi() {
             const input = document.getElementById("friend-pseudo-input");
-            const ami = input.value.trim();
+            const cible = input.value.trim();
 
-            if (!ami) return;
-            if (ami.toLowerCase() === monPseudo.toLowerCase()) {
-                alert("Tu ne peux pas t'ajouter toi-même en ami !");
+            if (!cible) return;
+            if (cible.toLowerCase() === monPseudo.toLowerCase()) {
+                alert("Impossible de t'envoyer une demande à toi-même !");
                 return;
             }
 
-            let amis = recupererAmis();
-            if (amis.includes(ami)) {
-                alert(ami + " est déjà dans ta liste d'amis.");
+            const mesAmis = recupererMesAmis();
+            if (mesAmis.some(a => a.toLowerCase() === cible.toLowerCase())) {
+                alert(cible + " est déjà dans ta liste d'amis !");
                 return;
             }
 
-            amis.push(ami);
-            sauvegarderAmis(amis);
-            input.value = "";
-            afficherListeAmis();
-        }
+            let toutes = recupererToutesDemandes();
+            const dejaEnvoye = toutes.some(d => 
+                d.statut === "en_attente" && 
+                d.demandeur.toLowerCase() === monPseudo.toLowerCase() && 
+                d.destinataire.toLowerCase() === cible.toLowerCase()
+            );
 
-        function supprimerAmi(index) {
-            let amis = recupererAmis();
-            amis.splice(index, 1);
-            sauvegarderAmis(amis);
-            afficherListeAmis();
-        }
-
-        function afficherListeAmis() {
-            const amis = recupererAmis();
-            const liste = document.getElementById("friends-list");
-
-            if (amis.length === 0) {
-                liste.innerHTML = `<li style="color: #a4b0be; font-size: 13px; text-align: center; padding: 10px;">
-                    Aucun ami ajouté. Ajoute tes camarades pour pouvoir échanger !
-                </li>`;
+            if (dejaEnvoye) {
+                alert("Une demande a déjà été envoyée à " + cible + ".");
                 return;
             }
 
-            liste.innerHTML = "";
-            amis.forEach((ami, index) => {
-                const li = document.createElement("li");
-                li.className = "friend-item";
-                li.innerHTML = `
-                    <span>👤 <strong>${ami}</strong></span>
-                    <button class="btn-del-friend" onclick="supprimerAmi(${index})">Retirer</button>
-                `;
-                liste.appendChild(li);
+            toutes.push({
+                demandeur: monPseudo,
+                destinataire: cible,
+                statut: "en_attente"
             });
+
+            sauvegarderToutesDemandes(toutes);
+            input.value = "";
+            alert("Demande envoyée à " + cible + " !");
+            actualiserPanneauAmis();
         }
 
-        /* --- MESSAGERIE SÉCURISÉE (Amis uniquement) --- */
+        function accepterDemande(demandeur) {
+            // Ajouter mutuellement dans les listes des 2 comptes
+            let mesAmis = recupererMesAmis();
+            if (!mesAmis.includes(demandeur)) {
+                mesAmis.push(demandeur);
+                localStorage.setItem(getCleAmis(monPseudo), JSON.stringify(mesAmis));
+            }
+
+            let sesAmis = JSON.parse(localStorage.getItem(getCleAmis(demandeur)) || "[]");
+            if (!sesAmis.includes(monPseudo)) {
+                sesAmis.push(monPseudo);
+                localStorage.setItem(getCleAmis(demandeur), JSON.stringify(sesAmis));
+            }
+
+            // Supprimer la demande du registre
+            let toutes = recupererToutesDemandes();
+            toutes = toutes.filter(d => !(d.demandeur.toLowerCase() === demandeur.toLowerCase() && d.destinataire.toLowerCase() === monPseudo.toLowerCase()));
+            sauvegarderToutesDemandes(toutes);
+
+            actualiserPanneauAmis();
+        }
+
+        function refuserDemande(demandeur) {
+            let toutes = recupererToutesDemandes();
+            toutes = toutes.filter(d => !(d.demandeur.toLowerCase() === demandeur.toLowerCase() && d.destinataire.toLowerCase() === monPseudo.toLowerCase()));
+            sauvegarderToutesDemandes(toutes);
+            actualiserPanneauAmis();
+        }
+
+        function supprimerAmi(ami) {
+            let mesAmis = recupererMesAmis().filter(a => a.toLowerCase() !== ami.toLowerCase());
+            localStorage.setItem(getCleAmis(monPseudo), JSON.stringify(mesAmis));
+
+            let sesAmis = JSON.parse(localStorage.getItem(getCleAmis(ami)) || "[]").filter(a => a.toLowerCase() !== monPseudo.toLowerCase());
+            localStorage.setItem(getCleAmis(ami), JSON.stringify(sesAmis));
+
+            actualiserPanneauAmis();
+        }
+
+        function actualiserPanneauAmis() {
+            verifierNotifications();
+
+            // 1. Demandes reçues pour mon compte
+            const toutes = recupererToutesDemandes();
+            const mesDemandes = toutes.filter(d => d.destinataire.toLowerCase() === monPseudo.toLowerCase() && d.statut === "en_attente");
+            const boxDemandes = document.getElementById("demandes-list");
+
+            if (mesDemandes.length === 0) {
+                boxDemandes.innerHTML = `<li style="color:#a4b0be; font-size:12px; padding:6px;">Aucune demande en attente.</li>`;
+            } else {
+                boxDemandes.innerHTML = "";
+                mesDemandes.forEach(d => {
+                    const li = document.createElement("li");
+                    li.className = "friend-item";
+                    li.innerHTML = `
+                        <span>👤 <strong>${d.demandeur}</strong> souhaite t'ajouter</span>
+                        <div class="action-btns">
+                            <button class="btn-accept" onclick="accepterDemande('${d.demandeur}')">Accepter</button>
+                            <button class="btn-refuse" onclick="refuserDemande('${d.demandeur}')">Refuser</button>
+                        </div>
+                    `;
+                    boxDemandes.appendChild(li);
+                });
+            }
+
+            // 2. Mes amis confirmés
+            const mesAmis = recupererMesAmis();
+            const boxAmis = document.getElementById("friends-list");
+
+            if (mesAmis.length === 0) {
+                boxAmis.innerHTML = `<li style="color:#a4b0be; font-size:12px; padding:6px;">Aucun ami confirmé.</li>`;
+            } else {
+                boxAmis.innerHTML = "";
+                mesAmis.forEach(a => {
+                    const li = document.createElement("li");
+                    li.className = "friend-item";
+                    li.innerHTML = `
+                        <span>🤝 <strong>${a}</strong></span>
+                        <button class="btn-del-friend" onclick="supprimerAmi('${a}')">Supprimer</button>
+                    `;
+                    boxAmis.appendChild(li);
+                });
+            }
+        }
+
+        /* --- MESSAGERIE AMIS MUTUELS --- */
         function ouvrirMessagerie() {
             fermerFenetres();
             document.getElementById("chat-entraide").style.display = "flex";
@@ -751,20 +895,24 @@
         function chargerMessagesGroupe() {
             const conteneur = document.getElementById("group-messages");
             const historique = JSON.parse(localStorage.getItem("messages_entraide") || "[]");
-            const mesAmis = recupererAmis();
+            const mesAmis = recupererMesAmis();
 
-            const messagesAutorises = historique.filter(m => m.pseudo === monPseudo || mesAmis.includes(m.pseudo));
+            // Filtrage : uniquement mes messages OU les messages de personnes que j'ai en ami ET qui m'ont en ami
+            const messagesAutorises = historique.filter(m => {
+                if (m.pseudo === monPseudo) return true;
+                return mesAmis.some(a => a.toLowerCase() === m.pseudo.toLowerCase());
+            });
 
             if (mesAmis.length === 0) {
                 conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #ff9f43;">
-                    ⚠️ Tu n'as aucun ami ajouté. Clique sur le bouton ✚ en bas à gauche pour ajouter un camarade, sinon personne ne pourra te lire ni te parler !
+                    ⚠️ Tu n'as aucun ami confirmé. Clique sur le ✚ pour envoyer une demande. Les deux personnes doivent s'accepter pour discuter !
                 </div>`;
                 return;
             }
 
             if (messagesAutorises.length === 0) {
                 conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
-                    Aucun message de tes amis pour l'instant. Envoie un premier mot !
+                    Aucun message de tes amis pour l'instant. Lance la discussion !
                 </div>`;
                 return;
             }
@@ -785,9 +933,9 @@
         }
 
         function envoyerMessageGroupe() {
-            const mesAmis = recupererAmis();
+            const mesAmis = recupererMesAmis();
             if (mesAmis.length === 0) {
-                alert("Ajoute au moins un ami via le bouton ✚ avant d'envoyer un message !");
+                alert("Tu ne peux envoyer de message que si tu as au moins un ami qui a accepté ta demande !");
                 return;
             }
 
@@ -810,7 +958,7 @@
             chargerMessagesGroupe();
         }
 
-        /* --- CHAT IA --- */
+        /* --- META IA --- */
         function ouvrirChatIA() {
             fermerFenetres();
             document.getElementById("chat-ia").style.display = "flex";
@@ -904,6 +1052,9 @@
                 reponse.innerHTML = "❌ Code faux !";
             }
         }
+
+        // Vérification des notifications de demandes au chargement
+        verifierNotifications();
     </script>
 
 </body>
