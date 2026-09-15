@@ -339,9 +339,7 @@
             margin-top: auto;
         }
 
-        /* =============================================
-           📱 ADAPTATION SPECIALE POUR TELEPHONE (RESPONSIVE)
-           ============================================= */
+        /* 📱 Adaptation Téléphone */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -350,7 +348,6 @@
                 overflow-y: auto;
             }
 
-            /* La colonne gauche devient une barre en haut */
             .sidebar-left {
                 width: 100%;
                 height: auto;
@@ -382,7 +379,6 @@
                 border-left: 1px solid #3d3f58;
             }
 
-            /* Le centre prend toute la place au milieu */
             .main-content {
                 order: 2;
                 padding: 15px 10px;
@@ -397,7 +393,6 @@
                 height: 420px;
             }
 
-            /* La colonne droite passe sous le contenu */
             .sidebar-right {
                 width: 100%;
                 height: auto;
@@ -425,7 +420,7 @@
 </head>
 <body>
 
-    <!-- Barre latérale Gauche (Barre du haut sur mobile) -->
+    <!-- Barre latérale Gauche -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="alert('Ouverture de Notebook')">Notebook</button>
@@ -464,7 +459,7 @@
         </div>
     </div>
 
-    <!-- Barre latérale Droite (Matières en bas sur mobile) -->
+    <!-- Barre latérale Droite (Catégories et sous-matières) -->
     <div class="sidebar-right">
         <div class="top-icons">
             <div class="profile-badge" id="icone-profil" title="Profil">Moi</div>
@@ -475,8 +470,8 @@
             <button onclick="ouvrirAdmin()">Panel Admin</button>
         </div>
 
-        <!-- Langue -->
-        <button class="right-item" onclick="toggleLangues()" style="color: #00d2d3; font-weight: bold;">
+        <!-- 1. Catégorie Langue -->
+        <button class="right-item" onclick="toggleMenu('menu-langues')" style="color: #00d2d3; font-weight: bold;">
             Langue ▾
         </button>
         <div class="sub-menu" id="menu-langues">
@@ -486,8 +481,28 @@
             <button class="sub-item" onclick="ouvrirMatiere('Latin-Grec')">🏛️ Latin / Grec</button>
         </div>
 
-        <button class="right-item" onclick="ouvrirMatiere('Science')">Science</button>
-        <button class="right-item" onclick="ouvrirMatiere('Culture')">Culture</button>
+        <!-- 2. Catégorie Science -->
+        <button class="right-item" onclick="toggleMenu('menu-sciences')" style="color: #ff9f43; font-weight: bold;">
+            Science ▾
+        </button>
+        <div class="sub-menu" id="menu-sciences">
+            <button class="sub-item" onclick="ouvrirMatiere('Maths')">📐 Maths</button>
+            <button class="sub-item" onclick="ouvrirMatiere('Physique-Chimie')">🧪 Physique-Chimie</button>
+            <button class="sub-item" onclick="ouvrirMatiere('SVT')">🌿 SVT</button>
+            <button class="sub-item" onclick="ouvrirMatiere('Technologie')">💻 Technologie</button>
+        </div>
+
+        <!-- 3. Catégorie Culture -->
+        <button class="right-item" onclick="toggleMenu('menu-culture')" style="color: #1dd1a1; font-weight: bold;">
+            Culture ▾
+        </button>
+        <div class="sub-menu" id="menu-culture">
+            <button class="sub-item" onclick="ouvrirMatiere('Histoire')">📜 Histoire</button>
+            <button class="sub-item" onclick="ouvrirMatiere('Géographie')">🌍 Géographie</button>
+            <button class="sub-item" onclick="ouvrirMatiere('EMC')">⚖️ EMC</button>
+            <button class="sub-item" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques / Musique</button>
+        </div>
+
         <button class="right-item add-btn" title="Ajouter un cours" onclick="alert('Ajouter un nouveau cours')">✚</button>
     </div>
 
@@ -501,15 +516,24 @@
             document.getElementById("icone-profil").title = pseudo;
         }
 
-        function toggleLangues() {
-            const sm = document.getElementById("menu-langues");
-            sm.style.display = (sm.style.display === "block") ? "none" : "block";
+        // Dérouler/enrouler un sous-menu précis
+        function toggleMenu(idMenu) {
+            const menu = document.getElementById(idMenu);
+            const estOuvert = (menu.style.display === "block");
+            
+            // Ferme les autres sous-menus
+            document.querySelectorAll(".sub-menu").forEach(m => m.style.display = "none");
+            
+            // Ouvre celui cliqué s'il était fermé
+            menu.style.display = estOuvert ? "none" : "block";
         }
 
+        // Ouvrir la page cours.html avec la matière sélectionnée
         function ouvrirMatiere(matiere) {
             window.location.href = `cours.html?matiere=${encodeURIComponent(matiere)}`;
         }
 
+        // Admin
         function toggleMenuAdmin() {
             const menu = document.getElementById("dropdown-menu");
             menu.style.display = (menu.style.display === "block") ? "none" : "block";
@@ -534,6 +558,7 @@
             }
         }
 
+        // Chat IA
         function ouvrirChatIA() {
             document.getElementById("admin-panel").style.display = "none";
             document.getElementById("chat-ia").style.display = "flex";
