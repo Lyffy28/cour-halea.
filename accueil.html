@@ -3,8 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cour-halea - Accueil</title>
+    <title>Cour-halea - Accueil & Studio d'Étude</title>
     <style>
+        :root {
+            --bg-main: #1e293b;
+            --bg-grid: rgba(255, 255, 255, 0.05);
+            --sidebar-bg: rgba(15, 23, 42, 0.95);
+            --card-bg: #0f172a;
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --input-bg: #0b1120;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --primary: #38bdf8;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        body.light-theme {
+            --bg-main: #f1f5f9;
+            --bg-grid: rgba(0, 0, 0, 0.05);
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --card-border: #cbd5e1;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --input-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --primary: #0284c7;
+            --accent: #d97706;
+            --success: #059669;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -14,17 +45,18 @@
         }
 
         body {
-            background-color: #1e293b;
+            background-color: var(--bg-main);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                linear-gradient(to right, var(--bg-grid) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--bg-grid) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-            color: #f8fafc;
+            color: var(--text-main);
             display: flex;
             height: 100vh;
             overflow: hidden;
+            transition: background 0.3s, color 0.3s;
         }
 
         .admin-banner {
@@ -43,11 +75,11 @@
             box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
         }
 
-        /* 1. Barre Gauche */
+        /* Barre Latérale Gauche */
         .sidebar-left {
             width: 95px;
-            background: rgba(15, 23, 42, 0.9);
-            border-right: 2px solid rgba(255, 255, 255, 0.08);
+            background: var(--sidebar-bg);
+            border-right: 2px solid var(--border-color);
             backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
@@ -59,10 +91,10 @@
         .left-btn {
             background: none;
             border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            color: #94a3b8;
-            padding: 22px 5px;
-            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 18px 4px;
+            font-size: 12px;
             font-weight: 700;
             cursor: pointer;
             text-align: center;
@@ -74,7 +106,7 @@
 
         .left-btn:hover {
             background: rgba(56, 189, 248, 0.12);
-            color: #38bdf8;
+            color: var(--primary);
         }
 
         .bottom-left-group {
@@ -82,13 +114,13 @@
             flex-direction: column;
         }
 
-        .add-friend-btn {
+        .tool-btn {
             background: none;
             border: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            color: #10b981;
-            padding: 16px 0;
-            font-size: 24px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 14px 0;
+            font-size: 20px;
             cursor: pointer;
             text-align: center;
             width: 100%;
@@ -96,8 +128,9 @@
             position: relative;
         }
 
-        .add-friend-btn:hover {
-            background: rgba(16, 185, 129, 0.15);
+        .tool-btn:hover {
+            color: var(--primary);
+            background: rgba(56, 189, 248, 0.08);
         }
 
         .notif-badge {
@@ -105,7 +138,7 @@
             position: absolute;
             top: 6px;
             right: 14px;
-            background-color: #ef4444;
+            background-color: var(--danger);
             color: white;
             font-size: 11px;
             padding: 2px 7px;
@@ -113,31 +146,13 @@
             font-weight: bold;
         }
 
-        .settings-btn {
-            background: none;
-            border: none;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            color: #94a3b8;
-            padding: 16px 0;
-            font-size: 20px;
-            cursor: pointer;
-            text-align: center;
-            width: 100%;
-            transition: 0.2s;
-        }
-
-        .settings-btn:hover {
-            color: #f8fafc;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* 2. Centre */
+        /* Centre */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 28px 20px;
+            padding: 25px 20px;
             position: relative;
             height: 100%;
             overflow-y: auto;
@@ -146,44 +161,44 @@
 
         .search-bar {
             width: 100%;
-            max-width: 600px;
+            max-width: 620px;
             padding: 15px 24px;
             font-size: 15px;
             border-radius: 9999px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--card-border);
+            background: var(--card-bg);
             backdrop-filter: blur(12px);
-            color: #ffffff;
+            color: var(--text-main);
             outline: none;
             flex-shrink: 0;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
             transition: all 0.2s ease;
         }
 
         .search-bar:focus {
-            border-color: #38bdf8;
+            border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
         }
 
         #search-results-box {
             display: none;
             width: 100%;
-            max-width: 600px;
-            background: #0f172a;
-            border: 1px solid #38bdf8;
+            max-width: 620px;
+            background: var(--card-bg);
+            border: 1px solid var(--primary);
             border-radius: 14px;
             margin-top: 10px;
             padding: 12px;
             max-height: 250px;
             overflow-y: auto;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
             flex-shrink: 0;
             z-index: 20;
         }
 
         .search-result-item {
             padding: 10px 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-color);
             cursor: pointer;
             font-size: 13px;
             border-radius: 8px;
@@ -192,149 +207,52 @@
 
         .search-result-item:hover {
             background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
+            color: var(--primary);
         }
 
-        .mobile-subjects {
-            display: none;
-            width: 100%;
-            max-width: 600px;
-            margin-top: 20px;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .subject-card {
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            overflow: hidden;
-        }
-
-        .subject-card-header {
-            padding: 15px 20px;
-            font-size: 15px;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .subject-card-content {
-            display: none;
-            background: rgba(11, 17, 32, 0.8);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 6px 0;
-        }
-
-        .mobile-sub-btn {
-            width: 100%;
-            padding: 12px 20px;
-            background: none;
-            border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            color: #cbd5e1;
-            font-size: 14px;
-            text-align: left;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .mobile-sub-btn:last-child {
-            border-bottom: none;
-        }
-
+        /* Fenêtres Modales */
         .modal-box {
             display: none;
             flex-direction: column;
             width: 100%;
-            max-width: 720px;
-            height: 540px;
-            background: #0f172a;
+            max-width: 740px;
+            height: 560px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 18px;
-            margin-top: 20px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            margin-top: 15px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             flex-shrink: 0;
         }
 
-        #chat-ia { border: 1px solid #38bdf8; }
-        #chat-entraide { border: 1px solid #f59e0b; }
-        #friends-panel { border: 1px solid #10b981; height: auto; max-height: 520px; padding-bottom: 15px; }
-        #devoirs-panel { border: 1px solid #eab308; }
-
-        #admin-panel {
-            display: none;
-            background: #0f172a;
-            margin-top: 25px;
-            padding: 24px;
-            border-radius: 16px;
-            border: 1px solid #f59e0b;
-            text-align: center;
-            width: 100%;
-            max-width: 320px;
-            flex-shrink: 0;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-        }
-
-        #admin-panel input {
-            padding: 10px;
-            font-size: 18px;
-            width: 130px;
-            text-align: center;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background: #0b1120;
-            color: #ffffff;
-            letter-spacing: 4px;
-            margin: 15px 0;
-            outline: none;
-        }
-
-        .btn-access-admin {
-            display: none;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #ffffff;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        }
-
         .chat-header {
-            background: #0b1120;
+            background: var(--input-bg);
             padding: 14px 18px;
             font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-color);
             flex-shrink: 0;
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 22px;
             cursor: pointer;
             padding: 0 6px;
         }
 
-        .close-btn:hover { color: #ef4444; }
+        .close-btn:hover { color: var(--danger); }
 
+        /* Agenda */
         .agenda-tabs {
             display: flex;
-            background: #0b1120;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--input-bg);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .agenda-tab-btn {
@@ -342,7 +260,7 @@
             padding: 13px;
             border: none;
             background: none;
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
@@ -350,9 +268,9 @@
         }
 
         .agenda-tab-btn.active {
-            color: #eab308;
-            border-bottom: 2px solid #eab308;
-            background: #0f172a;
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            background: var(--card-bg);
         }
 
         .devoirs-body {
@@ -369,16 +287,16 @@
             gap: 8px;
             flex-wrap: wrap;
             padding: 12px;
-            background: #0b1120;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
             margin-bottom: 8px;
         }
 
         .ajout-perso-box input {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: white;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
             padding: 9px 14px;
             border-radius: 8px;
             font-size: 13px;
@@ -386,9 +304,9 @@
         }
 
         .devoir-item {
-            background: #0b1120;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-left: 4px solid #eab308;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent);
             padding: 12px 14px;
             border-radius: 10px;
             display: flex;
@@ -396,35 +314,13 @@
             align-items: center;
         }
 
-        .devoir-item.perso {
-            border-left-color: #10b981;
-        }
+        .devoir-item.perso { border-left-color: var(--success); }
+        .devoir-matiere { font-size: 11px; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+        .devoir-matiere.perso { color: var(--success); }
+        .devoir-titre { font-size: 14px; font-weight: 600; margin-top: 2px; }
+        .devoir-date { font-size: 12px; color: #f87171; font-weight: 600; margin-top: 4px; }
 
-        .devoir-matiere {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #eab308;
-            font-weight: 700;
-        }
-
-        .devoir-matiere.perso {
-            color: #10b981;
-        }
-
-        .devoir-titre {
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 2px;
-        }
-
-        .devoir-date {
-            font-size: 12px;
-            color: #f87171;
-            font-weight: 600;
-            margin-top: 4px;
-        }
-
-        /* Messagerie */
+        /* Messagerie & Envoi Photo */
         .messagerie-body {
             display: flex;
             flex: 1;
@@ -433,31 +329,30 @@
         }
 
         .contacts-panel {
-            width: 190px;
-            background: #0b1120;
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            width: 195px;
+            background: var(--input-bg);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
             flex-shrink: 0;
         }
 
         .contacts-panel-title {
             font-size: 11px;
             text-transform: uppercase;
-            color: #f59e0b;
+            color: var(--accent);
             font-weight: 700;
             padding: 12px 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .contacts-list { list-style: none; }
 
         .contact-item {
-            padding: 12px 12px;
+            padding: 12px 10px;
             font-size: 13px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -467,16 +362,21 @@
 
         .contact-item:hover, .contact-item.active {
             background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            border-left: 3px solid #38bdf8;
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
         }
 
         .contact-dot {
-            width: 8px;
-            height: 8px;
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
-            background: #10b981;
+            background: #94a3b8;
             flex-shrink: 0;
+        }
+
+        .contact-dot.online {
+            background: #10b981;
+            box-shadow: 0 0 6px #10b981;
         }
 
         .discussion-zone {
@@ -485,19 +385,17 @@
             flex-direction: column;
             min-height: 0;
             overflow: hidden;
-            background: #0f172a;
+            background: var(--card-bg);
         }
 
         .chat-messages {
             flex: 1;
             padding: 16px;
-            overflow-y: scroll !important;
-            -webkit-overflow-scrolling: touch !important;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 12px;
             min-height: 0;
-            touch-action: pan-y;
         }
 
         .msg {
@@ -512,8 +410,8 @@
         }
 
         .msg-ia {
-            background: #1e293b;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
             align-self: flex-start;
             border-bottom-left-radius: 3px;
         }
@@ -526,8 +424,8 @@
         }
 
         .msg-group-other {
-            background: #1e293b;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
             align-self: flex-start;
             border-bottom-left-radius: 3px;
         }
@@ -540,142 +438,197 @@
             border-bottom-right-radius: 3px;
         }
 
-        .msg-author {
-            font-size: 11px;
-            font-weight: 700;
-            margin-bottom: 3px;
-            opacity: 0.9;
-        }
-
-        .msg-time {
-            font-size: 10px;
-            margin-left: 6px;
-            opacity: 0.75;
-        }
-
         .chat-input-zone {
             display: flex;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            background: #0b1120;
-            padding: 12px;
-            gap: 10px;
+            border-top: 1px solid var(--border-color);
+            background: var(--input-bg);
+            padding: 10px 12px;
+            gap: 8px;
+            align-items: center;
             flex-shrink: 0;
         }
 
         .chat-input-zone input {
             flex: 1;
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 12px 18px;
-            color: #ffffff;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 11px 16px;
+            color: var(--text-main);
             border-radius: 9999px;
             outline: none;
             font-size: 14px;
             min-width: 0;
         }
 
-        .chat-input-zone input:disabled {
-            background: #0b1120;
-            cursor: not-allowed;
-            color: #475569;
+        .btn-chat-action {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0 4px;
+            color: var(--text-muted);
+            transition: 0.2s;
         }
+
+        .btn-chat-action:hover { color: var(--primary); }
 
         .btn-send {
             border: none;
             font-weight: bold;
-            padding: 10px 20px;
+            padding: 10px 18px;
             border-radius: 9999px;
             cursor: pointer;
             flex-shrink: 0;
             font-size: 13px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #0f172a;
         }
 
-        /* Panneau Amis */
-        .friends-body {
+        /* 🗂️ Flashcards Recto/Verso */
+        .flashcards-body {
             padding: 16px;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            max-height: 420px;
-        }
-
-        .friends-input-zone { display: flex; gap: 10px; margin-bottom: 15px; }
-        .friends-input-zone input {
-            flex: 1;
-            background: #0b1120;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 10px 14px;
-            border-radius: 8px;
-            color: #ffffff;
-            outline: none;
-            min-width: 0;
-        }
-
-        .btn-add-submit {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: #ffffff;
-            border: none;
-            font-weight: bold;
-            padding: 10px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .section-subtitle {
-            font-size: 12px;
-            color: #f59e0b;
-            margin: 15px 0 8px 0;
-            font-weight: 700;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 4px;
-            text-transform: uppercase;
-        }
-
-        .friends-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-
-        .friend-item {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .flashcards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .flashcard {
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            height: 180px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 12px;
+        }
+
+        .flashcard.is-flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            background: #0b1120;
-            padding: 10px 14px;
+            justify-content: center;
+            padding: 15px;
+            border-radius: 12px;
+        }
+
+        .flashcard-front {
+            background: var(--input-bg);
+            color: var(--primary);
+            border: 2px dashed rgba(56, 189, 248, 0.4);
+        }
+
+        .flashcard-back {
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+            color: #ffffff;
+            transform: rotateY(180deg);
+        }
+
+        /* 🧮 Calculatrice */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 16px;
+            max-width: 320px;
+            margin: auto;
+        }
+
+        .calc-screen {
+            grid-column: span 4;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            font-size: 22px;
+            text-align: right;
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 13px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-family: monospace;
+            overflow-x: auto;
         }
 
-        .action-btns { display: flex; gap: 6px; }
-        .btn-accept {
-            background: #10b981;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 6px;
+        .calc-btn {
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--input-bg);
+            color: var(--text-main);
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
+            transition: 0.15s;
         }
 
-        .btn-refuse, .btn-del-friend {
-            background: #ef4444;
-            color: white;
+        .calc-btn:hover { background: rgba(56, 189, 248, 0.2); }
+        .calc-btn.op { color: var(--accent); }
+        .calc-btn.equal { background: var(--primary); color: white; }
+
+        /* ⏱️ Pomodoro */
+        .pomodoro-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            gap: 20px;
+        }
+
+        .timer-display {
+            font-size: 58px;
+            font-weight: 800;
+            color: var(--primary);
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-timer {
+            padding: 10px 22px;
+            font-weight: bold;
+            border-radius: 20px;
             border: none;
-            padding: 5px 10px;
-            border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 14px;
         }
 
-        /* 3. Barre Droite */
+        /* Barre Droite */
         .sidebar-right {
             width: 175px;
-            background: rgba(15, 23, 42, 0.9);
-            border-left: 2px solid rgba(255, 255, 255, 0.08);
+            background: var(--sidebar-bg);
+            border-left: 2px solid var(--border-color);
             backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
             flex-shrink: 0;
             position: relative;
             z-index: 15;
@@ -686,7 +639,7 @@
             justify-content: space-around;
             align-items: center;
             padding: 14px 6px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-color);
             position: relative;
         }
 
@@ -694,13 +647,12 @@
             background: linear-gradient(135deg, #06b6d4, #0284c7);
             color: #ffffff;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 13px;
+            font-size: 20px;
             cursor: pointer;
             transition: transform 0.2s;
             user-select: none;
@@ -712,22 +664,50 @@
             top: 65px;
             left: 10px;
             right: 10px;
-            background: #0b1120;
-            border: 1px solid #06b6d4;
+            background: var(--input-bg);
+            border: 1px solid var(--primary);
             border-radius: 12px;
             padding: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             z-index: 100;
             text-align: center;
         }
 
-        .profile-menu .info-name { font-size: 14px; font-weight: bold; color: #38bdf8; word-break: break-word; }
-        .profile-menu .info-email { font-size: 11px; color: #64748b; margin-top: 4px; margin-bottom: 12px; word-break: break-word; }
+        .theme-switch-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .avatar-grid {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 8px 0 12px 0;
+        }
+
+        .avatar-opt {
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+        }
+
+        .avatar-opt:hover { border-color: var(--primary); }
+
         .btn-logout {
-            background: #ef4444;
+            background: var(--danger);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 8px;
             font-size: 13px;
             cursor: pointer;
@@ -735,12 +715,12 @@
             width: 100%;
         }
 
-        .hamburger-btn { background: none; border: none; color: #cbd5e1; font-size: 22px; cursor: pointer; }
+        .hamburger-btn { background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; }
 
         .admin-dropdown {
             display: none;
-            background: #0b1120;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--input-bg);
+            border-bottom: 1px solid var(--border-color);
             padding: 10px;
             text-align: center;
         }
@@ -762,10 +742,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--border-color);
             font-size: 14px;
             cursor: pointer;
-            color: #94a3b8;
+            color: var(--text-muted);
             background: none;
             border-left: none;
             border-right: none;
@@ -774,12 +754,8 @@
             transition: all 0.2s;
         }
 
-        .right-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: #ffffff;
-        }
-
-        .sub-menu { display: none; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .right-item:hover { background: rgba(255, 255, 255, 0.05); color: var(--text-main); }
+        .sub-menu { display: none; background: var(--input-bg); border-bottom: 1px solid var(--border-color); }
 
         .sub-item {
             display: block;
@@ -787,40 +763,31 @@
             padding: 12px 16px;
             background: none;
             border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            color: #38bdf8;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--primary);
             font-size: 13px;
             text-align: left;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
-        .sub-item:hover {
-            background: rgba(56, 189, 248, 0.1);
-            padding-left: 20px;
-        }
+        .sub-item:hover { background: rgba(56, 189, 248, 0.1); padding-left: 20px; }
 
+        /* Mobile */
         @media (max-width: 768px) {
             body { flex-direction: column; height: 100vh; height: 100dvh; }
-            .sidebar-left { width: 100%; height: 54px; flex-direction: row; border-right: none; border-bottom: 2px solid rgba(255, 255, 255, 0.08); order: 1; flex-shrink: 0; }
+            .sidebar-left { width: 100%; height: 54px; flex-direction: row; border-right: none; border-bottom: 2px solid var(--border-color); order: 1; }
             .sidebar-left > div:first-child { display: flex; flex: 1; }
-            .left-btn { writing-mode: horizontal-tb; transform: none; padding: 10px 5px; border-bottom: none; border-right: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; flex: 1; }
+            .left-btn { writing-mode: horizontal-tb; transform: none; padding: 10px 5px; border-bottom: none; border-right: 1px solid var(--border-color); font-size: 12px; flex: 1; }
             .bottom-left-group { flex-direction: row; }
-            .add-friend-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid rgba(255, 255, 255, 0.08); font-size: 20px; }
-            .settings-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid rgba(255, 255, 255, 0.08); }
-            .main-content { order: 2; padding: 14px; flex: 1; width: 100%; overflow-y: auto; }
-            .mobile-subjects { display: flex; }
+            .tool-btn { width: 45px; padding: 8px 0; border-top: none; border-left: 1px solid var(--border-color); font-size: 18px; }
+            .main-content { order: 2; padding: 12px; flex: 1; width: 100%; }
             .sidebar-right { display: none; }
-            .modal-box { position: fixed; top: 54px; left: 0; right: 0; bottom: 0; width: 100%; max-width: 100%; height: calc(100dvh - 54px); max-height: calc(100dvh - 54px); margin: 0; border-radius: 0; z-index: 100; }
+            .modal-box { position: fixed; top: 54px; left: 0; right: 0; bottom: 0; width: 100%; height: calc(100dvh - 54px); border-radius: 0; margin: 0; }
             .messagerie-body { flex-direction: column; }
-            .contacts-panel { width: 100%; height: 46px; max-height: 46px; border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.08); flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+            .contacts-panel { width: 100%; height: 46px; border-right: none; border-bottom: 1px solid var(--border-color); flex-direction: row; }
             .contacts-panel-title { display: none; }
             .contacts-list { display: flex; flex-direction: row; }
-            .contact-item { white-space: nowrap; padding: 6px 14px; border-bottom: none; border-right: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; }
-            .discussion-zone { flex: 1; min-height: 0; height: 100%; }
-            .chat-messages { flex: 1; min-height: 0; padding: 12px; }
-            .chat-input-zone { padding: 8px 12px; }
-            .chat-input-zone input { padding: 10px 14px; font-size: 14px; }
+            .contact-item { white-space: nowrap; padding: 6px 12px; border-bottom: none; border-right: 1px solid var(--border-color); }
         }
     </style>
 </head>
@@ -828,139 +795,84 @@
 
     <div id="bandeau-annonce" class="admin-banner"></div>
 
+    <!-- Barre latérale Gauche avec Outils -->
     <div class="sidebar-left">
         <div>
-            <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
+            <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messages</button>
             <button class="left-btn" onclick="ouvrirChatIA()">🤖 Meta IA</button>
-            <button class="left-btn" onclick="ouvrirDevoirs()" style="color: #eab308;">📅 Agenda</button>
+            <button class="left-btn" onclick="ouvrirDevoirs()" style="color: var(--accent);">📅 Agenda</button>
         </div>
         
         <div class="bottom-left-group">
-            <button class="add-friend-btn" title="Amis & Demandes" onclick="ouvrirGestionAmis()">
-                ✚
+            <button class="tool-btn" title="Flashcards IA" onclick="ouvrirFlashcards()">🗂️</button>
+            <button class="tool-btn" title="Calculatrice" onclick="ouvrirCalculatrice()">🧮</button>
+            <button class="tool-btn" title="Minuteur Pomodoro" onclick="ouvrirPomodoro()">⏱️</button>
+            <button class="tool-btn" title="Amis" onclick="ouvrirGestionAmis()">
+                👥
                 <span class="notif-badge" id="badge-demandes">0</span>
             </button>
-            <button class="settings-btn" title="Profil & Options" onclick="ouvrirProfilMobile()">👤</button>
+            <button class="tool-btn" title="Profil" onclick="ouvrirProfilMobile()">👤</button>
         </div>
     </div>
 
+    <!-- Centre de travail -->
     <div class="main-content">
         <input type="text" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher une formule, un cours, un devoir..." oninput="filtrerContenuRecherche()">
         <div id="search-results-box"></div>
 
-        <div class="mobile-subjects">
-            <div class="subject-card">
-                <div class="subject-card-header" onclick="toggleMobileCard('card-langues')" style="color: #38bdf8;">
-                    <span>🌍 Langues vivantes</span>
-                    <span>▾</span>
-                </div>
-                <div class="subject-card-content" id="card-langues">
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Anglais')">🇬🇧 Anglais</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Espagnol')">🇪🇸 Espagnol</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Français')">🇫🇷 Français</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Latin-Grec')">🏛️ Latin / Grec</button>
-                </div>
-            </div>
-
-            <div class="subject-card">
-                <div class="subject-card-header" onclick="toggleMobileCard('card-sciences')" style="color: #f59e0b;">
-                    <span>📐 Pôle Scientifique</span>
-                    <span>▾</span>
-                </div>
-                <div class="subject-card-content" id="card-sciences">
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Maths')">📐 Maths</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Physique-Chimie')">🧪 Physique-Chimie</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('SVT')">🌿 SVT</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Technologie')">💻 Technologie</button>
-                </div>
-            </div>
-
-            <div class="subject-card">
-                <div class="subject-card-header" onclick="toggleMobileCard('card-culture')" style="color: #10b981;">
-                    <span>🏛️ Sciences Humaines & Arts</span>
-                    <span>▾</span>
-                </div>
-                <div class="subject-card-content" id="card-culture">
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Histoire')">📜 Histoire</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Géographie')">🌍 Géographie</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('EMC')">⚖️ EMC</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques</button>
-                </div>
-            </div>
-        </div>
-
+        <!-- 1. Agenda -->
         <div id="devoirs-panel" class="modal-box">
             <div class="chat-header">
-                <span style="color: #eab308;">📅 Agenda scolaire</span>
+                <span style="color: var(--accent);">📅 Agenda scolaire</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
-            
             <div class="agenda-tabs">
                 <button class="agenda-tab-btn active" id="tab-btn-public" onclick="changerOngletAgenda('public')">📢 Devoirs communs</button>
                 <button class="agenda-tab-btn" id="tab-btn-perso" onclick="changerOngletAgenda('perso')">🔒 Mes tâches perso</button>
             </div>
-
             <div class="devoirs-body">
                 <div id="form-ajout-perso" class="ajout-perso-box" style="display: none;">
-                    <input type="text" id="perso-titre" placeholder="Tâche perso (ex: Réviser formule de maths)..." style="flex: 1;">
+                    <input type="text" id="perso-titre" placeholder="Tâche perso..." style="flex: 1;">
                     <input type="text" id="perso-date" placeholder="Date (ex: Demain 18h)" style="width: 140px;">
-                    <button class="btn-add-submit" onclick="ajouterDevoirPerso()">Ajouter</button>
+                    <button class="btn-send" style="padding: 8px 16px;" onclick="ajouterDevoirPerso()">Ajouter</button>
                 </div>
-
                 <div id="devoirs-liste" style="display: flex; flex-direction: column; gap: 10px;">
-                    <p style="color: #64748b; font-size: 13px;">Chargement...</p>
+                    <p style="color: var(--text-muted); font-size: 13px;">Chargement...</p>
                 </div>
             </div>
         </div>
 
-        <div id="friends-panel" class="modal-box">
-            <div class="chat-header">
-                <span style="color: #10b981;">👥 Carnet d'amis & Contacts</span>
-                <button class="close-btn" onclick="fermerFenetres()">✕</button>
-            </div>
-            <div class="friends-body">
-                <div class="friends-input-zone">
-                    <input type="text" id="friend-pseudo-input" placeholder="Pseudo exact de ton ami...">
-                    <button class="btn-add-submit" onclick="envoyerDemandeAmi()">Envoyer</button>
-                </div>
-
-                <div class="section-subtitle">📩 Demandes en attente</div>
-                <ul class="friends-list" id="demandes-list"></ul>
-
-                <div class="section-subtitle">🤝 Amis confirmés</div>
-                <ul class="friends-list" id="friends-list"></ul>
-            </div>
-        </div>
-
+        <!-- 2. Messagerie Privée avec Partage Photo -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
-                <span style="color: #f59e0b;" id="titre-chat-prive">💬 Messagerie Privée</span>
+                <span style="color: var(--accent);" id="titre-chat-prive">💬 Messagerie Privée</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
-            
             <div class="messagerie-body">
                 <div class="contacts-panel">
                     <div class="contacts-panel-title">🔒 Contacts</div>
                     <ul class="contacts-list" id="contacts-list"></ul>
                 </div>
-
                 <div class="discussion-zone">
                     <div class="chat-messages" id="group-messages">
-                        <div class="msg msg-group-other" style="text-align: center; color: #64748b;">
+                        <div class="msg msg-group-other" style="text-align: center; color: var(--text-muted);">
                             👈 Choisis un contact à gauche pour ouvrir votre salon privé !
                         </div>
                     </div>
                     <div class="chat-input-zone">
+                        <input type="file" id="chat-photo-input" accept="image/*" style="display: none;" onchange="envoyerPhotoPrivee(event)">
+                        <button class="btn-chat-action" title="Envoyer une image" onclick="document.getElementById('chat-photo-input').click()">📷</button>
                         <input type="text" id="group-input" placeholder="Choisis un contact..." disabled onkeydown="if(event.key==='Enter') envoyerMessagePrive()">
-                        <button class="btn-send" id="btn-send-msg" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a;" disabled onclick="envoyerMessagePrive()">Envoyer</button>
+                        <button class="btn-send" id="btn-send-msg" disabled onclick="envoyerMessagePrive()">Envoyer</button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- 3. Tuteur Meta IA -->
         <div id="chat-ia" class="modal-box">
             <div class="chat-header">
-                <span style="color: #38bdf8;">🤖 Tuteur Scolaire IA</span>
+                <span style="color: var(--primary);">🤖 Tuteur Scolaire IA</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="chat-messages" id="chat-messages">
@@ -968,30 +880,130 @@
             </div>
             <div class="chat-input-zone">
                 <input type="text" id="user-input" placeholder="Pose ta question de cours..." onkeydown="if(event.key==='Enter') envoyerMessageIA()">
-                <button class="btn-send" style="background: linear-gradient(135deg, #06b6d4, #0284c7); color: white;" onclick="envoyerMessageIA()">Envoyer</button>
+                <button class="btn-send" style="background: var(--primary); color: white;" onclick="envoyerMessageIA()">Envoyer</button>
             </div>
         </div>
 
+        <!-- 4. 🗂️ Flashcards IA Recto/Verso -->
+        <div id="flashcards-panel" class="modal-box">
+            <div class="chat-header">
+                <span style="color: var(--primary);">🗂️ Générateur de Fiches Mémo (Flashcards)</span>
+                <button class="close-btn" onclick="fermerFenetres()">✕</button>
+            </div>
+            <div class="flashcards-body">
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="flashcard-sujet" placeholder="Matière ou notion (ex: Dates d'Histoire, Formules de Physique)..." style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
+                    <button class="btn-send" style="background: var(--primary); color: white;" onclick="genererFlashcards()">Générer</button>
+                </div>
+                <div class="flashcards-grid" id="flashcards-grid">
+                    <p style="color: var(--text-muted); font-size: 13px; grid-column: span 2; text-align: center;">Tape une notion ci-dessus pour générer des cartes interactives recto/verso.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 🧮 Calculatrice Scientifique -->
+        <div id="calc-panel" class="modal-box" style="max-width: 380px; height: 500px;">
+            <div class="chat-header">
+                <span style="color: var(--accent);">🧮 Calculatrice</span>
+                <button class="close-btn" onclick="fermerFenetres()">✕</button>
+            </div>
+            <div class="calc-grid">
+                <div class="calc-screen" id="calc-screen">0</div>
+                <button class="calc-btn op" onclick="calcClear()">C</button>
+                <button class="calc-btn op" onclick="calcInput('(')">(</button>
+                <button class="calc-btn op" onclick="calcInput(')')">)</button>
+                <button class="calc-btn op" onclick="calcInput('/')">÷</button>
+                
+                <button class="calc-btn" onclick="calcInput('7')">7</button>
+                <button class="calc-btn" onclick="calcInput('8')">8</button>
+                <button class="calc-btn" onclick="calcInput('9')">9</button>
+                <button class="calc-btn op" onclick="calcInput('*')">×</button>
+                
+                <button class="calc-btn" onclick="calcInput('4')">4</button>
+                <button class="calc-btn" onclick="calcInput('5')">5</button>
+                <button class="calc-btn" onclick="calcInput('6')">6</button>
+                <button class="calc-btn op" onclick="calcInput('-')">-</button>
+                
+                <button class="calc-btn" onclick="calcInput('1')">1</button>
+                <button class="calc-btn" onclick="calcInput('2')">2</button>
+                <button class="calc-btn" onclick="calcInput('3')">3</button>
+                <button class="calc-btn op" onclick="calcInput('+')">+</button>
+                
+                <button class="calc-btn" onclick="calcInput('0')">0</button>
+                <button class="calc-btn" onclick="calcInput('.')">.</button>
+                <button class="calc-btn op" onclick="calcInput('Math.sqrt(')">√</button>
+                <button class="calc-btn equal" onclick="calcEval()">=</button>
+            </div>
+        </div>
+
+        <!-- 6. ⏱️ Pomodoro Timer -->
+        <div id="pomodoro-panel" class="modal-box" style="max-width: 440px; height: 380px;">
+            <div class="chat-header">
+                <span style="color: var(--primary);">⏱️ Focus Pomodoro</span>
+                <button class="close-btn" onclick="fermerFenetres()">✕</button>
+            </div>
+            <div class="pomodoro-container">
+                <div id="timer-type" style="font-size: 14px; font-weight: bold; color: var(--accent); text-transform: uppercase;">Travail (Concentration)</div>
+                <div class="timer-display" id="timer-display">25:00</div>
+                <div class="timer-controls">
+                    <button class="btn-timer" style="background: var(--primary); color: white;" onclick="toggleTimer()" id="btn-toggle-timer">Démarrer</button>
+                    <button class="btn-timer" style="background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color);" onclick="resetTimer()">Réinitialiser</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Carnet d'amis -->
+        <div id="friends-panel" class="modal-box">
+            <div class="chat-header">
+                <span style="color: var(--success);">👥 Amis & Contacts</span>
+                <button class="close-btn" onclick="fermerFenetres()">✕</button>
+            </div>
+            <div class="friends-body" style="padding: 16px; overflow-y: auto;">
+                <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                    <input type="text" id="friend-pseudo-input" placeholder="Pseudo exact de ton ami..." style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
+                    <button class="btn-send" style="background: var(--success); color: white;" onclick="envoyerDemandeAmi()">Ajouter</button>
+                </div>
+                <div class="section-subtitle">📩 Demandes reçues</div>
+                <ul class="friends-list" id="demandes-list" style="list-style: none; display: flex; flex-direction: column; gap: 8px;"></ul>
+                <div class="section-subtitle" style="margin-top: 15px;">🤝 Amis confirmés</div>
+                <ul class="friends-list" id="friends-list" style="list-style: none; display: flex; flex-direction: column; gap: 8px;"></ul>
+            </div>
+        </div>
+
+        <!-- 8. Panel Admin -->
         <div id="admin-panel">
-            <h3 style="color: #f59e0b;">Panel Admin</h3>
-            <p style="font-size: 13px; color: #64748b; margin-top: 5px;">Code d'accès :</p>
+            <h3 style="color: var(--accent);">Panel Admin</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">Code d'accès :</p>
             <input type="password" id="code-pin" maxlength="4" placeholder="••••">
             <br>
-            <button style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a; padding: 10px 22px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="validerPin()">Valider</button>
+            <button class="btn-send" style="margin-top: 10px;" onclick="validerPin()">Valider</button>
             <p id="message-pin" style="margin-top: 12px; font-weight: bold; font-size: 14px;"></p>
             <button id="btn-admin-secret" class="btn-access-admin" onclick="allerVersAdmin()">👑 Ouvrir Panel Admin</button>
         </div>
     </div>
 
+    <!-- Barre latérale Droite -->
     <div class="sidebar-right">
         <div class="top-icons">
-            <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon profil">Moi</div>
+            <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon profil">👤</div>
             <button class="hamburger-btn" onclick="toggleMenuAdmin()">☰</button>
         </div>
 
         <div class="profile-menu" id="menu-profil">
-            <div class="info-name" id="nom-utilisateur">Pseudo</div>
-            <div class="info-email" id="email-utilisateur">email@domaine.com</div>
+            <div class="info-name" id="nom-utilisateur" style="font-size: 14px; font-weight: bold; color: var(--primary);">Pseudo</div>
+            <div class="info-email" id="email-utilisateur" style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">email@domaine.com</div>
+            
+            <button class="theme-switch-btn" onclick="basculerTheme()">🌓 Mode Clair / Sombre</button>
+            
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Choisir un avatar :</div>
+            <div class="avatar-grid">
+                <span class="avatar-opt" onclick="changerAvatar('🧑‍🎓')">🧑‍🎓</span>
+                <span class="avatar-opt" onclick="changerAvatar('🚀')">🚀</span>
+                <span class="avatar-opt" onclick="changerAvatar('🦊')">🦊</span>
+                <span class="avatar-opt" onclick="changerAvatar('⚡')">⚡</span>
+                <span class="avatar-opt" onclick="changerAvatar('👑')">👑</span>
+            </div>
+
             <button class="btn-logout" onclick="seDeconnecter()">🚪 Se déconnecter</button>
         </div>
 
@@ -1038,269 +1050,167 @@
         let amiActif = null;
         let modeAgenda = "public";
 
-        async function verifierSiBanni() {
-            try {
-                const res = await fetch(`${FIREBASE_URL}/comptes/${encodeURIComponent(monPseudo.toLowerCase())}/banni.json`);
-                const banni = await res.json();
-                if (banni === true) {
-                    alert("🚫 Ton compte a été suspendu par l'administration.");
-                    seDeconnecter();
-                }
-            } catch (e) {}
+        // ==========================================
+        // 🌓 THÈME & AVATAR
+        // ==========================================
+        function basculerTheme() {
+            document.body.classList.toggle("light-theme");
+            localStorage.setItem("theme_pref", document.body.classList.contains("light-theme") ? "light" : "dark");
         }
-        verifierSiBanni();
 
-        async function afficherAnnonceGenerale() {
-            try {
-                const res = await fetch(`${FIREBASE_URL}/annonce.json`);
-                const texte = await res.json();
-                const bandeau = document.getElementById("bandeau-annonce");
-                if (texte) {
-                    bandeau.textContent = "📢 Information : " + texte;
-                    bandeau.style.display = "block";
-                } else {
-                    bandeau.style.display = "none";
-                }
-            } catch (e) {}
+        if (localStorage.getItem("theme_pref") === "light") {
+            document.body.classList.add("light-theme");
         }
-        afficherAnnonceGenerale();
 
-        document.getElementById("icone-profil").textContent = monPseudo.slice(0, 2).toUpperCase();
+        function changerAvatar(emoji) {
+            localStorage.setItem("user_avatar", emoji);
+            document.getElementById("icone-profil").textContent = emoji;
+            fetch(`${FIREBASE_URL}/comptes/${encodeURIComponent(monPseudo.toLowerCase())}/avatar.json`, {
+                method: "PUT",
+                body: JSON.stringify(emoji)
+            });
+        }
+
+        const savedAvatar = localStorage.getItem("user_avatar") || "🧑‍🎓";
+        document.getElementById("icone-profil").textContent = savedAvatar;
         document.getElementById("nom-utilisateur").textContent = monPseudo;
         document.getElementById("email-utilisateur").textContent = monEmail;
 
-        function toggleMobileCard(id) {
-            const content = document.getElementById(id);
-            content.style.display = (content.style.display === "block") ? "none" : "block";
-        }
-
-        function ouvrirProfilMobile() {
-            const reponse = confirm(`Compte : ${monPseudo}\n${monEmail}\n\nAppuie sur "OK" pour te déconnecter, ou "Annuler" pour ouvrir le code admin.`);
-            if (reponse) {
-                seDeconnecter();
-            } else {
-                ouvrirAdmin();
-            }
-        }
-
-        function toggleMenuProfil() {
-            const menu = document.getElementById("menu-profil");
-            menu.style.display = (menu.style.display === "block") ? "none" : "block";
-            document.getElementById("dropdown-menu").style.display = "none";
-        }
-
-        function seDeconnecter() {
-            localStorage.removeItem("utilisateur_pseudo");
-            localStorage.removeItem("utilisateur_email");
-            window.location.href = "index.html";
-        }
-
-        function fermerFenetres() {
-            document.getElementById("chat-ia").style.display = "none";
-            document.getElementById("chat-entraide").style.display = "none";
-            document.getElementById("friends-panel").style.display = "none";
-            document.getElementById("admin-panel").style.display = "none";
-            document.getElementById("devoirs-panel").style.display = "none";
-            document.getElementById("menu-profil").style.display = "none";
-            document.getElementById("search-results-box").style.display = "none";
-        }
-
-        // RECHERCHE
-        const matieresDispos = [
-            { nom: "Anglais", cat: "Langues" },
-            { nom: "Espagnol", cat: "Langues" },
-            { nom: "Français", cat: "Langues" },
-            { nom: "Latin-Grec", cat: "Langues" },
-            { nom: "Maths", cat: "Sciences" },
-            { nom: "Physique-Chimie", cat: "Sciences" },
-            { nom: "SVT", cat: "Sciences" },
-            { nom: "Technologie", cat: "Sciences" },
-            { nom: "Histoire", cat: "Culture" },
-            { nom: "Géographie", cat: "Culture" },
-            { nom: "EMC", cat: "Culture" },
-            { nom: "Arts", cat: "Culture" }
-        ];
-
-        async function filtrerContenuRecherche() {
-            const saisie = document.getElementById("input-recherche").value.trim().toLowerCase();
-            const box = document.getElementById("search-results-box");
-
-            if (saisie.length < 2) {
-                box.style.display = "none";
-                return;
-            }
-
-            box.innerHTML = "";
-            let resultatsTrouves = 0;
-
-            matieresDispos.forEach(m => {
-                if (m.nom.toLowerCase().includes(saisie) || m.cat.toLowerCase().includes(saisie)) {
-                    resultatsTrouves++;
-                    const div = document.createElement("div");
-                    div.className = "search-result-item";
-                    div.innerHTML = `📚 <strong>${m.nom}</strong> <span style="color:#64748b;">(${m.cat})</span>`;
-                    div.onclick = () => ouvrirMatiere(m.nom);
-                    box.appendChild(div);
-                }
+        // ==========================================
+        // 🟢 PRÉSENCE EN LIGNE (Firebase Heartbeat)
+        // ==========================================
+        function signalerPresence() {
+            fetch(`${FIREBASE_URL}/en_ligne/${encodeURIComponent(monPseudo.toLowerCase())}.json`, {
+                method: "PUT",
+                body: JSON.stringify({ timestamp: Date.now() })
             });
+        }
+        signalerPresence();
+        setInterval(signalerPresence, 15000);
 
+        // ==========================================
+        // 🧮 CALCULATRICE
+        // ==========================================
+        let calcExpr = "";
+        function ouvrirCalculatrice() { fermerFenetres(); document.getElementById("calc-panel").style.display = "flex"; }
+        function calcInput(v) {
+            calcExpr += v;
+            document.getElementById("calc-screen").textContent = calcExpr;
+        }
+        function calcClear() {
+            calcExpr = "";
+            document.getElementById("calc-screen").textContent = "0";
+        }
+        function calcEval() {
             try {
-                const resLecons = await fetch(`${FIREBASE_URL}/lecons.json`);
-                const lecons = await resLecons.json();
-                if (lecons) {
-                    Object.values(lecons).forEach(l => {
-                        if (l.titre.toLowerCase().includes(saisie) || l.contenu.toLowerCase().includes(saisie) || l.matiere.toLowerCase().includes(saisie)) {
-                            resultatsTrouves++;
-                            const div = document.createElement("div");
-                            div.className = "search-result-item";
-                            div.innerHTML = `📝 <strong>Cours [${l.matiere}] :</strong> ${l.titre}`;
-                            div.onclick = () => alert(`[${l.matiere}] ${l.titre}\n\n${l.contenu}`);
-                            box.appendChild(div);
-                        }
-                    });
-                }
-            } catch (e) {}
-
-            try {
-                const resDevoirs = await fetch(`${FIREBASE_URL}/devoirs.json`);
-                const devoirs = await resDevoirs.json();
-                if (devoirs) {
-                    Object.values(devoirs).forEach(d => {
-                        if (d.titre.toLowerCase().includes(saisie) || d.matiere.toLowerCase().includes(saisie)) {
-                            resultatsTrouves++;
-                            const div = document.createElement("div");
-                            div.className = "search-result-item";
-                            div.innerHTML = `📅 <strong>Devoir [${d.matiere}] :</strong> ${d.titre} (Pour le ${d.dateLimite})`;
-                            div.onclick = () => ouvrirDevoirs();
-                            box.appendChild(div);
-                        }
-                    });
-                }
-            } catch (e) {}
-
-            if (resultatsTrouves === 0) {
-                box.innerHTML = `<div style="color:#64748b; font-size:12px; padding:8px;">Aucun élément trouvé pour "${saisie}".</div>`;
+                const res = Function(`'use strict'; return (${calcExpr})`)();
+                document.getElementById("calc-screen").textContent = res;
+                calcExpr = res.toString();
+            } catch(e) {
+                document.getElementById("calc-screen").textContent = "Erreur";
+                calcExpr = "";
             }
-
-            box.style.display = "block";
         }
 
-        // AGENDA
-        function ouvrirDevoirs() {
-            fermerFenetres();
-            document.getElementById("devoirs-panel").style.display = "flex";
-            changerOngletAgenda("public");
+        // ==========================================
+        // ⏱️ MINUTEUR POMODORO
+        // ==========================================
+        let timerSeconds = 25 * 60;
+        let timerRunning = false;
+        let timerInterval = null;
+        let isBreak = false;
+
+        function ouvrirPomodoro() { fermerFenetres(); document.getElementById("pomodoro-panel").style.display = "flex"; }
+        function updateTimerDisplay() {
+            const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
+            const s = (timerSeconds % 60).toString().padStart(2, '0');
+            document.getElementById("timer-display").textContent = `${m}:${s}`;
         }
-
-        function changerOngletAgenda(mode) {
-            modeAgenda = mode;
-            const btnPublic = document.getElementById("tab-btn-public");
-            const btnPerso = document.getElementById("tab-btn-perso");
-            const formPerso = document.getElementById("form-ajout-perso");
-
-            if (mode === "public") {
-                btnPublic.classList.add("active");
-                btnPerso.classList.remove("active");
-                formPerso.style.display = "none";
-                chargerDevoirsPublics();
+        function toggleTimer() {
+            if (timerRunning) {
+                clearInterval(timerInterval);
+                document.getElementById("btn-toggle-timer").textContent = "Reprendre";
+                timerRunning = false;
             } else {
-                btnPerso.classList.add("active");
-                btnPublic.classList.remove("active");
-                formPerso.style.display = "flex";
-                chargerDevoirsPersos();
+                timerRunning = true;
+                document.getElementById("btn-toggle-timer").textContent = "Pause";
+                timerInterval = setInterval(() => {
+                    if (timerSeconds > 0) {
+                        timerSeconds--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                        alert(isBreak ? "La pause est finie, au travail !" : "Session de 25 min terminée ! Prends 5 min de pause.");
+                        isBreak = !isBreak;
+                        timerSeconds = isBreak ? 5 * 60 : 25 * 60;
+                        document.getElementById("timer-type").textContent = isBreak ? "Pause (5 min)" : "Travail (Concentration)";
+                        document.getElementById("btn-toggle-timer").textContent = "Démarrer";
+                        updateTimerDisplay();
+                    }
+                }, 1000);
             }
         }
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            isBreak = false;
+            timerSeconds = 25 * 60;
+            document.getElementById("timer-type").textContent = "Travail (Concentration)";
+            document.getElementById("btn-toggle-timer").textContent = "Démarrer";
+            updateTimerDisplay();
+        }
 
-        async function chargerDevoirsPublics() {
-            const container = document.getElementById("devoirs-liste");
+        // ==========================================
+        // 🗂️ FLASHCARDS RECTO / VERSO
+        // ==========================================
+        function ouvrirFlashcards() { fermerFenetres(); document.getElementById("flashcards-panel").style.display = "flex"; }
+        async function genererFlashcards() {
+            const sujet = document.getElementById("flashcard-sujet").value.trim();
+            const grid = document.getElementById("flashcards-grid");
+            if (!sujet) return;
+
+            grid.innerHTML = `<p style="color:var(--text-muted); text-align:center; grid-column:span 2;">⏳ <em>L'IA conçoit tes fiches mémo sur "${sujet}"...</em></p>`;
+
+            const prompt = `Génère 4 flashcards de révision sur "${sujet}". Réponds STRICTEMENT en JSON : [{"front": "Question ou notion", "back": "Réponse ou définition concise"}]`;
+
             try {
-                const res = await fetch(`${FIREBASE_URL}/devoirs.json`);
-                const data = await res.json();
-
-                if (!data || Object.keys(data).length === 0) {
-                    container.innerHTML = `<p style="color:#64748b; font-size:13px;">🎉 Aucun devoir pour l'ensemble de la classe.</p>`;
-                    return;
-                }
-
-                container.innerHTML = "";
-                Object.values(data).forEach(d => {
-                    const div = document.createElement("div");
-                    div.className = "devoir-item";
-                    div.innerHTML = `
-                        <div>
-                            <div class="devoir-matiere">${d.matiere}</div>
-                            <div class="devoir-titre">${d.titre}</div>
-                            <div style="font-size: 12px; color: #94a3b8; margin-top: 3px;">${d.description || ""}</div>
-                        </div>
-                        <div class="devoir-date">⏳ ${d.dateLimite}</div>
-                    `;
-                    container.appendChild(div);
+                const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "x-goog-api-key": CLE_API },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
                 });
-            } catch (e) {
-                container.innerHTML = `<p style="color:#ef4444; font-size:13px;">Erreur de connexion.</p>`;
+                const data = await res.json();
+                let txt = data.candidates?.[0]?.content?.parts?.[0]?.text.replace(/```json/g, "").replace(/```/g, "").trim();
+                const cards = JSON.parse(txt);
+
+                grid.innerHTML = "";
+                cards.forEach(c => {
+                    const card = document.createElement("div");
+                    card.className = "flashcard";
+                    card.onclick = () => card.classList.toggle("is-flipped");
+                    card.innerHTML = `
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <span style="font-size: 11px; opacity: 0.7; margin-bottom: 5px;">QUESTION (Clique pour retourner)</span>
+                                <strong>${c.front}</strong>
+                            </div>
+                            <div class="flashcard-back">
+                                <span style="font-size: 11px; opacity: 0.8; margin-bottom: 5px;">RÉPONSE</span>
+                                <div>${c.back}</div>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch(e) {
+                grid.innerHTML = `<p style="color:var(--danger); grid-column:span 2; text-align:center;">Erreur de génération.</p>`;
             }
         }
 
-        async function chargerDevoirsPersos() {
-            const container = document.getElementById("devoirs-liste");
-            const userKey = encodeURIComponent(monPseudo.toLowerCase());
-
-            try {
-                const res = await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}.json`);
-                const data = await res.json();
-
-                if (!data || Object.keys(data).length === 0) {
-                    container.innerHTML = `<p style="color:#64748b; font-size:13px;">Aucune tâche personnelle planifiée.</p>`;
-                    return;
-                }
-
-                container.innerHTML = "";
-                Object.keys(data).forEach(id => {
-                    const d = data[id];
-                    const div = document.createElement("div");
-                    div.className = "devoir-item perso";
-                    div.innerHTML = `
-                        <div>
-                            <div class="devoir-matiere perso">🔒 Tâche perso</div>
-                            <div class="devoir-titre">${d.titre}</div>
-                            <div class="devoir-date" style="color: #34d399;">⏳ ${d.dateLimite}</div>
-                        </div>
-                        <button class="btn-refuse" onclick="supprimerDevoirPerso('${id}')">Fait ✓</button>
-                    `;
-                    container.appendChild(div);
-                });
-            } catch (e) {
-                container.innerHTML = `<p style="color:#ef4444; font-size:13px;">Erreur de connexion.</p>`;
-            }
-        }
-
-        async function ajouterDevoirPerso() {
-            const titre = document.getElementById("perso-titre").value.trim();
-            const dateLimite = document.getElementById("perso-date").value.trim();
-            const userKey = encodeURIComponent(monPseudo.toLowerCase());
-
-            if (!titre) return;
-
-            await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}.json`, {
-                method: "POST",
-                body: JSON.stringify({
-                    titre: titre,
-                    dateLimite: dateLimite || "Non spécifié"
-                })
-            });
-
-            document.getElementById("perso-titre").value = "";
-            document.getElementById("perso-date").value = "";
-            chargerDevoirsPersos();
-        }
-
-        async function supprimerDevoirPerso(id) {
-            const userKey = encodeURIComponent(monPseudo.toLowerCase());
-            await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}/${id}.json`, { method: "DELETE" });
-            chargerDevoirsPersos();
-        }
-
-        // MESSAGERIE PRIVÉE
+        // ==========================================
+        // 💬 MESSAGERIE & ENVOI PHOTO PRIVÉE
+        // ==========================================
         function identifiantDiscussion(u1, u2) {
             const tri = [u1.toLowerCase(), u2.toLowerCase()].sort();
             return `${tri[0]}_${tri[1]}`;
@@ -1315,72 +1225,53 @@
         function selectionnerAmiChat(ami) {
             amiActif = ami;
             document.getElementById("titre-chat-prive").textContent = `💬 Salon privé : ${ami}`;
-            
             const input = document.getElementById("group-input");
             const btn = document.getElementById("btn-send-msg");
             input.disabled = false;
             btn.disabled = false;
             input.placeholder = `Écrire à ${ami}...`;
             input.focus();
-
-            document.querySelectorAll(".contact-item").forEach(el => el.classList.remove("active"));
-            const contactEl = document.getElementById(`contact-${ami.toLowerCase()}`);
-            if (contactEl) contactEl.classList.add("active");
-
             chargerMessagesPrives(true);
         }
 
-        let dernierNombreMessagesPrives = 0;
-
         async function chargerMessagesPrives(forcerScroll = false) {
             if (!amiActif) return;
-
             const roomId = identifiantDiscussion(monPseudo, amiActif);
             const conteneur = document.getElementById("group-messages");
 
             try {
                 const res = await fetch(`${FIREBASE_URL}/messages_prives/${roomId}.json?orderBy="$key"&limitToLast=40`);
                 const data = await res.json();
-
                 if (!data) {
-                    conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #64748b;">
-                        🔒 Début de la discussion privée avec ${amiActif}.
-                    </div>`;
+                    conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: var(--text-muted);">🔒 Début de la discussion avec ${amiActif}.</div>`;
                     return;
                 }
-
-                const cles = Object.keys(data);
-                const nouveauMessageArrive = (cles.length !== dernierNombreMessagesPrives);
-                const estProcheDuBas = (conteneur.scrollHeight - conteneur.scrollTop - conteneur.clientHeight) < 140;
-
                 conteneur.innerHTML = "";
                 Object.values(data).forEach(m => {
                     const estMoi = (m.pseudo.toLowerCase() === monPseudo.toLowerCase());
                     const bulle = document.createElement("div");
                     bulle.className = "msg " + (estMoi ? "msg-group-me" : "msg-group-other");
+                    
+                    let contenuMsg = m.texte ? `<div>${m.texte}</div>` : "";
+                    if (m.image) {
+                        contenuMsg += `<img src="${m.image}" style="max-width:100%; max-height:200px; border-radius:8px; margin-top:5px; display:block;">`;
+                    }
+
                     bulle.innerHTML = `
-                        <div class="msg-author">${m.pseudo} <span class="msg-time">${m.heure}</span></div>
-                        <div>${m.texte}</div>
+                        <div style="font-size:11px; font-weight:bold; margin-bottom:3px; opacity:0.85;">${m.pseudo} <span style="font-size:10px; margin-left:5px;">${m.heure}</span></div>
+                        ${contenuMsg}
                     `;
                     conteneur.appendChild(bulle);
                 });
-
-                dernierNombreMessagesPrives = cles.length;
-
-                if (forcerScroll || (nouveauMessageArrive && estProcheDuBas)) {
-                    requestAnimationFrame(() => {
-                        conteneur.scrollTop = conteneur.scrollHeight;
-                    });
-                }
-            } catch (e) {}
+                if (forcerScroll) conteneur.scrollTop = conteneur.scrollHeight;
+            } catch(e) {}
         }
 
         async function envoyerMessagePrive() {
             if (!amiActif) return;
-
             const input = document.getElementById("group-input");
             const texte = input.value.trim();
-            if (texte === "") return;
+            if (!texte) return;
 
             const maintenant = new Date();
             const heure = maintenant.getHours().toString().padStart(2, '0') + ":" + maintenant.getMinutes().toString().padStart(2, '0');
@@ -1388,205 +1279,122 @@
 
             await fetch(`${FIREBASE_URL}/messages_prives/${roomId}.json`, {
                 method: "POST",
-                body: JSON.stringify({
-                    pseudo: monPseudo,
-                    texte: texte,
-                    heure: heure,
-                    timestamp: Date.now()
-                })
+                body: JSON.stringify({ pseudo: monPseudo, texte, heure, timestamp: Date.now() })
             });
 
             input.value = "";
             chargerMessagesPrives(true);
         }
 
-        // AMIS
-        async function envoyerDemandeAmi() {
-            const input = document.getElementById("friend-pseudo-input");
-            const cible = input.value.trim();
+        function envoyerPhotoPrivee(event) {
+            const f = event.target.files[0];
+            if (!f || !amiActif) return;
 
-            if (!cible || cible.toLowerCase() === monPseudo.toLowerCase()) return;
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const maintenant = new Date();
+                const heure = maintenant.getHours().toString().padStart(2, '0') + ":" + maintenant.getMinutes().toString().padStart(2, '0');
+                const roomId = identifiantDiscussion(monPseudo, amiActif);
 
-            try {
-                const res = await fetch(`${FIREBASE_URL}/demandes/${cible.toLowerCase()}/${monPseudo.toLowerCase()}.json`, {
-                    method: "PUT",
-                    body: JSON.stringify({
-                        demandeur: monPseudo,
-                        destinataire: cible,
-                        date: new Date().toISOString()
-                    })
+                await fetch(`${FIREBASE_URL}/messages_prives/${roomId}.json`, {
+                    method: "POST",
+                    body: JSON.stringify({ pseudo: monPseudo, image: e.target.result, heure, timestamp: Date.now() })
                 });
-
-                if (res.ok) {
-                    alert(`Demande envoyée à ${cible} !`);
-                    input.value = "";
-                }
-            } catch (e) {}
+                chargerMessagesPrives(true);
+            };
+            reader.readAsDataURL(f);
         }
 
+        // ==========================================
+        // 👥 AMIS & PRÉSENCE EN DIRECT
+        // ==========================================
         async function synchroniserDemandesEtAmis() {
             try {
-                const resDemandes = await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}.json`);
-                const dataDemandes = await resDemandes.json();
-                
-                const boxDemandes = document.getElementById("demandes-list");
-                const badge = document.getElementById("badge-demandes");
-
-                if (!dataDemandes || Object.keys(dataDemandes).length === 0) {
-                    boxDemandes.innerHTML = `<li style="color:#64748b; font-size:12px; padding:6px;">Aucune invitation reçue.</li>`;
-                    badge.style.display = "none";
-                } else {
-                    const liste = Object.values(dataDemandes);
-                    badge.textContent = liste.length;
-                    badge.style.display = "inline-block";
-
-                    boxDemandes.innerHTML = "";
-                    liste.forEach(d => {
-                        const li = document.createElement("li");
-                        li.className = "friend-item";
-                        li.innerHTML = `
-                            <span>👤 <strong>${d.demandeur}</strong></span>
-                            <div class="action-btns">
-                                <button class="btn-accept" onclick="accepterDemande('${d.demandeur}')">Accepter</button>
-                                <button class="btn-refuse" onclick="refuserDemande('${d.demandeur}')">Refuser</button>
-                            </div>
-                        `;
-                        boxDemandes.appendChild(li);
-                    });
-                }
-
                 const resAmis = await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}.json`);
                 const dataAmis = await resAmis.json();
-                const boxAmis = document.getElementById("friends-list");
+                const resEnLigne = await fetch(`${FIREBASE_URL}/en_ligne.json`);
+                const dataEnLigne = await resEnLigne.json() || {};
+
                 const boxContacts = document.getElementById("contacts-list");
+                const boxAmis = document.getElementById("friends-list");
 
                 if (!dataAmis || Object.keys(dataAmis).length === 0) {
-                    boxAmis.innerHTML = `<li style="color:#64748b; font-size:12px; padding:6px;">Aucun contact pour l'instant.</li>`;
-                    boxContacts.innerHTML = `<li style="color:#64748b; font-size:11px; padding:10px;">Ajoute un ami pour chatter.</li>`;
+                    boxContacts.innerHTML = `<li style="color:var(--text-muted); font-size:11px; padding:10px;">Ajoute un ami pour discuter.</li>`;
+                    boxAmis.innerHTML = `<li style="color:var(--text-muted); font-size:12px; padding:6px;">Aucun ami confirmé.</li>`;
                 } else {
-                    const amis = Object.keys(dataAmis);
-                    boxAmis.innerHTML = "";
                     boxContacts.innerHTML = "";
+                    boxAmis.innerHTML = "";
+                    Object.keys(dataAmis).forEach(ami => {
+                        const presence = dataEnLigne[ami.toLowerCase()];
+                        const estEnLigne = presence && (Date.now() - presence.timestamp < 35000);
 
-                    amis.forEach(ami => {
-                        const liAmi = document.createElement("li");
-                        liAmi.className = "friend-item";
-                        liAmi.innerHTML = `
-                            <span>🤝 <strong>${ami}</strong></span>
-                            <button class="btn-del-friend" onclick="supprimerAmi('${ami}')">Supprimer</button>
+                        const li = document.createElement("li");
+                        li.className = "contact-item" + (amiActif === ami ? " active" : "");
+                        li.innerHTML = `
+                            <span class="contact-dot ${estEnLigne ? 'online' : ''}"></span>
+                            <span>${ami}</span>
+                            <span style="font-size:10px; margin-left:auto; opacity:0.6;">${estEnLigne ? 'en ligne' : ''}</span>
                         `;
-                        boxAmis.appendChild(liAmi);
+                        li.onclick = () => selectionnerAmiChat(ami);
+                        boxContacts.appendChild(li);
 
-                        const liContact = document.createElement("li");
-                        liContact.className = "contact-item" + (amiActif === ami ? " active" : "");
-                        liContact.id = `contact-${ami.toLowerCase()}`;
-                        liContact.innerHTML = `<span class="contact-dot"></span><span>${ami}</span>`;
-                        liContact.onclick = () => selectionnerAmiChat(ami);
-                        boxContacts.appendChild(liContact);
+                        const liAmi = document.createElement("li");
+                        liAmi.innerHTML = `<span style="padding: 6px 0; display:block;">👤 <strong>${ami}</strong> ${estEnLigne ? '🟢' : '⚪'}</span>`;
+                        boxAmis.appendChild(liAmi);
                     });
                 }
-            } catch (e) {}
+            } catch(e) {}
         }
 
-        async function accepterDemande(demandeur) {
-            await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, { method: "PUT", body: JSON.stringify(true) });
-            await fetch(`${FIREBASE_URL}/amis/${demandeur.toLowerCase()}/${monPseudo.toLowerCase()}.json`, { method: "PUT", body: JSON.stringify(true) });
-            await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, { method: "DELETE" });
-            synchroniserDemandesEtAmis();
+        function ouvrirGestionAmis() { fermerFenetres(); document.getElementById("friends-panel").style.display = "flex"; synchroniserDemandesEtAmis(); }
+        async function envoyerDemandeAmi() {
+            const cible = document.getElementById("friend-pseudo-input").value.trim();
+            if (!cible || cible.toLowerCase() === monPseudo.toLowerCase()) return;
+            await fetch(`${FIREBASE_URL}/demandes/${cible.toLowerCase()}/${monPseudo.toLowerCase()}.json`, {
+                method: "PUT",
+                body: JSON.stringify({ demandeur: monPseudo, destinataire: cible, date: new Date().toISOString() })
+            });
+            alert("Demande envoyée !");
+            document.getElementById("friend-pseudo-input").value = "";
         }
 
-        async function refuserDemande(demandeur) {
-            await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, { method: "DELETE" });
-            synchroniserDemandesEtAmis();
-        }
-
-        async function supprimerAmi(ami) {
-            await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}/${ami.toLowerCase()}.json`, { method: "DELETE" });
-            await fetch(`${FIREBASE_URL}/amis/${ami.toLowerCase()}/${monPseudo.toLowerCase()}.json`, { method: "DELETE" });
-            if (amiActif === ami) {
-                amiActif = null;
-                document.getElementById("group-input").disabled = true;
-                document.getElementById("btn-send-msg").disabled = true;
-                document.getElementById("titre-chat-prive").textContent = "💬 Messagerie Privée";
-                document.getElementById("group-messages").innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #64748b;">👈 Choisis un contact à gauche !</div>`;
-            }
-            synchroniserDemandesEtAmis();
-        }
-
-        function ouvrirGestionAmis() {
-            fermerFenetres();
-            document.getElementById("friends-panel").style.display = "flex";
-            synchroniserDemandesEtAmis();
-        }
-
-        // TUTEUR IA
-        function ouvrirChatIA() {
-            fermerFenetres();
-            document.getElementById("chat-ia").style.display = "flex";
-            document.getElementById("user-input").focus();
-        }
-
+        // ==========================================
+        // 🤖 META IA & RECHERCHE
+        // ==========================================
+        function ouvrirChatIA() { fermerFenetres(); document.getElementById("chat-ia").style.display = "flex"; document.getElementById("user-input").focus(); }
         async function envoyerMessageIA() {
             const input = document.getElementById("user-input");
             const texte = input.value.trim();
-            if (texte === "") return;
-
+            if (!texte) return;
             const box = document.getElementById("chat-messages");
-
-            const msgUser = document.createElement("div");
-            msgUser.className = "msg msg-user";
-            msgUser.textContent = texte;
-            box.appendChild(msgUser);
-
+            
+            box.innerHTML += `<div class="msg msg-user">${texte}</div><div class="msg msg-ia" id="ia-loading">⏳ Réflexion en cours...</div>`;
             input.value = "";
             box.scrollTop = box.scrollHeight;
 
-            const msgIA = document.createElement("div");
-            msgIA.className = "msg msg-ia";
-            msgIA.textContent = "⏳ Réflexion en cours...";
-            box.appendChild(msgIA);
-            box.scrollTop = box.scrollHeight;
-
             try {
-                const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
+                const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-goog-api-key": CLE_API
-                    },
-                    body: JSON.stringify({
-                        contents: [{
-                            parts: [{ text: "Tu es un tuteur scolaire pédagogue et clair. Réponds à la question de l'élève : " + texte }]
-                        }]
-                    })
+                    headers: { "Content-Type": "application/json", "x-goog-api-key": CLE_API },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: "Tu es un tuteur scolaire : " + texte }] }] })
                 });
-
-                const data = await response.json();
-
-                if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
-                    msgIA.textContent = data.candidates[0].content.parts[0].text;
-                } else {
-                    msgIA.textContent = "Désolé, je n'ai pas pu formuler de réponse.";
-                }
-            } catch (err) {
-                msgIA.textContent = "Erreur de connexion au serveur.";
+                const data = await res.json();
+                document.getElementById("ia-loading").textContent = data.candidates?.[0]?.content?.parts?.[0]?.text || "Erreur de réponse.";
+            } catch(e) {
+                document.getElementById("ia-loading").textContent = "Erreur de connexion.";
             }
-
             box.scrollTop = box.scrollHeight;
         }
 
-        // NAVIGATION & CODE PIN
-        function toggleMenu(idMenu) {
-            const menu = document.getElementById(idMenu);
-            const estOuvert = (menu.style.display === "block");
-            document.querySelectorAll(".sub-menu").forEach(m => m.style.display = "none");
-            menu.style.display = estOuvert ? "none" : "block";
+        function fermerFenetres() {
+            document.querySelectorAll(".modal-box").forEach(m => m.style.display = "none");
+            document.getElementById("admin-panel").style.display = "none";
+            document.getElementById("menu-profil").style.display = "none";
         }
 
-        function ouvrirMatiere(matiere) {
-            window.location.href = `cours.html?matiere=${encodeURIComponent(matiere)}`;
-        }
-
+        // ==========================================
+        // 👑 ADMIN & CODE 2107 EXCLUSIF
+        // ==========================================
         function toggleMenuAdmin() {
             const menu = document.getElementById("dropdown-menu");
             menu.style.display = (menu.style.display === "block") ? "none" : "block";
@@ -1625,20 +1433,33 @@
             }
         }
 
-        function allerVersAdmin() {
-            window.location.href = "admin.html";
+        function allerVersAdmin() { window.location.href = "admin.html"; }
+
+        // Navigation
+        function toggleMenu(id) {
+            const m = document.getElementById(id);
+            const open = m.style.display === "block";
+            document.querySelectorAll(".sub-menu").forEach(el => el.style.display = "none");
+            m.style.display = open ? "none" : "block";
+        }
+        function ouvrirMatiere(matiere) { window.location.href = `cours.html?matiere=${encodeURIComponent(matiere)}`; }
+        function toggleMenuProfil() {
+            const m = document.getElementById("menu-profil");
+            m.style.display = (m.style.display === "block") ? "none" : "block";
+        }
+        function seDeconnecter() {
+            localStorage.removeItem("utilisateur_pseudo");
+            localStorage.removeItem("utilisateur_email");
+            window.location.href = "index.html";
         }
 
-        synchroniserDemandesEtAmis();
-        setInterval(synchroniserDemandesEtAmis, 2500);
-        setInterval(afficherAnnonceGenerale, 6000);
-        setInterval(verifierSiBanni, 5000);
+        // Boucle de rafraîchissement
         setInterval(() => {
             if (document.getElementById("chat-entraide").style.display === "flex" && amiActif) {
                 chargerMessagesPrives(false);
             }
         }, 2000);
+        setInterval(synchroniserDemandesEtAmis, 4000);
     </script>
-
 </body>
 </html>
