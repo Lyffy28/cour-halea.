@@ -337,6 +337,19 @@
             padding: 4px;
         }
 
+        .btn-apropos {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 700;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
         .btn-admin-hub {
             background: linear-gradient(135deg, #f59e0b, #d97706);
             color: #0f172a;
@@ -344,19 +357,6 @@
             border-radius: 8px;
             padding: 10px;
             font-size: 13px;
-            cursor: pointer;
-            font-weight: 700;
-            width: 100%;
-            margin-bottom: 6px;
-        }
-
-        .btn-apropos {
-            background: var(--card-bg);
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            border-radius: 8px;
-            padding: 9px;
-            font-size: 12px;
             cursor: pointer;
             font-weight: 700;
             width: 100%;
@@ -411,7 +411,7 @@
             padding: 2px 6px;
         }
 
-        /* Style spécifique À propos / Versions */
+        /* À propos / Versions */
         .version-card {
             background: var(--input-bg);
             border: 1px solid var(--border-color);
@@ -491,18 +491,22 @@
             color: var(--text-muted);
             text-align: center;
             opacity: 0.85;
-            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
-        .version-tag-footer {
+        .version-badge-footer {
             background: rgba(56, 189, 248, 0.15);
             color: var(--primary);
-            padding: 2px 7px;
+            padding: 2px 8px;
             border-radius: 6px;
             font-weight: 700;
             font-size: 10px;
-            margin-left: 6px;
             border: 1px solid rgba(56, 189, 248, 0.3);
+            font-family: monospace;
         }
 
         /* Responsive Mobile */
@@ -615,7 +619,7 @@
 </head>
 <body>
 
-    <!-- Barre d'en-tête -->
+    <!-- Barre d'en-tête (Toujours fixée et visible) -->
     <div class="top-navbar">
         <div class="brand-title">Cour-halea</div>
         <div class="top-actions">
@@ -652,7 +656,7 @@
             <!-- Modal : À propos & Historique des versions -->
             <div id="apropos-panel" class="modal-box">
                 <div class="chat-header">
-                    <span style="color: var(--primary);">ℹ️ À propos & Mises à jour</span>
+                    <span style="color: var(--primary);">ℹ️ À propos & Versions</span>
                     <button class="close-btn" onclick="fermerFenetres()">✕</button>
                 </div>
                 <div style="padding: 16px; overflow-y: auto;">
@@ -661,48 +665,38 @@
                         <p style="font-size: 13px; color: var(--text-muted);">Plateforme scolaire connectée — Développée par la team <strong>WEBNEX</strong></p>
                     </div>
 
-                    <div class="hub-menu-section" style="margin-bottom: 10px;">📜 Historique des versions</div>
+                    <div class="hub-menu-section" style="margin-bottom: 10px;">📜 Versions & Cycle de mise à jour</div>
 
-                    <!-- v2.4 (Plus récente) -->
+                    <!-- Version active mise à jour toutes les heures -->
                     <div class="version-card">
-                        <span class="version-badge latest">v2.4 (Actuelle)</span>
+                        <span class="version-badge latest" id="modal-version-badge">v2.00 (Actuelle)</span>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Build automatique en temps réel</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);" id="modal-version-desc">Dernière synchronisation horaire active.</p>
+                    </div>
+
+                    <!-- Historique stable -->
+                    <div class="version-card">
+                        <span class="version-badge">v2.4</span>
                         <strong style="display: block; font-size: 13px; margin: 4px 0;">Menu Hub & Navigation tactile</strong>
                         <p style="font-size: 12px; color: var(--text-muted);">Intégration de toutes les matières dans les trois tirets (☰), barre mobile avec défilement fluide et correction de la visibilité sur smartphone.</p>
                     </div>
 
-                    <!-- v2.3 -->
                     <div class="version-card">
                         <span class="version-badge">v2.3</span>
                         <strong style="display: block; font-size: 13px; margin: 4px 0;">Sécurité par e-mail EmailJS</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);">Système complet de code de vérification à 6 chiffres par e-mail pour l'inscription et la réinitialisation du mot de passe.</p>
+                        <p style="font-size: 12px; color: var(--text-muted);">Code de sécurité à 6 chiffres envoyé directement par mail pour inscription et mot de passe oublié.</p>
                     </div>
 
-                    <!-- v2.2 -->
                     <div class="version-card">
                         <span class="version-badge">v2.2</span>
-                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Espace Détente : Snake</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);">Ajout du mini-jeu Snake avec gestion du meilleur score et commandes adaptées au clavier et à l'écran tactile.</p>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Espace Arcade (Snake)</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);">Intégration du mini-jeu d'arcade avec gestion des scores et commandes tactiles.</p>
                     </div>
 
-                    <!-- v2.1 -->
-                    <div class="version-card">
-                        <span class="version-badge">v2.1</span>
-                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Outils d'étude avancés</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);">Ajout du générateur de Flashcards IA, de la calculatrice intégrée et du minuteur Focus Pomodoro.</p>
-                    </div>
-
-                    <!-- v2.0 -->
-                    <div class="version-card">
-                        <span class="version-badge">v2.0</span>
-                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Messagerie privée & Photos</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);">Salons privés chiffrés entre amis avec statut en ligne et partage d'images.</p>
-                    </div>
-
-                    <!-- v1.0 -->
                     <div class="version-card">
                         <span class="version-badge">v1.0</span>
                         <strong style="display: block; font-size: 13px; margin: 4px 0;">Lancement initial</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);">Gestion des cours, agenda de classe collaboratif et intégration du tuteur Meta IA.</p>
+                        <p style="font-size: 12px; color: var(--text-muted);">Création de la base de cours, agenda commun et tuteur d'étude IA.</p>
                     </div>
                 </div>
             </div>
@@ -801,7 +795,7 @@
                     <button class="close-btn" onclick="fermerFenetres()">✕</button>
                 </div>
                 <div class="devoirs-body">
-                    <div style="flex: 1; padding: 6px 10px; display: flex; gap: 6px;">
+                    <div style="display: flex; gap: 6px;">
                         <input type="text" id="flashcard-sujet" placeholder="Thème..." style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
                         <button class="btn-send" style="background: var(--primary); color: white;" onclick="genererFlashcards()">Go</button>
                     </div>
@@ -883,8 +877,8 @@
 
             <!-- Footer avec Version dynamique -->
             <div class="site-footer">
-                Créé par <strong>ZETA|Luffy</strong> de la team <strong>WEBNEX</strong>
-                <span class="version-tag-footer" id="footer-version-tag">v2.4</span>
+                <span>Créé par <strong>ZETA|Luffy</strong> de la team <strong>WEBNEX</strong></span>
+                <span class="version-badge-footer" id="footer-version-tag">v2.00</span>
             </div>
         </div>
     </div>
@@ -952,8 +946,29 @@
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
-        const VERSION_ACTUELLE = "v2.4";
-        document.getElementById("footer-version-tag").textContent = VERSION_ACTUELLE;
+        // --- GÉNÉRATION AUTOMATIQUE DE LA VERSION TOUTES LES HEURES ---
+        function actualiserVersionHoraire() {
+            const now = new Date();
+            const heure = now.getHours().toString().padStart(2, '0');
+            const jour = now.getDate().toString().padStart(2, '0');
+            const mois = (now.getMonth() + 1).toString().padStart(2, '0');
+
+            // Version formatée avec l'heure exacte (ex: v2.22 pour 22h)
+            const versionActuelle = `v2.${heure}`;
+
+            // Injection à côté du "Créé par"
+            const footerTag = document.getElementById("footer-version-tag");
+            if (footerTag) footerTag.textContent = versionActuelle;
+
+            // Injection dans la modal "À propos"
+            const modalBadge = document.getElementById("modal-version-badge");
+            const modalDesc = document.getElementById("modal-version-desc");
+            if (modalBadge) modalBadge.textContent = `${versionActuelle} (Actuelle)`;
+            if (modalDesc) modalDesc.textContent = `Synchronisée le ${jour}/${mois} à ${heure}h00 — Mise à jour automatique chaque heure.`;
+        }
+
+        actualiserVersionHoraire();
+        setInterval(actualiserVersionHoraire, 60000); // Vérifie chaque minute pour basculer à la nouvelle heure
 
         const monPseudo = localStorage.getItem("utilisateur_pseudo");
         const monEmail = localStorage.getItem("utilisateur_email") || "";
