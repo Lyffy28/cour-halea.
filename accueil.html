@@ -10,11 +10,11 @@
             --bg-grid: rgba(255, 255, 255, 0.05);
             --sidebar-bg: rgba(15, 23, 42, 0.98);
             --card-bg: #0f172a;
-            --card-border: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255, 255, 255, 0.12);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --input-bg: #0b1120;
-            --border-color: rgba(255, 255, 255, 0.08);
+            --border-color: rgba(255, 255, 255, 0.1);
             --primary: #38bdf8;
             --accent: #f59e0b;
             --success: #10b981;
@@ -54,24 +54,37 @@
             background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
             color: var(--text-main);
             display: flex;
+            flex-direction: column;
             height: 100vh;
             height: 100dvh;
             overflow: hidden;
             transition: background 0.3s, color 0.3s;
         }
 
-        /* Topbar commune */
+        /* Topbar toujours visible */
         .top-navbar {
-            position: absolute;
-            top: 0;
-            left: 90px;
-            right: 0;
             height: 56px;
+            min-height: 56px;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
             padding: 0 16px;
-            z-index: 50;
+            background: var(--sidebar-bg);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 60;
+            flex-shrink: 0;
+        }
+
+        .brand-title {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 17px;
+            letter-spacing: 0.5px;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
 
@@ -79,151 +92,50 @@
             background: linear-gradient(135deg, #06b6d4, #0284c7);
             color: #ffffff;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             cursor: pointer;
             user-select: none;
-            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         .hamburger-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            font-size: 18px;
+            background: #ffffff;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: bold;
             cursor: pointer;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: transform 0.15s;
         }
 
-        /* Menu Hub ☰ */
-        .hub-menu {
-            display: none;
-            position: absolute;
-            top: 60px;
-            right: 16px;
-            width: 290px;
-            max-height: calc(100vh - 80px);
-            background: var(--input-bg);
-            border: 1px solid var(--primary);
-            border-radius: 12px;
-            padding: 12px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
-            overflow-y: auto;
-            z-index: 100;
+        .hamburger-btn:active {
+            transform: scale(0.95);
         }
 
-        .hub-menu-header {
-            text-align: center;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 8px;
-        }
-
-        .hub-menu-section {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin: 10px 0 6px 0;
-        }
-
-        .hub-menu-item {
-            width: 100%;
-            padding: 9px 10px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-main);
-            font-size: 13px;
-            text-align: left;
-            cursor: pointer;
-            margin-bottom: 5px;
+        /* Layout central */
+        .app-body {
+            flex: 1;
             display: flex;
-            justify-content: space-between;
-        }
-
-        .hub-sub-list {
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            padding-left: 6px;
-            margin-bottom: 6px;
-        }
-
-        .hub-sub-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            padding: 6px 8px;
-            font-size: 12px;
-            text-align: left;
-            cursor: pointer;
-        }
-
-        .theme-switch-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            margin-bottom: 6px;
-        }
-
-        .avatar-grid {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            margin: 4px 0 8px 0;
-        }
-
-        .avatar-opt {
-            font-size: 16px;
-            cursor: pointer;
-            padding: 3px;
-        }
-
-        .btn-admin-hub {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #0f172a;
-            border: none;
-            border-radius: 6px;
-            padding: 9px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 700;
-            width: 100%;
-            margin-bottom: 6px;
-        }
-
-        .btn-logout {
-            background: var(--danger);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 7px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
+            min-height: 0;
+            position: relative;
+            overflow: hidden;
         }
 
         /* Barre PC latérale */
         .sidebar-left {
-            width: 90px;
+            width: 86px;
             background: var(--sidebar-bg);
             border-right: 1px solid var(--border-color);
             display: flex;
@@ -270,7 +182,7 @@
             display: none;
             position: absolute;
             top: 4px;
-            right: 14px;
+            right: 12px;
             background-color: var(--danger);
             color: white;
             font-size: 10px;
@@ -279,15 +191,14 @@
             font-weight: bold;
         }
 
-        /* Contenu Central */
+        /* Zone centrale scrollable */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 68px 16px 20px 16px;
+            padding: 16px;
             position: relative;
-            height: 100%;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
@@ -295,7 +206,7 @@
         .search-bar {
             width: 100%;
             max-width: 580px;
-            padding: 12px 18px;
+            padding: 13px 20px;
             font-size: 14px;
             border-radius: 9999px;
             border: 1px solid var(--card-border);
@@ -303,11 +214,12 @@
             color: var(--text-main);
             outline: none;
             flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .search-bar:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
         }
 
         #search-results-box {
@@ -325,11 +237,129 @@
         }
 
         .search-result-item {
-            padding: 8px 10px;
+            padding: 10px 12px;
             border-bottom: 1px solid var(--border-color);
             cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* Volet déroulant des 3 tirets (☰) */
+        .hub-menu {
+            position: fixed;
+            top: 56px;
+            right: -320px;
+            width: 300px;
+            height: calc(100dvh - 56px);
+            background: var(--sidebar-bg);
+            border-left: 1px solid var(--border-color);
+            padding: 16px;
+            box-shadow: -8px 0 25px rgba(0, 0, 0, 0.6);
+            overflow-y: auto;
+            transition: right 0.25s ease;
+            z-index: 100;
+        }
+
+        .hub-menu.active {
+            right: 0;
+        }
+
+        .hub-menu-header {
+            text-align: center;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+
+        .hub-menu-section {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin: 12px 0 6px 0;
+        }
+
+        .hub-menu-item {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 13px;
+            text-align: left;
+            cursor: pointer;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .hub-sub-list {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            padding-left: 8px;
+            margin-bottom: 8px;
+        }
+
+        .hub-sub-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 7px 10px;
+            font-size: 13px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .theme-switch-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 9px;
+            border-radius: 8px;
             font-size: 12px;
-            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
+        .avatar-grid {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin: 6px 0 8px 0;
+        }
+
+        .avatar-opt {
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .btn-admin-hub {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #0f172a;
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 700;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
+        .btn-logout {
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 9px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
         }
 
         /* Modales */
@@ -349,7 +379,7 @@
 
         .chat-header {
             background: var(--input-bg);
-            padding: 10px 14px;
+            padding: 12px 14px;
             font-weight: 700;
             display: flex;
             justify-content: space-between;
@@ -363,9 +393,9 @@
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
-            padding: 4px;
+            padding: 2px 6px;
         }
 
         /* Agenda */
@@ -384,7 +414,7 @@
         .messagerie-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
         .contacts-panel { width: 170px; background: var(--input-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
         .contacts-list { list-style: none; }
-        .contact-item { padding: 8px; font-size: 12px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .contact-item { padding: 9px; font-size: 12px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .contact-item.active { background: rgba(56, 189, 248, 0.15); color: var(--primary); }
         .contact-dot { width: 7px; height: 7px; border-radius: 50%; background: #94a3b8; flex-shrink: 0; }
         .contact-dot.online { background: #10b981; }
@@ -425,48 +455,22 @@
             opacity: 0.75;
         }
 
-        /* ========================================================= */
-        /* CORRECTIONS RESPONSIVE MOBILE (< 768px)                   */
-        /* ========================================================= */
+        /* Adaptation Smartphone */
         @media (max-width: 768px) {
-            body {
+            .app-body {
                 flex-direction: column;
             }
 
-            /* Header mobile compact */
-            .top-navbar {
-                left: 0;
-                height: 50px;
-                padding: 0 12px;
-                background: var(--sidebar-bg);
-                border-bottom: 1px solid var(--border-color);
-            }
-
-            .main-content {
-                padding: 60px 10px 75px 10px;
-            }
-
-            .search-bar {
-                font-size: 13px;
-                padding: 10px 16px;
-            }
-
-            /* Barre du bas : scrolling horizontal fluide avec éléments compacts */
             .sidebar-left {
-                position: fixed;
-                bottom: 0;
-                left: 0;
                 width: 100%;
                 height: 60px;
+                min-height: 60px;
                 flex-direction: row;
+                order: 2;
                 border-right: none;
                 border-top: 1px solid var(--border-color);
-                background: var(--sidebar-bg);
-                z-index: 50;
-                padding: 0 6px;
                 overflow-x: auto;
                 overflow-y: hidden;
-                -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
             }
 
@@ -485,10 +489,10 @@
             .left-btn {
                 writing-mode: horizontal-tb;
                 transform: none;
-                padding: 6px 12px;
+                padding: 6px 14px;
                 border-bottom: none;
                 font-size: 11px;
-                min-width: 60px;
+                min-width: 64px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -499,22 +503,20 @@
                 border-top: none;
                 padding: 6px 14px;
                 font-size: 18px;
-                min-width: 50px;
+                min-width: 52px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
-            .hub-menu {
-                right: 8px;
-                left: 8px;
-                width: auto;
-                top: 54px;
+            .main-content {
+                order: 1;
+                padding: 14px 10px;
             }
 
             .modal-box {
                 position: fixed;
-                top: 50px;
+                top: 56px;
                 left: 0;
                 right: 0;
                 bottom: 60px;
@@ -534,8 +536,8 @@
 
             .contacts-panel {
                 width: 100%;
-                height: 40px;
-                min-height: 40px;
+                height: 42px;
+                min-height: 42px;
                 flex-direction: row;
                 border-right: none;
                 border-bottom: 1px solid var(--border-color);
@@ -563,16 +565,224 @@
 </head>
 <body>
 
+    <!-- Barre d'en-tête (Toujours fixée et visible) -->
     <div class="top-navbar">
-        <div style="margin-right: auto; font-weight: 800; color: var(--primary); font-size: 15px;">Cour-halea</div>
-        <div class="profile-badge" id="icone-profil" onclick="toggleHubMenu()" title="Mon profil">👤</div>
-        <button class="hamburger-btn" onclick="toggleHubMenu()" title="Menu">☰</button>
+        <div class="brand-title">Cour-halea</div>
+        <div class="top-actions">
+            <div class="profile-badge" id="icone-profil" onclick="toggleHubMenu()" title="Mon profil">👤</div>
+            <button class="hamburger-btn" onclick="toggleHubMenu()" title="Menu matières">☰</button>
+        </div>
     </div>
 
-    <!-- Menu Hub ☰ -->
+    <div class="app-body">
+        <!-- Barre de navigation (Gauche PC, Bas Mobile) -->
+        <div class="sidebar-left">
+            <div>
+                <button class="left-btn" onclick="ouvrirMessagerie()"><span>💬</span><span>Chat</span></button>
+                <button class="left-btn" onclick="ouvrirChatIA()"><span>🤖</span><span>IA</span></button>
+                <button class="left-btn" onclick="ouvrirDevoirs()" style="color: var(--accent);"><span>📅</span><span>Agenda</span></button>
+            </div>
+            <div class="bottom-left-group">
+                <button class="tool-btn" title="Détente" onclick="ouvrirSnake()">🎮</button>
+                <button class="tool-btn" title="Flashcards" onclick="ouvrirFlashcards()">🗂️</button>
+                <button class="tool-btn" title="Calculatrice" onclick="ouvrirCalculatrice()">🧮</button>
+                <button class="tool-btn" title="Pomodoro" onclick="ouvrirPomodoro()">⏱️</button>
+                <button class="tool-btn" title="Amis" onclick="ouvrirGestionAmis()">
+                    👥
+                    <span class="notif-badge" id="badge-demandes">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Contenu Central -->
+        <div class="main-content" onclick="fermerHubMenu()">
+            <input type="search" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher un cours, devoir..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="filtrerContenuRecherche()">
+            <div id="search-results-box"></div>
+
+            <!-- Agenda -->
+            <div id="devoirs-panel" class="modal-box">
+                <div class="chat-header">
+                    <span style="color: var(--accent);">📅 Agenda</span>
+                    <button class="close-btn" onclick="fermerFenetres()">✕</button>
+                </div>
+                <div class="agenda-tabs">
+                    <button class="agenda-tab-btn active" id="tab-btn-public" onclick="changerOngletAgenda('public')">Classe</button>
+                    <button class="agenda-tab-btn" id="tab-btn-perso" onclick="changerOngletAgenda('perso')">Mes tâches</button>
+                </div>
+                <div class="devoirs-body">
+                    <div id="form-ajout-perso" class="ajout-perso-box" style="display: none;">
+                        <input type="text" id="perso-titre" placeholder="Tâche..." style="flex: 1;">
+                        <input type="text" id="perso-date" placeholder="Date" style="width: 100px;">
+                        <button class="btn-send" onclick="ajouterDevoirPerso()">+</button>
+                    </div>
+                    <div id="devoirs-liste" style="display: flex; flex-direction: column; gap: 6px;">
+                        <p style="color: var(--text-muted); font-size: 12px;">Chargement...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messagerie Privée -->
+            <div id="chat-entraide" class="modal-box">
+                <div class="chat-header">
+                    <span style="color: var(--accent);" id="titre-chat-prive">💬 Messagerie</span>
+                    <button class="close-btn" onclick="fermerFenetres()">✕</button>
+                </div>
+                <div class="messagerie-body">
+                    <div class="contacts-panel">
+                        <ul class="contacts-list" id="contacts-list"></ul>
+                    </div>
+                    <div class="discussion-zone">
+                        <div class="chat-messages" id="group-messages">
+                            <div class="msg msg-group-other" style="text-align: center; color: var(--text-muted);">
+                                👈 Choisis un contact.
+                            </div>
+                        </div>
+                        <div class="chat-input-zone">
+                            <input type="file" id="chat-photo-input" accept="image/*" style="display: none;" onchange="envoyerPhotoPrivee(event)">
+                            <button class="btn-chat-action" onclick="document.getElementById('chat-photo-input').click()">📷</button>
+                            <input type="text" id="group-input" placeholder="Message..." disabled onkeydown="if(event.key==='Enter') envoyerMessagePrive()">
+                            <button class="btn-send" id="btn-send-msg" disabled onclick="envoyerMessagePrive()">></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meta IA -->
+            <div id="chat-ia" class="modal-box">
+                <div class="chat-header">
+                    <span style="color: var(--primary);">🤖 Tuteur Scolaire IA</span>
+                    <button class="close-btn" onclick="fermerFenetres()">✕</button>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="msg msg-ia">Pose ta question de cours ici !</div>
+                </div>
+                <div class="chat-input-zone">
+                    <input type="text" id="user-input" placeholder="Question..." onkeydown="if(event.key==='Enter') envoyerMessageIA()">
+                    <button class="btn-send" style="background: var(--primary); color: white;" onclick="envoyerMessageIA()">></button>
+                </div>
+            </div>
+
+            <!-- Snake -->
+            <div id="snake-panel" class="modal-box" style="max-width: 380px;">
+                <div class="chat-header">
+                    <span style="color: var(--primary);">🎮 Snake</span>
+                    <button class="close-btn" onclick="fermerFenetres()">✕</button>
+                </div>
+                <div class="snake-container">
+                    <div class="snake-scoreboard">
+                        <span>Score : <strong id="snake-score" style="color:white;">0</strong></span>
+                        <span>Record : <strong id="snake-highscore" style="color:white;">0</strong></span>
+                    </div>
+                    <canvas id="snake-canvas" width="260" height="260"></canvas>
+                    <button class="btn-send" style="background: var(--primary); color: white;" onclick="demarrerSnake()">Rejouer</button>
+                    <div class="snake-touch-controls">
+                        <div></div>
+                        <button class="snake-btn" onclick="changerDirection('UP')">▲</button>
+                        <div></div>
+                        <button class="snake-btn" onclick="changerDirection('LEFT')">◀</button>
+                        <button class="snake-btn" onclick="changerDirection('DOWN')">▼</button>
+                        <button class="snake-btn" onclick="changerDirection('RIGHT')">▶</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flashcards -->
+            <div id="flashcards-panel" class="modal-box">
+                <div class="chat-header">
+                    <span style="color: var(--primary);">🗂️ Flashcards</span>
+                    <button class="close-btn" onclick="fermerFenetres()">✕</button>
+                </div>
+                <div class="devoirs-body">
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" id="flashcard-sujet" placeholder="Thème..." style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
+                        <button class="btn-send" style="background: var(--primary); color: white;" onclick="genererFlashcards()">Go</button>
+                    </div>
+                    <div id="flashcards-grid" style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px;"></div>
+                </div>
+            </div>
+
+            <!-- Calculatrice -->
+            <div id="calc-panel" class="modal-box" style="max-width: 300px;">
+                <div class="chat-header">
+                    <span style="color: var(--accent);">🧮 Calculatrice</span>
+                    <button class="close-btn" onclick="fermerFenetres()">✕</button>
+                </div>
+                <div class="calc-grid">
+                    <div class="calc-screen" id="calc-screen">0</div>
+                    <button class="calc-btn op" onclick="calcClear()">C</button>
+                    <button class="calc-btn op" onclick="calcInput('(')">(</button>
+                    <button class="calc-btn op" onclick="calcInput(')')">)</button>
+                    <button class="calc-btn op" onclick="calcInput('/')">÷</button>
+                    <button class="calc-btn" onclick="calcInput('7')">7</button>
+                    <button class="calc-btn" onclick="calcInput('8')">8</button>
+                    <button class="calc-btn" onclick="calcInput('9')">9</button>
+                    <button class="calc-btn op" onclick="calcInput('*')">×</button>
+                    <button class="calc-btn" onclick="calcInput('4')">4</button>
+                    <button class="calc-btn" onclick="calcInput('5')">5</button>
+                    <button class="calc-btn" onclick="calcInput('6')">6</button>
+                    <button class="calc-btn op" onclick="calcInput('-')">-</button>
+                    <button class="calc-btn" onclick="calcInput('1')">1</button>
+                    <button class="calc-btn" onclick="calcInput('2')">2</button>
+                    <button class="calc-btn" onclick="calcInput('3')">3</button>
+                    <button class="calc-btn op" onclick="calcInput('+')">+</button>
+                    <button class="calc-btn" onclick="calcInput('0')">0</button>
+                    <button class="calc-btn" onclick="calcInput('.')">.</button>
+                    <button class="calc-btn op" onclick="calcInput('Math.sqrt(')">√</button>
+                    <button class="calc-btn equal" onclick="calcEval()">=</button>
+                </div>
+            </div>
+
+            <!-- Pomodoro -->
+            <div id="pomodoro-panel" class="modal-box" style="max-width: 320px;">
+                <div class="chat-header">
+                    <span style="color: var(--primary);">⏱️ Focus</span>
+                    <button class="close-btn" onclick="fermerFenetres()">✕</button>
+                </div>
+                <div class="pomodoro-container">
+                    <div id="timer-type" style="font-size: 12px; font-weight: bold; color: var(--accent);">Travail</div>
+                    <div class="timer-display" id="timer-display">25:00</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-send" style="background: var(--primary); color: white;" onclick="toggleTimer()" id="btn-toggle-timer">Démarrer</button>
+                        <button class="btn-send" style="background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color);" onclick="resetTimer()">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amis -->
+            <div id="friends-panel" class="modal-box">
+                <div class="chat-header">
+                    <span style="color: var(--success);">👥 Amis</span>
+                    <button class="close-btn" onclick="fermerFenetres()">✕</button>
+                </div>
+                <div style="padding: 10px; overflow-y: auto;">
+                    <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+                        <input type="text" id="friend-pseudo-input" placeholder="Pseudo..." style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
+                        <button class="btn-send" style="background: var(--success); color: white;" onclick="envoyerDemandeAmi()">+</button>
+                    </div>
+                    <ul id="friends-list" style="list-style: none; display: flex; flex-direction: column; gap: 4px;"></ul>
+                </div>
+            </div>
+
+            <!-- Panel Admin PIN -->
+            <div id="admin-panel" style="display: none; background: var(--card-bg); padding: 16px; border-radius: 10px; border: 1px solid var(--accent); text-align: center; margin-top: 14px;">
+                <h3 style="color: var(--accent); font-size: 14px;">Panel Admin</h3>
+                <input type="password" id="code-pin" maxlength="4" placeholder="••••" style="padding: 6px; font-size: 16px; width: 90px; text-align: center; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: white; margin-top: 6px;">
+                <br>
+                <button class="btn-send" style="margin-top: 8px;" onclick="validerPin()">Valider</button>
+                <p id="message-pin" style="margin-top: 6px; font-size: 12px; font-weight: bold;"></p>
+                <button id="btn-admin-secret" class="btn-send" style="display: none; width: 100%; margin-top: 8px; background: var(--success); color: white;" onclick="allerVersAdmin()">👑 Accéder</button>
+            </div>
+
+            <div class="site-footer">
+                Créé par <strong>ZETA|Luffy</strong> de la team <strong>WEBNEX</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Volet coulissant des 3 tirets (☰) -->
     <div class="hub-menu" id="hub-menu">
         <div class="hub-menu-header">
-            <div id="nom-utilisateur" style="font-size: 13px; font-weight: bold; color: var(--primary);">Pseudo</div>
+            <div id="nom-utilisateur" style="font-size: 14px; font-weight: bold; color: var(--primary);">Pseudo</div>
             <div id="email-utilisateur" style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">email</div>
             <button class="theme-switch-btn" onclick="basculerTheme()">🌓 Mode Clair / Sombre</button>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Avatar :</div>
@@ -620,212 +830,8 @@
             <button class="hub-sub-btn" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques</button>
         </div>
 
-        <div style="margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 8px;">
+        <div style="margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 10px;">
             <button class="btn-logout" onclick="seDeconnecter()">🚪 Déconnexion</button>
-        </div>
-    </div>
-
-    <!-- Barre Navigation (Scrolling horizontal sur Mobile) -->
-    <div class="sidebar-left">
-        <div>
-            <button class="left-btn" onclick="ouvrirMessagerie()"><span>💬</span><span>Chat</span></button>
-            <button class="left-btn" onclick="ouvrirChatIA()"><span>🤖</span><span>IA</span></button>
-            <button class="left-btn" onclick="ouvrirDevoirs()" style="color: var(--accent);"><span>📅</span><span>Agenda</span></button>
-        </div>
-        <div class="bottom-left-group">
-            <button class="tool-btn" title="Détente" onclick="ouvrirSnake()">🎮</button>
-            <button class="tool-btn" title="Flashcards" onclick="ouvrirFlashcards()">🗂️</button>
-            <button class="tool-btn" title="Calculatrice" onclick="ouvrirCalculatrice()">🧮</button>
-            <button class="tool-btn" title="Pomodoro" onclick="ouvrirPomodoro()">⏱️</button>
-            <button class="tool-btn" title="Amis" onclick="ouvrirGestionAmis()">
-                👥
-                <span class="notif-badge" id="badge-demandes">0</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Contenu Central -->
-    <div class="main-content" onclick="fermerHubMenu()">
-        <!-- autocomplete="off" empêche le pop-up de mot de passe Google -->
-        <input type="search" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher un cours, devoir..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="filtrerContenuRecherche()">
-        <div id="search-results-box"></div>
-
-        <!-- Agenda -->
-        <div id="devoirs-panel" class="modal-box">
-            <div class="chat-header">
-                <span style="color: var(--accent);">📅 Agenda</span>
-                <button class="close-btn" onclick="fermerFenetres()">✕</button>
-            </div>
-            <div class="agenda-tabs">
-                <button class="agenda-tab-btn active" id="tab-btn-public" onclick="changerOngletAgenda('public')">Classe</button>
-                <button class="agenda-tab-btn" id="tab-btn-perso" onclick="changerOngletAgenda('perso')">Mes tâches</button>
-            </div>
-            <div class="devoirs-body">
-                <div id="form-ajout-perso" class="ajout-perso-box" style="display: none;">
-                    <input type="text" id="perso-titre" placeholder="Tâche..." style="flex: 1;">
-                    <input type="text" id="perso-date" placeholder="Date" style="width: 100px;">
-                    <button class="btn-send" onclick="ajouterDevoirPerso()">+</button>
-                </div>
-                <div id="devoirs-liste" style="display: flex; flex-direction: column; gap: 6px;">
-                    <p style="color: var(--text-muted); font-size: 12px;">Chargement...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Messagerie Privée -->
-        <div id="chat-entraide" class="modal-box">
-            <div class="chat-header">
-                <span style="color: var(--accent);" id="titre-chat-prive">💬 Messagerie</span>
-                <button class="close-btn" onclick="fermerFenetres()">✕</button>
-            </div>
-            <div class="messagerie-body">
-                <div class="contacts-panel">
-                    <ul class="contacts-list" id="contacts-list"></ul>
-                </div>
-                <div class="discussion-zone">
-                    <div class="chat-messages" id="group-messages">
-                        <div class="msg msg-group-other" style="text-align: center; color: var(--text-muted);">
-                            👈 Choisis un contact.
-                        </div>
-                    </div>
-                    <div class="chat-input-zone">
-                        <input type="file" id="chat-photo-input" accept="image/*" style="display: none;" onchange="envoyerPhotoPrivee(event)">
-                        <button class="btn-chat-action" onclick="document.getElementById('chat-photo-input').click()">📷</button>
-                        <input type="text" id="group-input" placeholder="Message..." disabled onkeydown="if(event.key==='Enter') envoyerMessagePrive()">
-                        <button class="btn-send" id="btn-send-msg" disabled onclick="envoyerMessagePrive()">></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Meta IA -->
-        <div id="chat-ia" class="modal-box">
-            <div class="chat-header">
-                <span style="color: var(--primary);">🤖 Tuteur Scolaire IA</span>
-                <button class="close-btn" onclick="fermerFenetres()">✕</button>
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="msg msg-ia">Pose ta question de cours ici !</div>
-            </div>
-            <div class="chat-input-zone">
-                <input type="text" id="user-input" placeholder="Question..." onkeydown="if(event.key==='Enter') envoyerMessageIA()">
-                <button class="btn-send" style="background: var(--primary); color: white;" onclick="envoyerMessageIA()">></button>
-            </div>
-        </div>
-
-        <!-- Snake -->
-        <div id="snake-panel" class="modal-box" style="max-width: 380px;">
-            <div class="chat-header">
-                <span style="color: var(--primary);">🎮 Snake</span>
-                <button class="close-btn" onclick="fermerFenetres()">✕</button>
-            </div>
-            <div class="snake-container">
-                <div class="snake-scoreboard">
-                    <span>Score : <strong id="snake-score" style="color:white;">0</strong></span>
-                    <span>Record : <strong id="snake-highscore" style="color:white;">0</strong></span>
-                </div>
-                <canvas id="snake-canvas" width="260" height="260"></canvas>
-                <button class="btn-send" style="background: var(--primary); color: white;" onclick="demarrerSnake()">Rejouer</button>
-                <div class="snake-touch-controls">
-                    <div></div>
-                    <button class="snake-btn" onclick="changerDirection('UP')">▲</button>
-                    <div></div>
-                    <button class="snake-btn" onclick="changerDirection('LEFT')">◀</button>
-                    <button class="snake-btn" onclick="changerDirection('DOWN')">▼</button>
-                    <button class="snake-btn" onclick="changerDirection('RIGHT')">▶</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Flashcards -->
-        <div id="flashcards-panel" class="modal-box">
-            <div class="chat-header">
-                <span style="color: var(--primary);">🗂️ Flashcards</span>
-                <button class="close-btn" onclick="fermerFenetres()">✕</button>
-            </div>
-            <div class="devoirs-body">
-                <div style="display: flex; gap: 6px;">
-                    <input type="text" id="flashcard-sujet" placeholder="Thème de révision..." style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
-                    <button class="btn-send" style="background: var(--primary); color: white;" onclick="genererFlashcards()">Go</button>
-                </div>
-                <div id="flashcards-grid" style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px;"></div>
-            </div>
-        </div>
-
-        <!-- Calculatrice -->
-        <div id="calc-panel" class="modal-box" style="max-width: 300px;">
-            <div class="chat-header">
-                <span style="color: var(--accent);">🧮 Calculatrice</span>
-                <button class="close-btn" onclick="fermerFenetres()">✕</button>
-            </div>
-            <div class="calc-grid">
-                <div class="calc-screen" id="calc-screen">0</div>
-                <button class="calc-btn op" onclick="calcClear()">C</button>
-                <button class="calc-btn op" onclick="calcInput('(')">(</button>
-                <button class="calc-btn op" onclick="calcInput(')')">)</button>
-                <button class="calc-btn op" onclick="calcInput('/')">÷</button>
-                <button class="calc-btn" onclick="calcInput('7')">7</button>
-                <button class="calc-btn" onclick="calcInput('8')">8</button>
-                <button class="calc-btn" onclick="calcInput('9')">9</button>
-                <button class="calc-btn op" onclick="calcInput('*')">×</button>
-                <button class="calc-btn" onclick="calcInput('4')">4</button>
-                <button class="calc-btn" onclick="calcInput('5')">5</button>
-                <button class="calc-btn" onclick="calcInput('6')">6</button>
-                <button class="calc-btn op" onclick="calcInput('-')">-</button>
-                <button class="calc-btn" onclick="calcInput('1')">1</button>
-                <button class="calc-btn" onclick="calcInput('2')">2</button>
-                <button class="calc-btn" onclick="calcInput('3')">3</button>
-                <button class="calc-btn op" onclick="calcInput('+')">+</button>
-                <button class="calc-btn" onclick="calcInput('0')">0</button>
-                <button class="calc-btn" onclick="calcInput('.')">.</button>
-                <button class="calc-btn op" onclick="calcInput('Math.sqrt(')">√</button>
-                <button class="calc-btn equal" onclick="calcEval()">=</button>
-            </div>
-        </div>
-
-        <!-- Pomodoro -->
-        <div id="pomodoro-panel" class="modal-box" style="max-width: 320px;">
-            <div class="chat-header">
-                <span style="color: var(--primary);">⏱️ Focus</span>
-                <button class="close-btn" onclick="fermerFenetres()">✕</button>
-            </div>
-            <div class="pomodoro-container">
-                <div id="timer-type" style="font-size: 12px; font-weight: bold; color: var(--accent);">Travail</div>
-                <div class="timer-display" id="timer-display">25:00</div>
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn-send" style="background: var(--primary); color: white;" onclick="toggleTimer()" id="btn-toggle-timer">Démarrer</button>
-                    <button class="btn-send" style="background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border-color);" onclick="resetTimer()">Reset</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Amis -->
-        <div id="friends-panel" class="modal-box">
-            <div class="chat-header">
-                <span style="color: var(--success);">👥 Amis</span>
-                <button class="close-btn" onclick="fermerFenetres()">✕</button>
-            </div>
-            <div style="padding: 10px; overflow-y: auto;">
-                <div style="display: flex; gap: 6px; margin-bottom: 8px;">
-                    <input type="text" id="friend-pseudo-input" placeholder="Pseudo..." style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
-                    <button class="btn-send" style="background: var(--success); color: white;" onclick="envoyerDemandeAmi()">+</button>
-                </div>
-                <ul id="friends-list" style="list-style: none; display: flex; flex-direction: column; gap: 4px;"></ul>
-            </div>
-        </div>
-
-        <!-- Panel Admin PIN -->
-        <div id="admin-panel" style="display: none; background: var(--card-bg); padding: 16px; border-radius: 10px; border: 1px solid var(--accent); text-align: center; margin-top: 14px;">
-            <h3 style="color: var(--accent); font-size: 14px;">Panel Admin</h3>
-            <input type="password" id="code-pin" maxlength="4" placeholder="••••" style="padding: 6px; font-size: 16px; width: 90px; text-align: center; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: white; margin-top: 6px;">
-            <br>
-            <button class="btn-send" style="margin-top: 8px;" onclick="validerPin()">Valider</button>
-            <p id="message-pin" style="margin-top: 6px; font-size: 12px; font-weight: bold;"></p>
-            <button id="btn-admin-secret" class="btn-send" style="display: none; width: 100%; margin-top: 8px; background: var(--success); color: white;" onclick="allerVersAdmin()">👑 Accéder</button>
-        </div>
-
-        <div class="site-footer">
-            Créé par <strong>ZETA|Luffy</strong> de la team <strong>WEBNEX</strong>
         </div>
     </div>
 
@@ -844,12 +850,11 @@
         let modeAgenda = "public";
 
         function toggleHubMenu() {
-            const menu = document.getElementById("hub-menu");
-            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+            document.getElementById("hub-menu").classList.toggle("active");
         }
 
         function fermerHubMenu() {
-            document.getElementById("hub-menu").style.display = "none";
+            document.getElementById("hub-menu").classList.remove("active");
         }
 
         function toggleSousMenu(id) {
