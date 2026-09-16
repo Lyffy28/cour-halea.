@@ -2,14 +2,15 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cour-halea - Leçons & Révisions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cour-halea - Espace Cours & Entraînement</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -18,528 +19,629 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 15px;
+            padding-bottom: 30px;
         }
 
+        /* En-tête */
         header {
-            width: 100%;
-            max-width: 960px;
+            background-color: #26273b;
+            border-bottom: 1px solid #3d3f58;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #3d3f58;
-            gap: 10px;
-            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        .nav-group {
+        .header-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00d2d3;
             display: flex;
-            gap: 10px;
             align-items: center;
+            gap: 10px;
         }
 
-        .back-btn {
-            background-color: #2b2c40;
+        .btn-back {
+            background-color: #343650;
             color: #c8d6e5;
             border: 1px solid #484b6a;
             padding: 8px 14px;
             border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        .back-btn:hover {
-            border-color: #00d2d3;
-            color: #00d2d3;
-        }
-
-        .lessons-btn {
-            background-color: #ff9f43;
-            color: #1e1e2e;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 14px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 13px;
             transition: 0.2s;
         }
 
-        .lessons-btn:hover {
-            background-color: #feca57;
-        }
-
-        h1 {
-            color: #00d2d3;
-            font-size: 22px;
-            text-align: center;
+        .btn-back:hover {
+            background-color: #ee5253;
+            color: white;
         }
 
         .container {
+            max-width: 900px;
             width: 100%;
-            max-width: 960px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            header {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .nav-group {
-                justify-content: space-between;
-            }
+        /* Sélecteur de matière rapide */
+        .matieres-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            -webkit-overflow-scrolling: touch;
         }
 
+        .matiere-chip {
+            background-color: #26273b;
+            border: 1px solid #3d3f58;
+            color: #c8d6e5;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .matiere-chip:hover, .matiere-chip.active {
+            background-color: #00d2d3;
+            color: #1e1e2e;
+            border-color: #00d2d3;
+        }
+
+        /* Cartes */
         .card {
             background-color: #26273b;
             border: 1px solid #3d3f58;
             border-radius: 12px;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
         .card h2 {
             font-size: 17px;
             color: #ff9f43;
-            border-bottom: 1px solid #3d3f58;
-            padding-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .upload-area {
-            border: 2px dashed #484b6a;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
+        /* Leçons Firebase */
+        .lecons-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 250px;
+            overflow-y: auto;
         }
 
-        .upload-area:hover {
-            border-color: #00d2d3;
-        }
-
-        .preview-img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 8px;
-            display: none;
-            margin: 10px auto 0 auto;
-            object-fit: contain;
-        }
-
-        textarea {
-            width: 100%;
-            height: 90px;
-            background-color: #1e1e2e;
-            border: 1px solid #484b6a;
-            border-radius: 8px;
-            padding: 10px;
-            color: #ffffff;
-            font-size: 13px;
-            outline: none;
-            resize: none;
-        }
-
-        textarea:focus {
-            border-color: #00d2d3;
-        }
-
-        .btn-action {
-            background-color: #00d2d3;
-            color: #1e1e2e;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-        }
-
-        .btn-action:hover {
-            background-color: #01a3a4;
-        }
-
-        .btn-action:disabled {
-            background-color: #484b6a;
-            cursor: not-allowed;
-            color: #a4b0be;
-        }
-
-        .btn-save {
-            background-color: #1dd1a1;
-            color: #1e1e2e;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-            display: none;
-        }
-
-        .btn-save:hover {
-            background-color: #10ac84;
-        }
-
-        #fiche-resultat {
+        .lecon-item {
             background-color: #1e1e2e;
             border: 1px solid #3d3f58;
             border-radius: 8px;
-            padding: 15px;
-            min-height: 230px;
-            max-height: 380px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            line-height: 1.5;
-            font-size: 14px;
-            color: #c8d6e5;
-        }
-
-        /* Section Masquée par défaut : accessible UNIQUEMENT via le bouton */
-        .saved-section {
-            display: none;
-            width: 100%;
-            max-width: 960px;
-            margin-top: 25px;
-            background-color: #26273b;
-            border: 2px solid #ff9f43;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
-
-        .saved-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #3d3f58;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-
-        .saved-title {
-            color: #ff9f43;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .badge-count {
-            background-color: #1e1e2e;
-            color: #00d2d3;
-            border: 1px solid #00d2d3;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .fiche-item {
-            background-color: #1e1e2e;
-            border: 1px solid #484b6a;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-
-        .fiche-item-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .fiche-titre {
-            color: #ff9f43;
-            font-weight: bold;
-            font-size: 15px;
-        }
-
-        .fiche-date {
-            color: #a4b0be;
-            font-size: 12px;
-            margin-left: 8px;
-        }
-
-        .delete-btn {
-            background-color: #ee5253;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
+            padding: 12px 15px;
             cursor: pointer;
             transition: 0.2s;
         }
 
-        .delete-btn:hover {
-            background-color: #c0392b;
+        .lecon-item:hover {
+            border-color: #00d2d3;
+            transform: translateX(4px);
         }
 
-        .fiche-content-saved {
-            font-size: 14px;
-            color: #c8d6e5;
-            white-space: pre-wrap;
-            line-height: 1.5;
-            border-top: 1px solid #2d2f44;
-            padding-top: 10px;
+        .lecon-item h4 {
+            color: #00d2d3;
+            font-size: 15px;
+            margin-bottom: 4px;
         }
 
-        .empty-msg {
+        .lecon-item p {
             color: #a4b0be;
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+
+        /* Zone Générateur IA */
+        .generator-inputs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .generator-inputs input {
+            flex: 1;
+            min-width: 220px;
+            background-color: #1e1e2e;
+            border: 1px solid #484b6a;
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
             font-size: 14px;
+            outline: none;
+        }
+
+        .generator-inputs input:focus {
+            border-color: #00d2d3;
+        }
+
+        .btn-gen {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-exercice {
+            background-color: #ff9f43;
+            color: #1e1e2e;
+        }
+
+        .btn-quiz {
+            background-color: #1dd1a1;
+            color: #1e1e2e;
+        }
+
+        .btn-gen:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .btn-gen:disabled {
+            background-color: #484b6a;
+            cursor: not-allowed;
+            color: #a4b0be;
+            transform: none;
+        }
+
+        /* Affichage Résultats IA */
+        .ai-output-box {
+            display: none;
+            background-color: #1e1e2e;
+            border: 1px solid #3d3f58;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 15px;
+            line-height: 1.6;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        /* Quiz interactif */
+        .quiz-container {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .quiz-card {
+            background-color: #1e1e2e;
+            border: 1px solid #3d3f58;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .quiz-question {
+            font-size: 15px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quiz-option {
+            background-color: #26273b;
+            border: 1px solid #484b6a;
+            color: #c8d6e5;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .quiz-option:hover {
+            background-color: #343650;
+            border-color: #00d2d3;
+        }
+
+        .quiz-option.correct {
+            background-color: rgba(29, 209, 161, 0.25) !important;
+            border-color: #1dd1a1 !important;
+            color: #1dd1a1 !important;
+            font-weight: bold;
+        }
+
+        .quiz-option.wrong {
+            background-color: rgba(238, 82, 83, 0.25) !important;
+            border-color: #ee5253 !important;
+            color: #ee5253 !important;
+        }
+
+        .quiz-score-banner {
+            display: none;
+            background-color: #26273b;
+            border: 1px solid #1dd1a1;
+            padding: 15px;
+            border-radius: 10px;
             text-align: center;
-            padding: 20px 0;
+            font-size: 16px;
+            font-weight: bold;
+            color: #1dd1a1;
+        }
+
+        /* Toggle corrigé exercice */
+        .toggle-corrige-btn {
+            background-color: #343650;
+            color: #00d2d3;
+            border: 1px solid #00d2d3;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            margin-top: 12px;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="nav-group">
-            <a href="accueil.html" class="back-btn">← Accueil</a>
-            <!-- Le SEUL bouton pour ouvrir ou cacher tes leçons enregistrées -->
-            <button class="lessons-btn" onclick="toggleAffichageLecons()">
-                📖 Mes leçons (<span id="nb-lecons-btn">0</span>) ▾
-            </button>
+        <div class="header-title">
+            <span>📖</span>
+            <span id="label-matiere">Matière</span>
         </div>
-        <h1 id="titre-matiere">Matière</h1>
+        <a href="accueil.html" class="btn-back">⬅ Retour à l'accueil</a>
     </header>
 
     <div class="container">
-        <!-- 1. Formulaire pour prendre la photo directement -->
+
+        <!-- Barre de sélection rapide de la matière -->
+        <div class="matieres-bar" id="matieres-bar">
+            <button class="matiere-chip" onclick="changerMatiere('Maths')">📐 Maths</button>
+            <button class="matiere-chip" onclick="changerMatiere('Français')">🇫🇷 Français</button>
+            <button class="matiere-chip" onclick="changerMatiere('Anglais')">🇬🇧 Anglais</button>
+            <button class="matiere-chip" onclick="changerMatiere('Espagnol')">🇪🇸 Espagnol</button>
+            <button class="matiere-chip" onclick="changerMatiere('Physique-Chimie')">🧪 Physique-Chimie</button>
+            <button class="matiere-chip" onclick="changerMatiere('SVT')">🌿 SVT</button>
+            <button class="matiere-chip" onclick="changerMatiere('Histoire')">📜 Histoire</button>
+            <button class="matiere-chip" onclick="changerMatiere('Géographie')">🌍 Géographie</button>
+            <button class="matiere-chip" onclick="changerMatiere('Technologie')">💻 Technologie</button>
+            <button class="matiere-chip" onclick="changerMatiere('Latin-Grec')">🏛️ Latin / Grec</button>
+            <button class="matiere-chip" onclick="changerMatiere('EMC')">⚖️ EMC</button>
+            <button class="matiere-chip" onclick="changerMatiere('Arts')">🎨 Arts</button>
+        </div>
+
+        <!-- 1. Leçons enregistrées par l'administrateur -->
         <div class="card">
-            <h2>1. Prendre une photo du cours</h2>
-            
-            <label class="upload-area" for="photo-input">
-                <p id="label-upload">📷 Clique ici pour prendre ou charger la photo</p>
-                <img id="image-preview" class="preview-img" alt="Aperçu">
-            </label>
-            <input type="file" id="photo-input" accept="image/*" capture="environment" style="display:none;" onchange="afficherApercu(event)">
-
-            <p style="font-size: 12px; color: #a4b0be; text-align: center;">- OU ajoute des précisions textuelles -</p>
-            <textarea id="cours-texte" placeholder="Écris du vocabulaire, des phrases ou des règles en plus..."></textarea>
-
-            <button class="btn-action" id="btn-generer" onclick="genererFiche()">⚡ Créer la fiche de révision</button>
+            <h2>📚 Fiches de leçons du cours</h2>
+            <div class="lecons-list" id="lecons-conteneur">
+                <p style="color: #a4b0be; font-size: 13px;">Chargement des fiches de cours...</p>
+            </div>
         </div>
 
-        <!-- 2. Fiche créée par l'IA + Bouton d'enregistrement -->
+        <!-- 2. Générateur IA : Exercices & Quiz sur-mesure -->
         <div class="card">
-            <h2>2. Fiche de révision par l'IA</h2>
-            <div id="fiche-resultat">Prends ta photo à gauche puis clique sur "Créer la fiche de révision".</div>
+            <h2>🤖 Entraînement intelligent avec l'IA</h2>
+            <p style="font-size: 13px; color: #a4b0be; margin-bottom: 12px;">
+                Indique le chapitre ou la notion que tu veux réviser, puis choisis de générer un exercice ou un quiz interactif :
+            </p>
 
-            <button class="btn-save" id="btn-save" onclick="sauvegarderFiche()">
-                💾 Enregistrer la leçon dans <span id="label-save-matiere"></span>
-            </button>
-            <p id="save-confirmation" style="color: #1dd1a1; font-weight: bold; font-size: 13px; text-align: center;"></p>
-        </div>
-    </div>
+            <div class="generator-inputs">
+                <input type="text" id="sujet-input" placeholder="Ex: Théorème de Pythagore, Les verbes irréguliers, La Révolution...">
+                <button class="btn-gen btn-exercice" id="btn-gen-exo" onclick="genererExerciceIA()">
+                    📝 Générer Exercice
+                </button>
+                <button class="btn-gen btn-quiz" id="btn-gen-quiz" onclick="genererQuizIA()">
+                    🎯 Générer Quiz (QCM)
+                </button>
+            </div>
 
-    <!-- 3. Section des leçons : VISIBLE UNIQUEMENT après clic sur "Mes leçons" -->
-    <div class="saved-section" id="section-lecons">
-        <div class="saved-header">
-            <span class="saved-title" id="saved-title">📚 Leçons enregistrées</span>
-            <span class="badge-count" id="badge-total">0 leçon</span>
+            <!-- Résultat Exercice -->
+            <div class="ai-output-box" id="exercice-result"></div>
+
+            <!-- Résultat Quiz -->
+            <div class="quiz-score-banner" id="quiz-score"></div>
+            <div class="quiz-container" id="quiz-box"></div>
         </div>
-        <div id="liste-fiches"></div>
+
     </div>
 
     <script>
+        const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
-        // Détection stricte de la matière (Espagnol, Anglais, Maths, etc.)
+        // Récupération de la matière passée dans l'adresse URL
         const params = new URLSearchParams(window.location.search);
-        const matiereActuelle = params.get("matiere") || "Général";
-        const cleStockage = "fiches_" + matiereActuelle;
+        let matiereActuelle = params.get("matiere") || "Maths";
 
-        document.getElementById("titre-matiere").textContent = "Matière : " + matiereActuelle;
-        document.getElementById("saved-title").textContent = "📚 Leçons enregistrées en " + matiereActuelle;
-        document.getElementById("label-save-matiere").textContent = matiereActuelle;
+        function initialiserPage() {
+            document.getElementById("label-matiere").textContent = matiereActuelle;
+            
+            // Met en surbrillance le bouton de la matière active
+            document.querySelectorAll(".matiere-chip").forEach(chip => {
+                if (chip.textContent.includes(matiereActuelle)) {
+                    chip.classList.add("active");
+                } else {
+                    chip.classList.remove("active");
+                }
+            });
 
-        let base64Image = null;
-        let mimeTypeImage = null;
-        let dernierTexteFiche = "";
-
-        // Afficher ou cacher la zone des leçons
-        function toggleAffichageLecons() {
-            const section = document.getElementById("section-lecons");
-            if (section.style.display === "block") {
-                section.style.display = "none";
-            } else {
-                section.style.display = "block";
-                section.scrollIntoView({ behavior: "smooth" });
-            }
+            chargerLecons();
         }
 
-        // Aperçu de la photo
-        function afficherApercu(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        function changerMatiere(nom) {
+            matiereActuelle = nom;
+            document.getElementById("label-matiere").textContent = nom;
+            
+            document.querySelectorAll(".matiere-chip").forEach(chip => {
+                if (chip.textContent.includes(nom)) {
+                    chip.classList.add("active");
+                } else {
+                    chip.classList.remove("active");
+                }
+            });
 
-            mimeTypeImage = file.type;
-            const reader = new FileReader();
+            // Réinitialise les affichages
+            document.getElementById("exercice-result").style.display = "none";
+            document.getElementById("quiz-box").style.display = "none";
+            document.getElementById("quiz-score").style.display = "none";
+            document.getElementById("sujet-input").value = "";
 
-            reader.onload = function(e) {
-                const img = document.getElementById("image-preview");
-                img.src = e.target.result;
-                img.style.display = "block";
-                document.getElementById("label-upload").style.display = "none";
-                base64Image = e.target.result.split(",")[1];
-            };
-
-            reader.readAsDataURL(file);
+            chargerLecons();
         }
 
-        // Création de la fiche par l'IA
-        async function genererFiche() {
-            const texteSaisi = document.getElementById("cours-texte").value.trim();
-            if (!base64Image && texteSaisi === "") {
-                alert("Ajoute une photo ou écris du texte de cours !");
-                return;
-            }
-
-            const resDiv = document.getElementById("fiche-resultat");
-            const btnGen = document.getElementById("btn-generer");
-            const btnSave = document.getElementById("btn-save");
-
-            btnGen.disabled = true;
-            btnSave.style.display = "none";
-            resDiv.textContent = "⏳ L'IA analyse ton cours et génère la fiche...";
-            document.getElementById("save-confirmation").textContent = "";
+        // =======================================================
+        // 📚 CHARGEMENT DES LEÇONS FIREBASE
+        // =======================================================
+        async function chargerLecons() {
+            const conteneur = document.getElementById("lecons-conteneur");
+            conteneur.innerHTML = `<p style="color:#a4b0be; font-size:13px;">Chargement...</p>`;
 
             try {
-                const prompt = `Tu es un professeur tuteur expert en : ${matiereActuelle}.
-À partir du document fourni (photo ou notes), génère une fiche de révision complète et facile à mémoriser :
-1. Titre clair du cours
-2. Notions essentielles & vocabulaire ou règles clés
-3. Points indispensables à retenir par cœur
-4. 3 questions / réponses rapides pour réviser.
-Notes supplémentaires : ${texteSaisi}`;
+                const res = await fetch(`${FIREBASE_URL}/lecons.json`);
+                const data = await res.json();
 
-                let parts = [{ text: prompt }];
-
-                if (base64Image) {
-                    parts.push({
-                        inline_data: {
-                            mime_type: mimeTypeImage || "image/jpeg",
-                            data: base64Image
-                        }
-                    });
+                if (!data) {
+                    conteneur.innerHTML = `<p style="color:#a4b0be; font-size:13px;">Aucune fiche publiée pour l'instant. Utilise l'IA ci-dessous pour t'entraîner !</p>`;
+                    return;
                 }
 
-                const response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-goog-api-key": CLE_API
-                    },
-                    body: JSON.stringify({ contents: [{ parts: parts }] })
+                // Filtrer les leçons de la matière actuelle
+                const lecons = Object.values(data).filter(l => l.matiere.toLowerCase() === matiereActuelle.toLowerCase());
+
+                if (lecons.length === 0) {
+                    conteneur.innerHTML = `<p style="color:#a4b0be; font-size:13px;">Aucune fiche enregistrée en ${matiereActuelle}. Entre un sujet ci-dessous pour que l'IA t'entraîne !</p>`;
+                    return;
+                }
+
+                conteneur.innerHTML = "";
+                lecons.forEach(l => {
+                    const div = document.createElement("div");
+                    div.className = "lecon-item";
+                    div.innerHTML = `
+                        <h4>📌 ${l.titre}</h4>
+                        <p>${l.contenu}</p>
+                    `;
+                    // Clic pour pré-remplir le champ de l'IA avec le titre de la leçon !
+                    div.onclick = () => {
+                        document.getElementById("sujet-input").value = l.titre;
+                        document.getElementById("sujet-input").focus();
+                    };
+                    conteneur.appendChild(div);
                 });
 
-                const data = await response.json();
+            } catch (e) {
+                conteneur.innerHTML = `<p style="color:#ee5253; font-size:13px;">Erreur de connexion aux fiches.</p>`;
+            }
+        }
 
-                if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
-                    dernierTexteFiche = data.candidates[0].content.parts[0].text;
-                    resDiv.textContent = dernierTexteFiche;
-                    btnSave.style.display = "block";
-                } else if (data.error) {
-                    resDiv.textContent = "Erreur : " + data.error.message;
+        // =======================================================
+        // 📝 GÉNÉRATION D'EXERCICE AVEC CORRIGÉ
+        // =======================================================
+        async function genererExerciceIA() {
+            const sujet = document.getElementById("sujet-input").value.trim() || matiereActuelle;
+            const output = document.getElementById("exercice-result");
+            const btnExo = document.getElementById("btn-gen-exo");
+            const btnQuiz = document.getElementById("btn-gen-quiz");
+
+            document.getElementById("quiz-box").style.display = "none";
+            document.getElementById("quiz-score").style.display = "none";
+
+            btnExo.disabled = true;
+            btnQuiz.disabled = true;
+            output.style.display = "block";
+            output.innerHTML = `⏳ <em>L'IA conçoit un exercice d'entraînement sur "${sujet}"...</em>`;
+
+            const prompt = `Tu es un professeur de collège/lycée en ${matiereActuelle}.
+Crée un exercice d'entraînement clair et bien formulé sur le thème suivant : "${sujet}".
+Format de réponse obligatoire :
+1. Titre de l'exercice
+2. Énoncé et consignes (questions claires et numérotées)
+3. Un indice pour aider l'élève
+4. ===CORRIGE===
+5. La correction détaillée étape par étape avec le résultat final.`;
+
+            try {
+                const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "x-goog-api-key": CLE_API },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                const data = await res.json();
+                const texte = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (texte) {
+                    const parties = texte.split("===CORRIGE===");
+                    const enonce = parties[0];
+                    const corrige = parties[1] || "Correction non disponible.";
+
+                    output.innerHTML = `
+                        <div style="color: #00d2d3; font-weight: bold; margin-bottom: 8px;">🎯 Exercice d'entraînement :</div>
+                        <div>${enonce}</div>
+                        <button class="toggle-corrige-btn" onclick="toggleCorrige()">👁️ Afficher / Masquer la correction</button>
+                        <div id="bloc-corrige" style="display:none; margin-top:12px; padding:12px; background-color:#26273b; border-left:3px solid #1dd1a1; border-radius:6px; color:#1dd1a1;">
+                            <strong>✅ Corrigé détaillé :</strong><br>${corrige}
+                        </div>
+                    `;
                 } else {
-                    resDiv.textContent = "Impossible de lire le document.";
+                    output.textContent = "Désolé, impossible de créer l'exercice pour le moment.";
                 }
             } catch (err) {
-                resDiv.textContent = "Erreur de connexion. Vérifie ton réseau internet.";
-            } finally {
-                btnGen.disabled = false;
+                output.textContent = "Erreur de connexion avec l'IA.";
+            }
+
+            btnExo.disabled = false;
+            btnQuiz.disabled = false;
+        }
+
+        function toggleCorrige() {
+            const bloc = document.getElementById("bloc-corrige");
+            bloc.style.display = (bloc.style.display === "block") ? "none" : "block";
+        }
+
+        // =======================================================
+        // 🎯 GÉNÉRATION DE QUIZ INTERACTIF (QCM)
+        // =======================================================
+        let scoreQuiz = 0;
+        let questionsRepondues = 0;
+        let totalQuestions = 0;
+
+        async function genererQuizIA() {
+            const sujet = document.getElementById("sujet-input").value.trim() || matiereActuelle;
+            const quizBox = document.getElementById("quiz-box");
+            const scoreBox = document.getElementById("quiz-score");
+            const btnExo = document.getElementById("btn-gen-exo");
+            const btnQuiz = document.getElementById("btn-gen-quiz");
+
+            document.getElementById("exercice-result").style.display = "none";
+            scoreBox.style.display = "none";
+
+            btnExo.disabled = true;
+            btnQuiz.disabled = true;
+            quizBox.style.display = "flex";
+            quizBox.innerHTML = `<p style="color:#a4b0be; text-align:center;">⏳ <em>Génération d'un quiz interactif sur "${sujet}"...</em></p>`;
+
+            const prompt = `Tu es un professeur en ${matiereActuelle}. Génère un quiz de 3 questions à choix multiples (QCM) sur le sujet : "${sujet}".
+Réponds STRICTEMENT sous forme d'un tableau JSON valide, sans balises markdown de code, sans texte avant ni après.
+Exemple de format attendu :
+[
+  {
+    "question": "Quel est le carré de 5 ?",
+    "options": ["10", "25", "20", "15"],
+    "correctIndex": 1,
+    "explication": "5 x 5 = 25."
+  }
+]`;
+
+            try {
+                const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "x-goog-api-key": CLE_API },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+
+                const data = await res.json();
+                let texte = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+                // Nettoyage des balises JSON si Gemini les ajoute
+                texte = texte.replace(/```json/g, "").replace(/```/g, "").trim();
+
+                const questions = JSON.parse(texte);
+                totalQuestions = questions.length;
+                scoreQuiz = 0;
+                questionsRepondues = 0;
+
+                quizBox.innerHTML = "";
+                questions.forEach((q, indexQ) => {
+                    const card = document.createElement("div");
+                    card.className = "quiz-card";
+                    card.innerHTML = `
+                        <div class="quiz-question">Question ${indexQ + 1} : ${q.question}</div>
+                        <div class="quiz-options" id="options-q-${indexQ}"></div>
+                        <div id="expl-q-${indexQ}" style="display:none; margin-top:10px; font-size:12px; color:#c8d6e5;"></div>
+                    `;
+
+                    const optionsDiv = card.querySelector(`#options-q-${indexQ}`);
+                    q.options.forEach((opt, indexOpt) => {
+                        const btnOpt = document.createElement("button");
+                        btnOpt.className = "quiz-option";
+                        btnOpt.textContent = opt;
+                        btnOpt.onclick = () => validerReponseQuiz(indexQ, indexOpt, q.correctIndex, q.explication);
+                        optionsDiv.appendChild(btnOpt);
+                    });
+
+                    quizBox.appendChild(card);
+                });
+
+            } catch (err) {
+                quizBox.innerHTML = `<p style="color:#ee5253; text-align:center;">Erreur lors de la création du quiz. Réessaie avec un autre terme !</p>`;
+            }
+
+            btnExo.disabled = false;
+            btnQuiz.disabled = false;
+        }
+
+        function validerReponseQuiz(indexQ, optionChoisie, bonneOption, explication) {
+            const optionsDiv = document.getElementById(`options-q-${indexQ}`);
+            const boutons = optionsDiv.querySelectorAll(".quiz-option");
+            const explDiv = document.getElementById(`expl-q-${indexQ}`);
+
+            // Désactive les boutons de cette question pour éviter de recliquer
+            boutons.forEach(b => b.disabled = true);
+
+            if (optionChoisie === bonneOption) {
+                boutons[optionChoisie].classList.add("correct");
+                scoreQuiz++;
+            } else {
+                boutons[optionChoisie].classList.add("wrong");
+                boutons[bonneOption].classList.add("correct");
+            }
+
+            explDiv.innerHTML = `💡 <em>${explication}</em>`;
+            explDiv.style.display = "block";
+
+            questionsRepondues++;
+
+            // Si toutes les questions ont été répondues, afficher le score final
+            if (questionsRepondues === totalQuestions) {
+                const scoreBox = document.getElementById("quiz-score");
+                scoreBox.innerHTML = `🏆 Résultat final : <strong>${scoreQuiz} / ${totalQuestions}</strong> ${scoreQuiz === totalQuestions ? '🎉 Félicitations, un sans-faute !' : '💪 Continue de t\'entraîner !'}`;
+                scoreBox.style.display = "block";
+                scoreBox.scrollIntoView({ behavior: "smooth" });
             }
         }
 
-        // Enregistrement STRICT dans la matière courante
-        function sauvegarderFiche() {
-            if (!dernierTexteFiche) return;
-
-            const existantes = JSON.parse(localStorage.getItem(cleStockage) || "[]");
-            const date = new Date().toLocaleDateString("fr-FR");
-
-            const premierLigne = dernierTexteFiche.split("\n")[0].replace(/[#*]/g, "").trim();
-            const titre = premierLigne.length > 3 ? premierLigne : ("Leçon du " + date);
-
-            existantes.unshift({
-                titre: titre,
-                date: date,
-                contenu: dernierTexteFiche
-            });
-
-            localStorage.setItem(cleStockage, JSON.stringify(existantes));
-            document.getElementById("save-confirmation").textContent = `✅ Leçon sauvegardée dans ${matiereActuelle} !`;
-            document.getElementById("btn-save").style.display = "none";
-            
-            // Mise à jour du compteur et de la liste
-            mettreAJourCompteurEtListe();
-        }
-
-        // Rafraîchir les données de la matière courante
-        function mettreAJourCompteurEtListe() {
-            const existantes = JSON.parse(localStorage.getItem(cleStockage) || "[]");
-            const box = document.getElementById("liste-fiches");
-            const countBtn = document.getElementById("nb-lecons-btn");
-            const badgeTotal = document.getElementById("badge-total");
-
-            countBtn.textContent = existantes.length;
-            badgeTotal.textContent = existantes.length + (existantes.length > 1 ? " leçons" : " leçon");
-
-            if (existantes.length === 0) {
-                box.innerHTML = `<div class="empty-msg">Aucune leçon enregistrée en ${matiereActuelle}.</div>`;
-                return;
-            }
-
-            box.innerHTML = "";
-            existantes.forEach((fiche, index) => {
-                const item = document.createElement("div");
-                item.className = "fiche-item";
-                item.innerHTML = `
-                    <div class="fiche-item-top">
-                        <div>
-                            <span class="fiche-titre">📌 ${fiche.titre}</span>
-                            <span class="fiche-date">(${fiche.date})</span>
-                        </div>
-                        <button class="delete-btn" onclick="supprimerFiche(${index})">Supprimer</button>
-                    </div>
-                    <div class="fiche-content-saved">${fiche.contenu}</div>
-                `;
-                box.appendChild(item);
-            });
-        }
-
-        function supprimerFiche(index) {
-            let existantes = JSON.parse(localStorage.getItem(cleStockage) || "[]");
-            existantes.splice(index, 1);
-            localStorage.setItem(cleStockage, JSON.stringify(existantes));
-            mettreAJourCompteurEtListe();
-        }
-
-        // Initialiser le compteur sans afficher la liste au démarrage
-        mettreAJourCompteurEtListe();
+        // Lancement au chargement
+        initialiserPage();
     </script>
-
 </body>
 </html>
