@@ -104,6 +104,33 @@
             border-color: #00d2d3;
         }
 
+        /* Conteneur pour aligner l'input mot de passe et l'icône œil */
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-container input {
+            padding-right: 45px; /* Espace pour ne pas cacher le texte sous l'œil */
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #a4b0be;
+            padding: 4px;
+            outline: none;
+        }
+
+        .toggle-password:hover {
+            color: #00d2d3;
+        }
+
         .btn-submit {
             width: 100%;
             background-color: #00d2d3;
@@ -170,7 +197,10 @@
 
                 <div>
                     <label for="password">Mot de passe</label>
-                    <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                    <div class="password-container">
+                        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                        <button type="button" class="toggle-password" id="eye-btn" onclick="basculerAffichageMDP()" title="Afficher/Masquer le mot de passe">👁️</button>
+                    </div>
                 </div>
             </div>
 
@@ -181,10 +211,8 @@
     </div>
 
     <script>
-        // Ta base Firebase centrale en direct
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
 
-        // Redirige si déjà connecté
         if (localStorage.getItem("utilisateur_pseudo")) {
             window.location.href = "accueil.html";
         }
@@ -215,6 +243,20 @@
             }
         }
 
+        // Fonction pour afficher ou masquer le mot de passe avec l'œil
+        function basculerAffichageMDP() {
+            const inputMdp = document.getElementById("password");
+            const boutonŒil = document.getElementById("eye-btn");
+
+            if (inputMdp.type === "password") {
+                inputMdp.type = "text";
+                boutonŒil.textContent = "🙈"; // Change l'icône quand c'est visible
+            } else {
+                inputMdp.type = "password";
+                boutonŒil.textContent = "👁️";
+            }
+        }
+
         async function gererSoumission(event) {
             event.preventDefault();
 
@@ -228,7 +270,6 @@
             msgErreur.textContent = "";
             msgSucces.textContent = "";
 
-            // Vérifications de saisie
             if (pseudo.length < 2) {
                 msgErreur.textContent = "Le pseudo doit comporter au moins 2 caractères.";
                 return;
@@ -249,14 +290,9 @@
             btnAction.textContent = "⏳ Traitement...";
 
             try {
-                // Clé unique propre pour le compte dans Firebase : pseudo en minuscules
                 const pseudoCle = encodeURIComponent(pseudo.toLowerCase());
 
-                // ==========================================
-                // 1. INSCRIPTION DANS FIREBASE
-                // ==========================================
                 if (modeActuel === "inscription") {
-                    // Vérifier si le pseudo existe déjà dans Firebase
                     const checkRes = await fetch(`${FIREBASE_URL}/comptes/${pseudoCle}.json`);
                     const existant = await checkRes.json();
 
@@ -267,7 +303,6 @@
                         return;
                     }
 
-                    // Enregistrer le compte avec mot de passe dans Firebase
                     const saveRes = await fetch(`${FIREBASE_URL}/comptes/${pseudoCle}.json`, {
                         method: "PUT",
                         body: JSON.stringify({
@@ -279,7 +314,7 @@
                     });
 
                     if (saveRes.ok) {
-                        msgSucces.textContent = "Compte créé avec succès dans la base ! Basculement...";
+                        msgSucces.textContent = "Compte créé avec succès ! Basculement...";
                         setTimeout(() => {
                             changerOnglet("connexion");
                             document.getElementById("password").value = "";
@@ -293,11 +328,7 @@
                     return;
                 }
 
-                // ==========================================
-                // 2. CONNEXION AVEC VÉRIFICATION FIREBASE
-                // ==========================================
                 if (modeActuel === "connexion") {
-                    // Récupérer le compte depuis Firebase
                     const res = await fetch(`${FIREBASE_URL}/comptes/${pseudoCle}.json`);
                     const compte = await res.json();
 
@@ -308,7 +339,6 @@
                         return;
                     }
 
-                    // Vérifier l'e-mail et le mot de passe
                     if (compte.email.toLowerCase() !== email || compte.password !== password) {
                         msgErreur.textContent = "Identifiants incorrects (vérifie ton e-mail ou ton mot de passe).";
                         btnAction.disabled = false;
@@ -316,7 +346,6 @@
                         return;
                     }
 
-                    // Connexion validée : on mémorise la session active de cet utilisateur
                     localStorage.setItem("utilisateur_pseudo", compte.pseudo);
                     localStorage.setItem("utilisateur_email", compte.email);
 
@@ -327,7 +356,7 @@
                 }
 
             } catch (err) {
-                msgErreur.textContent = "Erreur de connexion avec le serveur Firebase. Vérifie ta connexion internet.";
+                msgErreur.textContent = "Erreur de connexion avec le serveur Firebase.";
                 btnAction.disabled = false;
                 btnAction.textContent = (modeActuel === "connexion") ? "Se connecter" : "Créer mon compte";
             }
