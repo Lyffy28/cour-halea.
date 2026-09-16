@@ -13,19 +13,15 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
+        body {
             background-color: #1e1e2e;
             color: #ffffff;
+            display: flex;
+            height: 100vh;
             overflow: hidden;
         }
 
-        body {
-            display: flex;
-        }
-
-        /* 1. Colonne gauche */
+        /* 1. Colonne gauche (PC) */
         .sidebar-left {
             width: 90px;
             background-color: #26273b;
@@ -149,6 +145,7 @@
             margin-top: 20px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.5);
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         #chat-ia {
@@ -176,6 +173,7 @@
             text-align: center;
             width: 100%;
             max-width: 320px;
+            flex-shrink: 0;
         }
 
         #admin-panel input {
@@ -216,11 +214,11 @@
             color: #ee5253;
         }
 
-        /* Organisation Messagerie */
+        /* Messagerie */
         .messagerie-body {
             display: flex;
             flex: 1;
-            min-height: 0; /* OBLIGATOIRE pour activer le défilement vertical enfant */
+            min-height: 0;
             overflow: hidden;
         }
 
@@ -275,7 +273,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            min-height: 0; /* OBLIGATOIRE pour activer le défilement */
+            min-height: 0;
             overflow: hidden;
             background-color: #26273b;
         }
@@ -283,13 +281,13 @@
         .chat-messages {
             flex: 1;
             padding: 15px;
-            overflow-y: scroll !important; /* Force la barre tactile */
-            -webkit-overflow-scrolling: touch !important; /* Glissement fluide au doigt sur iPhone/Android */
+            overflow-y: scroll !important;
+            -webkit-overflow-scrolling: touch !important;
             display: flex;
             flex-direction: column;
             gap: 12px;
             min-height: 0;
-            touch-action: pan-y; /* Autorise explicitement le doigt à scroller de haut en bas */
+            touch-action: pan-y;
         }
 
         .msg {
@@ -375,7 +373,7 @@
             font-size: 14px;
         }
 
-        /* Panneau Amis & Demandes */
+        /* Panneau Amis */
         .friends-body {
             padding: 15px;
             overflow-y: auto;
@@ -461,7 +459,7 @@
             font-size: 12px;
         }
 
-        /* 3. Colonne droite */
+        /* 3. Colonne droite (Matières & Profil) */
         .sidebar-right {
             width: 170px;
             background-color: #26273b;
@@ -469,6 +467,7 @@
             display: flex;
             flex-direction: column;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             flex-shrink: 0;
             position: relative;
         }
@@ -621,16 +620,18 @@
             padding-left: 20px;
         }
 
-        /* 📱 CORRECTION COMPLÈTE SUR TÉLÉPHONE */
+        /* 📱 Adaptation Mobile complète */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
-                height: 100dvh; /* Vraie hauteur d'écran mobile */
+                height: 100vh;
+                height: 100dvh;
+                overflow-y: auto;
             }
 
             .sidebar-left {
                 width: 100%;
-                height: 52px;
+                height: 50px;
                 flex-direction: row;
                 border-right: none;
                 border-bottom: 1px solid #3d3f58;
@@ -649,7 +650,7 @@
                 padding: 10px;
                 border-bottom: none;
                 border-right: 1px solid #3d3f58;
-                font-size: 14px;
+                font-size: 13px;
                 flex: 1;
             }
 
@@ -674,31 +675,32 @@
 
             .main-content {
                 order: 2;
-                padding: 10px;
-                flex: 1;
-                height: calc(100dvh - 52px);
-                overflow: hidden;
+                padding: 12px 10px;
+                flex: none;
+                height: auto;
+                min-height: auto;
+                width: 100%;
             }
 
             .search-bar {
                 width: 100%;
-                margin-bottom: 8px;
+                margin-bottom: 10px;
             }
 
-            /* La boîte de chat occupe tout l'espace restant sans déborder */
+            /* Fenêtres pop-up plein écran sur mobile quand elles sont ouvertes */
             .modal-box {
                 position: fixed;
-                top: 52px;
+                top: 50px;
                 left: 0;
                 right: 0;
                 bottom: 0;
                 width: 100%;
                 max-width: 100%;
-                height: calc(100dvh - 52px);
-                max-height: calc(100dvh - 52px);
+                height: calc(100dvh - 50px);
+                max-height: calc(100dvh - 50px);
                 margin: 0;
                 border-radius: 0;
-                z-index: 50;
+                z-index: 99;
             }
 
             .messagerie-body {
@@ -745,13 +747,10 @@
                 flex: 1;
                 min-height: 0;
                 padding: 10px;
-                overflow-y: scroll !important;
-                -webkit-overflow-scrolling: touch !important;
             }
 
             .chat-input-zone {
                 padding: 8px;
-                background-color: #1e1e2e;
             }
 
             .chat-input-zone input {
@@ -759,14 +758,36 @@
                 font-size: 15px;
             }
 
+            /* La colonne des matières réapparaît sous la barre de recherche sur téléphone */
             .sidebar-right {
-                display: none;
+                order: 3;
+                width: 100%;
+                height: auto;
+                border-left: none;
+                border-top: 1px solid #3d3f58;
+                margin-top: 10px;
+            }
+
+            .top-icons {
+                padding: 10px 15px;
+                justify-content: space-between;
+            }
+
+            .right-item {
+                padding: 14px 10px;
+                font-size: 16px;
+            }
+
+            .sub-item {
+                padding: 14px 20px;
+                font-size: 15px;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- Barre Gauche (Haut sur mobile) -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
@@ -782,6 +803,7 @@
         </div>
     </div>
 
+    <!-- Centre -->
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
 
@@ -854,6 +876,7 @@
         </div>
     </div>
 
+    <!-- Barre Droite (Matières & Profil bien visibles sur Mobile) -->
     <div class="sidebar-right">
         <div class="top-icons">
             <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon compte">Moi</div>
@@ -870,6 +893,7 @@
             <button onclick="ouvrirAdmin()">Panel Admin</button>
         </div>
 
+        <!-- Langue -->
         <button class="right-item" onclick="toggleMenu('menu-langues')" style="color: #00d2d3; font-weight: bold;">
             Langue ▾
         </button>
@@ -880,6 +904,7 @@
             <button class="sub-item" onclick="ouvrirMatiere('Latin-Grec')">🏛️ Latin / Grec</button>
         </div>
 
+        <!-- Science -->
         <button class="right-item" onclick="toggleMenu('menu-sciences')" style="color: #ff9f43; font-weight: bold;">
             Science ▾
         </button>
@@ -890,6 +915,7 @@
             <button class="sub-item" onclick="ouvrirMatiere('Technologie')">💻 Technologie</button>
         </div>
 
+        <!-- Culture -->
         <button class="right-item" onclick="toggleMenu('menu-culture')" style="color: #1dd1a1; font-weight: bold;">
             Culture ▾
         </button>
@@ -1085,7 +1111,6 @@
             synchroniserDemandesEtAmis();
             chargerMessagesEnLigne(true);
             
-            // Focus sans faire sauter l'écran sur mobile
             setTimeout(() => {
                 const zone = document.getElementById("group-messages");
                 zone.scrollTop = zone.scrollHeight;
@@ -1107,8 +1132,6 @@
 
                 const cles = Object.keys(data);
                 const nouveauMessageArrive = (cles.length !== dernierNombreMessages);
-
-                // Détecter si l'utilisateur est déjà en train de lire les derniers messages
                 const estProcheDuBas = (conteneur.scrollHeight - conteneur.scrollTop - conteneur.clientHeight) < 150;
 
                 conteneur.innerHTML = "";
@@ -1125,7 +1148,6 @@
 
                 dernierNombreMessages = cles.length;
 
-                // Si un message arrive ou qu'on force l'affichage, descendre tout en bas
                 if (forcerScroll || (nouveauMessageArrive && estProcheDuBas)) {
                     requestAnimationFrame(() => {
                         conteneur.scrollTop = conteneur.scrollHeight;
@@ -1216,7 +1238,9 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // MENUS & ADMIN
+        // =======================================================
+        // 📚 MENUS MATIERES & ADMIN
+        // =======================================================
         function toggleMenu(idMenu) {
             const menu = document.getElementById(idMenu);
             const estOuvert = (menu.style.display === "block");
@@ -1252,7 +1276,7 @@
             }
         }
 
-        // Synchronisation en temps réel
+        // Synchronisation continue
         synchroniserDemandesEtAmis();
         setInterval(synchroniserDemandesEtAmis, 2500);
         setInterval(() => {
