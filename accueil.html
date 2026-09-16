@@ -9,13 +9,18 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* Thème ardoise & texture cahier quadrillé */
         body {
-            background-color: #1e1e2e;
-            color: #ffffff;
+            background-color: #0b1120;
+            background-image: 
+                linear-gradient(to right, rgba(51, 65, 85, 0.25) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(51, 65, 85, 0.25) 1px, transparent 1px);
+            background-size: 26px 26px;
+            color: #f1f5f9;
             display: flex;
             height: 100vh;
             overflow: hidden;
@@ -23,24 +28,25 @@
 
         .admin-banner {
             display: none;
-            background-color: #ff9f43;
-            color: #1e1e2e;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            color: #0b1120;
             font-weight: bold;
             text-align: center;
-            padding: 8px 15px;
+            padding: 9px 15px;
             font-size: 13px;
             width: 100%;
             position: absolute;
             top: 0;
             left: 0;
             z-index: 1000;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
         }
 
-        /* 1. Colonne gauche */
+        /* 1. Colonne gauche (Style classeur relié) */
         .sidebar-left {
             width: 90px;
-            background-color: #26273b;
-            border-right: 1px solid #3d3f58;
+            background-color: #0f172a;
+            border-right: 2px solid #1e293b;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -51,22 +57,24 @@
         .left-btn {
             background: none;
             border: none;
-            border-bottom: 1px solid #3d3f58;
-            color: #c8d6e5;
-            padding: 20px 5px;
+            border-bottom: 1px solid #1e293b;
+            color: #94a3b8;
+            padding: 22px 5px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             cursor: pointer;
             text-align: center;
             writing-mode: vertical-rl;
             transform: rotate(180deg);
             width: 100%;
-            transition: 0.2s;
+            transition: all 0.2s ease;
         }
 
         .left-btn:hover {
-            background-color: #343650;
-            color: #00d2d3;
+            background-color: #1e293b;
+            color: #38bdf8;
+            box-shadow: inset 3px 0 0 #38bdf8;
         }
 
         .bottom-left-group {
@@ -77,10 +85,10 @@
         .add-friend-btn {
             background: none;
             border: none;
-            border-top: 1px solid #3d3f58;
-            color: #1dd1a1;
+            border-top: 1px solid #1e293b;
+            color: #10b981;
             padding: 16px 0;
-            font-size: 26px;
+            font-size: 24px;
             cursor: pointer;
             text-align: center;
             width: 100%;
@@ -89,8 +97,8 @@
         }
 
         .add-friend-btn:hover {
-            background-color: #343650;
-            color: #10ac84;
+            background-color: #1e293b;
+            color: #34d399;
         }
 
         .notif-badge {
@@ -98,24 +106,31 @@
             position: absolute;
             top: 6px;
             right: 14px;
-            background-color: #ee5253;
+            background-color: #ef4444;
             color: white;
             font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 10px;
+            padding: 2px 7px;
+            border-radius: 9999px;
             font-weight: bold;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
         }
 
         .settings-btn {
             background: none;
             border: none;
-            border-top: 1px solid #3d3f58;
-            color: #c8d6e5;
+            border-top: 1px solid #1e293b;
+            color: #94a3b8;
             padding: 16px 0;
             font-size: 20px;
             cursor: pointer;
             text-align: center;
             width: 100%;
+            transition: 0.2s;
+        }
+
+        .settings-btn:hover {
+            color: #f1f5f9;
+            background-color: #1e293b;
         }
 
         /* 2. Centre */
@@ -124,7 +139,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
+            padding: 24px 20px;
             position: relative;
             height: 100%;
             overflow-y: auto;
@@ -133,69 +148,77 @@
 
         .search-bar {
             width: 100%;
-            max-width: 550px;
-            padding: 14px 20px;
+            max-width: 580px;
+            padding: 14px 22px;
             font-size: 15px;
-            border-radius: 25px;
-            border: 1px solid #484b6a;
-            background-color: #2b2c40;
-            color: #ffffff;
+            border-radius: 9999px;
+            border: 1px solid #334155;
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            color: #f8fafc;
             outline: none;
             flex-shrink: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         .search-bar:focus {
-            border-color: #00d2d3;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
         }
 
         #search-results-box {
             display: none;
             width: 100%;
-            max-width: 550px;
-            background-color: #26273b;
-            border: 1px solid #00d2d3;
-            border-radius: 10px;
+            max-width: 580px;
+            background-color: #0f172a;
+            border: 1px solid #06b6d4;
+            border-radius: 12px;
             margin-top: 10px;
             padding: 12px;
             max-height: 250px;
             overflow-y: auto;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
             flex-shrink: 0;
         }
 
         .search-result-item {
-            padding: 8px 10px;
-            border-bottom: 1px solid #3d3f58;
+            padding: 10px 12px;
+            border-bottom: 1px solid #1e293b;
             cursor: pointer;
             font-size: 13px;
+            border-radius: 6px;
+            transition: 0.15s;
         }
 
         .search-result-item:hover {
-            background-color: #343650;
-            color: #00d2d3;
+            background-color: #1e293b;
+            color: #38bdf8;
+            padding-left: 16px;
         }
 
         /* Matières sur mobile */
         .mobile-subjects {
             display: none;
             width: 100%;
-            max-width: 550px;
+            max-width: 580px;
             margin-top: 20px;
             flex-direction: column;
             gap: 15px;
         }
 
         .subject-card {
-            background-color: #26273b;
-            border: 1px solid #3d3f58;
-            border-radius: 12px;
+            background-color: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 14px;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .subject-card-header {
             padding: 16px 20px;
-            font-size: 16px;
-            font-weight: bold;
+            font-size: 15px;
+            font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -205,9 +228,9 @@
 
         .subject-card-content {
             display: none;
-            background-color: #1e1e2e;
-            border-top: 1px solid #3d3f58;
-            padding: 8px 0;
+            background-color: #0b1120;
+            border-top: 1px solid #1e293b;
+            padding: 6px 0;
         }
 
         .mobile-sub-btn {
@@ -215,8 +238,8 @@
             padding: 12px 20px;
             background: none;
             border: none;
-            border-bottom: 1px solid #2d2f44;
-            color: #c8d6e5;
+            border-bottom: 1px solid #1e293b;
+            color: #cbd5e1;
             font-size: 14px;
             text-align: left;
             cursor: pointer;
@@ -229,37 +252,38 @@
             border-bottom: none;
         }
 
-        /* Modales */
+        /* Fenêtres Modales */
         .modal-box {
             display: none;
             flex-direction: column;
             width: 100%;
-            max-width: 700px;
-            height: 520px;
-            background-color: #26273b;
-            border-radius: 12px;
+            max-width: 720px;
+            height: 540px;
+            background-color: #0f172a;
+            border-radius: 16px;
             margin-top: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
             overflow: hidden;
             flex-shrink: 0;
         }
 
-        #chat-ia { border: 1px solid #00d2d3; }
-        #chat-entraide { border: 1px solid #ff9f43; }
-        #friends-panel { border: 1px solid #1dd1a1; height: auto; max-height: 520px; padding-bottom: 15px; }
-        #devoirs-panel { border: 1px solid #feca57; }
+        #chat-ia { border: 1px solid #06b6d4; }
+        #chat-entraide { border: 1px solid #f59e0b; }
+        #friends-panel { border: 1px solid #10b981; height: auto; max-height: 520px; padding-bottom: 15px; }
+        #devoirs-panel { border: 1px solid #eab308; }
 
         #admin-panel {
             display: none;
-            background-color: #2b2c40;
+            background-color: #0f172a;
             margin-top: 25px;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #ff9f43;
+            padding: 24px;
+            border-radius: 14px;
+            border: 1px solid #f59e0b;
             text-align: center;
             width: 100%;
             max-width: 320px;
             flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         #admin-panel input {
@@ -267,9 +291,9 @@
             font-size: 18px;
             width: 130px;
             text-align: center;
-            border-radius: 6px;
-            border: 1px solid #484b6a;
-            background-color: #1e1e2e;
+            border-radius: 8px;
+            border: 1px solid #334155;
+            background-color: #0b1120;
             color: #ffffff;
             letter-spacing: 4px;
             margin: 15px 0;
@@ -278,8 +302,8 @@
 
         .btn-access-admin {
             display: none;
-            background-color: #1dd1a1;
-            color: #1e1e2e;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
             border: none;
             padding: 12px 18px;
             border-radius: 8px;
@@ -289,57 +313,59 @@
             margin-top: 15px;
             width: 100%;
             transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
 
         .chat-header {
-            background-color: #1e1e2e;
-            padding: 12px 16px;
-            font-weight: bold;
+            background-color: #0b1120;
+            padding: 14px 18px;
+            font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #3d3f58;
+            border-bottom: 1px solid #1e293b;
             flex-shrink: 0;
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: #a4b0be;
-            font-size: 24px;
+            color: #64748b;
+            font-size: 22px;
             cursor: pointer;
             padding: 0 6px;
+            transition: 0.2s;
         }
 
-        .close-btn:hover { color: #ee5253; }
+        .close-btn:hover { color: #ef4444; }
 
-        /* Agenda Tabs & Design */
+        /* Agenda / Onglets */
         .agenda-tabs {
             display: flex;
-            background-color: #1e1e2e;
-            border-bottom: 1px solid #3d3f58;
+            background-color: #0b1120;
+            border-bottom: 1px solid #1e293b;
         }
 
         .agenda-tab-btn {
             flex: 1;
-            padding: 12px;
+            padding: 13px;
             border: none;
             background: none;
-            color: #a4b0be;
+            color: #64748b;
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
         }
 
         .agenda-tab-btn.active {
-            color: #feca57;
-            border-bottom: 2px solid #feca57;
-            background-color: #26273b;
+            color: #eab308;
+            border-bottom: 2px solid #eab308;
+            background-color: #0f172a;
         }
 
         .devoirs-body {
-            padding: 15px;
+            padding: 16px;
             overflow-y: auto;
             flex: 1;
             display: flex;
@@ -351,59 +377,61 @@
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            padding: 10px;
-            background-color: #1e1e2e;
-            border: 1px solid #3d3f58;
-            border-radius: 8px;
+            padding: 12px;
+            background-color: #0b1120;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
             margin-bottom: 8px;
         }
 
         .ajout-perso-box input {
-            background-color: #26273b;
-            border: 1px solid #484b6a;
+            background-color: #0f172a;
+            border: 1px solid #334155;
             color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 9px 14px;
+            border-radius: 8px;
             font-size: 13px;
             outline: none;
         }
 
         .devoir-item {
-            background-color: #1e1e2e;
-            border: 1px solid #3d3f58;
-            border-left: 4px solid #feca57;
-            padding: 12px;
-            border-radius: 8px;
+            background-color: #0b1120;
+            border: 1px solid #1e293b;
+            border-left: 4px solid #eab308;
+            padding: 12px 14px;
+            border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .devoir-item.perso {
-            border-left-color: #1dd1a1;
+            border-left-color: #10b981;
         }
 
         .devoir-matiere {
             font-size: 11px;
             text-transform: uppercase;
-            color: #feca57;
-            font-weight: bold;
+            color: #eab308;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .devoir-matiere.perso {
-            color: #1dd1a1;
+            color: #10b981;
         }
 
         .devoir-titre {
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 600;
             margin-top: 2px;
+            color: #f8fafc;
         }
 
         .devoir-date {
             font-size: 12px;
-            color: #ee5253;
-            font-weight: bold;
+            color: #f87171;
+            font-weight: 600;
             margin-top: 4px;
         }
 
@@ -417,8 +445,8 @@
 
         .contacts-panel {
             width: 190px;
-            background-color: #1e1e2e;
-            border-right: 1px solid #3d3f58;
+            background-color: #0b1120;
+            border-right: 1px solid #1e293b;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -429,37 +457,39 @@
         .contacts-panel-title {
             font-size: 11px;
             text-transform: uppercase;
-            color: #ff9f43;
-            font-weight: bold;
-            padding: 10px;
-            border-bottom: 1px solid #3d3f58;
+            color: #f59e0b;
+            font-weight: 700;
+            padding: 12px 10px;
+            border-bottom: 1px solid #1e293b;
+            letter-spacing: 0.5px;
         }
 
         .contacts-list { list-style: none; }
 
         .contact-item {
-            padding: 12px 10px;
+            padding: 12px 12px;
             font-size: 13px;
-            border-bottom: 1px solid #2b2c40;
+            border-bottom: 1px solid #1e293b;
             display: flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.15s;
         }
 
         .contact-item:hover, .contact-item.active {
-            background-color: #2b2c40;
-            color: #00d2d3;
-            border-left: 3px solid #00d2d3;
+            background-color: #1e293b;
+            color: #38bdf8;
+            border-left: 3px solid #38bdf8;
         }
 
         .contact-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background-color: #1dd1a1;
+            background-color: #10b981;
             flex-shrink: 0;
+            box-shadow: 0 0 6px #10b981;
         }
 
         .discussion-zone {
@@ -468,12 +498,12 @@
             flex-direction: column;
             min-height: 0;
             overflow: hidden;
-            background-color: #26273b;
+            background-color: #0f172a;
         }
 
         .chat-messages {
             flex: 1;
-            padding: 15px;
+            padding: 16px;
             overflow-y: scroll !important;
             -webkit-overflow-scrolling: touch !important;
             display: flex;
@@ -484,64 +514,110 @@
         }
 
         .msg {
-            max-width: 85%;
-            padding: 10px 14px;
-            border-radius: 12px;
+            max-width: 82%;
+            padding: 11px 15px;
+            border-radius: 14px;
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.45;
             white-space: pre-wrap;
             word-break: break-word;
             flex-shrink: 0;
         }
 
-        .msg-ia { background-color: #343650; align-self: flex-start; border-bottom-left-radius: 2px; color: #ffffff; }
-        .msg-user { background-color: #00d2d3; color: #1e1e2e; font-weight: 500; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .msg-group-other { background-color: #343650; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .msg-group-me { background-color: #ff9f43; color: #1e1e2e; font-weight: 500; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .msg-ia {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+            color: #f1f5f9;
+        }
 
-        .msg-author { font-size: 11px; font-weight: bold; margin-bottom: 3px; opacity: 0.85; }
-        .msg-time { font-size: 10px; margin-left: 6px; opacity: 0.7; }
+        .msg-user {
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            color: #ffffff;
+            font-weight: 500;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+
+        .msg-group-other {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+            color: #f1f5f9;
+        }
+
+        .msg-group-me {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #0f172a;
+            font-weight: 600;
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+
+        .msg-author {
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 3px;
+            opacity: 0.9;
+        }
+
+        .msg-time {
+            font-size: 10px;
+            margin-left: 6px;
+            opacity: 0.75;
+        }
 
         .chat-input-zone {
             display: flex;
-            border-top: 1px solid #3d3f58;
-            background-color: #1e1e2e;
-            padding: 10px;
-            gap: 8px;
+            border-top: 1px solid #1e293b;
+            background-color: #0b1120;
+            padding: 12px;
+            gap: 10px;
             flex-shrink: 0;
         }
 
         .chat-input-zone input {
             flex: 1;
-            background-color: #26273b;
-            border: 1px solid #3d3f58;
-            padding: 12px 16px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            padding: 12px 18px;
             color: #ffffff;
-            border-radius: 20px;
+            border-radius: 9999px;
             outline: none;
-            font-size: 15px;
+            font-size: 14px;
             min-width: 0;
         }
 
+        .chat-input-zone input:focus {
+            border-color: #38bdf8;
+        }
+
         .chat-input-zone input:disabled {
-            background-color: #1e1e2e;
+            background-color: #0b1120;
             cursor: not-allowed;
-            color: #718093;
+            color: #475569;
         }
 
         .btn-send {
             border: none;
             font-weight: bold;
-            padding: 10px 18px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 9999px;
             cursor: pointer;
             flex-shrink: 0;
-            font-size: 14px;
+            font-size: 13px;
+            transition: 0.15s;
+        }
+
+        .btn-send:hover:not(:disabled) {
+            transform: scale(1.03);
         }
 
         /* Panneau Amis */
         .friends-body {
-            padding: 15px;
+            padding: 16px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             max-height: 420px;
@@ -550,9 +626,9 @@
         .friends-input-zone { display: flex; gap: 10px; margin-bottom: 15px; }
         .friends-input-zone input {
             flex: 1;
-            background-color: #1e1e2e;
-            border: 1px solid #484b6a;
-            padding: 10px;
+            background-color: #0b1120;
+            border: 1px solid #334155;
+            padding: 10px 14px;
             border-radius: 8px;
             color: #ffffff;
             outline: none;
@@ -560,23 +636,25 @@
         }
 
         .btn-add-submit {
-            background-color: #1dd1a1;
-            color: #1e1e2e;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
             border: none;
             font-weight: bold;
-            padding: 10px 15px;
+            padding: 10px 16px;
             border-radius: 8px;
             cursor: pointer;
             flex-shrink: 0;
         }
 
         .section-subtitle {
-            font-size: 13px;
-            color: #ff9f43;
+            font-size: 12px;
+            color: #f59e0b;
             margin: 15px 0 8px 0;
-            font-weight: bold;
-            border-bottom: 1px solid #3d3f58;
+            font-weight: 700;
+            border-bottom: 1px solid #1e293b;
             padding-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .friends-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
@@ -585,40 +663,40 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #1e1e2e;
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid #3d3f58;
+            background-color: #0b1120;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #1e293b;
             font-size: 13px;
         }
 
         .action-btns { display: flex; gap: 6px; }
         .btn-accept {
-            background-color: #1dd1a1;
-            color: #1e1e2e;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .btn-refuse, .btn-del-friend {
-            background-color: #ee5253;
+            background-color: #10b981;
             color: white;
             border: none;
             padding: 5px 10px;
-            border-radius: 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .btn-refuse, .btn-del-friend {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
         }
 
-        /* 3. Colonne droite */
+        /* 3. Colonne droite (Style classeur relié) */
         .sidebar-right {
-            width: 170px;
-            background-color: #26273b;
-            border-left: 1px solid #3d3f58;
+            width: 175px;
+            background-color: #0f172a;
+            border-left: 2px solid #1e293b;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -632,137 +710,148 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 12px 5px;
-            border-bottom: 1px solid #3d3f58;
+            padding: 14px 6px;
+            border-bottom: 1px solid #1e293b;
             position: relative;
         }
 
         .profile-badge {
-            background-color: #00d2d3;
-            color: #1e1e2e;
+            background: linear-gradient(135deg, #06b6d4, #0284c7);
+            color: #ffffff;
             border-radius: 50%;
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             font-size: 13px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: transform 0.2s;
             user-select: none;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+        }
+
+        .profile-badge:hover {
+            transform: scale(1.05);
         }
 
         .profile-menu {
             display: none;
             position: absolute;
-            top: 60px;
+            top: 65px;
             left: 10px;
             right: 10px;
-            background-color: #1e1e2e;
-            border: 1px solid #00d2d3;
-            border-radius: 8px;
-            padding: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            background-color: #0b1120;
+            border: 1px solid #06b6d4;
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             z-index: 100;
             text-align: center;
         }
 
-        .profile-menu .info-name { font-size: 14px; font-weight: bold; color: #00d2d3; word-break: break-word; }
-        .profile-menu .info-email { font-size: 11px; color: #a4b0be; margin-top: 4px; margin-bottom: 12px; word-break: break-word; }
+        .profile-menu .info-name { font-size: 14px; font-weight: bold; color: #38bdf8; word-break: break-word; }
+        .profile-menu .info-email { font-size: 11px; color: #64748b; margin-top: 4px; margin-bottom: 12px; word-break: break-word; }
         .btn-logout {
-            background-color: #ee5253;
+            background-color: #ef4444;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             padding: 8px;
             font-size: 13px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             width: 100%;
         }
 
-        .hamburger-btn { background: none; border: none; color: #ffffff; font-size: 24px; cursor: pointer; }
+        .hamburger-btn { background: none; border: none; color: #cbd5e1; font-size: 22px; cursor: pointer; }
 
         .admin-dropdown {
             display: none;
-            background-color: #1e1e2e;
-            border-bottom: 1px solid #3d3f58;
+            background-color: #0b1120;
+            border-bottom: 1px solid #1e293b;
             padding: 10px;
             text-align: center;
         }
 
         .admin-dropdown button {
-            background-color: #ff9f43;
-            color: #1e1e2e;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #0f172a;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             padding: 8px;
             font-size: 13px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 700;
             width: 100%;
         }
 
         .right-item {
-            padding: 16px 10px;
+            padding: 16px 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid #3d3f58;
-            font-size: 15px;
+            border-bottom: 1px solid #1e293b;
+            font-size: 14px;
             cursor: pointer;
-            color: #c8d6e5;
+            color: #94a3b8;
             background: none;
             border-left: none;
             border-right: none;
             border-top: none;
             width: 100%;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
 
-        .right-item:hover { background-color: #343650; color: #ffffff; }
+        .right-item:hover {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
 
-        .sub-menu { display: none; background-color: #1e1e2e; border-bottom: 1px solid #3d3f58; }
+        .sub-menu { display: none; background-color: #0b1120; border-bottom: 1px solid #1e293b; }
 
         .sub-item {
             display: block;
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px 16px;
             background: none;
             border: none;
-            border-bottom: 1px solid #2d2f44;
-            color: #00d2d3;
-            font-size: 14px;
+            border-bottom: 1px solid #1e293b;
+            color: #38bdf8;
+            font-size: 13px;
             text-align: left;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
 
-        .sub-item:hover { background-color: #2b2c40; padding-left: 20px; }
+        .sub-item:hover {
+            background-color: #1e293b;
+            padding-left: 22px;
+        }
 
         /* Mobile */
         @media (max-width: 768px) {
             body { flex-direction: column; height: 100vh; height: 100dvh; }
-            .sidebar-left { width: 100%; height: 52px; flex-direction: row; border-right: none; border-bottom: 1px solid #3d3f58; order: 1; flex-shrink: 0; }
+            .sidebar-left { width: 100%; height: 54px; flex-direction: row; border-right: none; border-bottom: 2px solid #1e293b; order: 1; flex-shrink: 0; }
             .sidebar-left > div:first-child { display: flex; flex: 1; }
-            .left-btn { writing-mode: horizontal-tb; transform: none; padding: 10px 5px; border-bottom: none; border-right: 1px solid #3d3f58; font-size: 12px; flex: 1; }
+            .left-btn { writing-mode: horizontal-tb; transform: none; padding: 10px 5px; border-bottom: none; border-right: 1px solid #1e293b; font-size: 12px; flex: 1; }
             .bottom-left-group { flex-direction: row; }
-            .add-friend-btn { width: 48px; padding: 8px 0; border-top: none; border-left: 1px solid #3d3f58; font-size: 20px; }
-            .settings-btn { width: 48px; padding: 8px 0; border-top: none; border-left: 1px solid #3d3f58; }
-            .main-content { order: 2; padding: 12px; flex: 1; width: 100%; overflow-y: auto; }
+            .add-friend-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid #1e293b; font-size: 20px; }
+            .settings-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid #1e293b; }
+            .main-content { order: 2; padding: 14px; flex: 1; width: 100%; overflow-y: auto; }
             .mobile-subjects { display: flex; }
             .sidebar-right { display: none; }
-            .modal-box { position: fixed; top: 52px; left: 0; right: 0; bottom: 0; width: 100%; max-width: 100%; height: calc(100dvh - 52px); max-height: calc(100dvh - 52px); margin: 0; border-radius: 0; z-index: 100; }
+            .modal-box { position: fixed; top: 54px; left: 0; right: 0; bottom: 0; width: 100%; max-width: 100%; height: calc(100dvh - 54px); max-height: calc(100dvh - 54px); margin: 0; border-radius: 0; z-index: 100; }
             .messagerie-body { flex-direction: column; }
-            .contacts-panel { width: 100%; height: 44px; max-height: 44px; border-right: none; border-bottom: 1px solid #3d3f58; flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+            .contacts-panel { width: 100%; height: 46px; max-height: 46px; border-right: none; border-bottom: 1px solid #1e293b; flex-direction: row; overflow-x: auto; overflow-y: hidden; }
             .contacts-panel-title { display: none; }
             .contacts-list { display: flex; flex-direction: row; }
-            .contact-item { white-space: nowrap; padding: 6px 12px; border-bottom: none; border-right: 1px solid #2b2c40; font-size: 12px; }
+            .contact-item { white-space: nowrap; padding: 6px 14px; border-bottom: none; border-right: 1px solid #1e293b; font-size: 12px; }
             .discussion-zone { flex: 1; min-height: 0; height: 100%; }
-            .chat-messages { flex: 1; min-height: 0; padding: 10px; }
-            .chat-input-zone { padding: 8px; }
-            .chat-input-zone input { padding: 10px 14px; font-size: 15px; }
+            .chat-messages { flex: 1; min-height: 0; padding: 12px; }
+            .chat-input-zone { padding: 8px 12px; }
+            .chat-input-zone input { padding: 10px 14px; font-size: 14px; }
         }
     </style>
 </head>
@@ -770,11 +859,12 @@
 
     <div id="bandeau-annonce" class="admin-banner"></div>
 
+    <!-- Barre latérale Gauche -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
             <button class="left-btn" onclick="ouvrirChatIA()">🤖 Meta IA</button>
-            <button class="left-btn" onclick="ouvrirDevoirs()" style="color: #feca57;">📅 Agenda</button>
+            <button class="left-btn" onclick="ouvrirDevoirs()" style="color: #eab308;">📅 Agenda</button>
         </div>
         
         <div class="bottom-left-group">
@@ -786,15 +876,16 @@
         </div>
     </div>
 
+    <!-- Centre -->
     <div class="main-content">
-        <input type="text" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher un cours, un devoir, une matière..." oninput="filtrerContenuRecherche()">
+        <input type="text" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher une formule, un cours, un devoir..." oninput="filtrerContenuRecherche()">
         <div id="search-results-box"></div>
 
         <!-- Matières Mobile -->
         <div class="mobile-subjects">
             <div class="subject-card">
-                <div class="subject-card-header" onclick="toggleMobileCard('card-langues')" style="color: #00d2d3;">
-                    <span>🌍 Langue</span>
+                <div class="subject-card-header" onclick="toggleMobileCard('card-langues')" style="color: #38bdf8;">
+                    <span>🌍 Langues vivantes</span>
                     <span>▾</span>
                 </div>
                 <div class="subject-card-content" id="card-langues">
@@ -806,8 +897,8 @@
             </div>
 
             <div class="subject-card">
-                <div class="subject-card-header" onclick="toggleMobileCard('card-sciences')" style="color: #ff9f43;">
-                    <span>📐 Science</span>
+                <div class="subject-card-header" onclick="toggleMobileCard('card-sciences')" style="color: #f59e0b;">
+                    <span>📐 Pôle Scientifique</span>
                     <span>▾</span>
                 </div>
                 <div class="subject-card-content" id="card-sciences">
@@ -819,8 +910,8 @@
             </div>
 
             <div class="subject-card">
-                <div class="subject-card-header" onclick="toggleMobileCard('card-culture')" style="color: #1dd1a1;">
-                    <span>🏛️ Culture</span>
+                <div class="subject-card-header" onclick="toggleMobileCard('card-culture')" style="color: #10b981;">
+                    <span>🏛️ Sciences Humaines & Arts</span>
                     <span>▾</span>
                 </div>
                 <div class="subject-card-content" id="card-culture">
@@ -832,28 +923,27 @@
             </div>
         </div>
 
-        <!-- 📅 MODAL AGENDA (PUBLIC & PERSO) -->
+        <!-- Agenda -->
         <div id="devoirs-panel" class="modal-box">
             <div class="chat-header">
-                <span style="color: #feca57;">📅 Agenda & Devoirs</span>
+                <span style="color: #eab308;">📅 Agenda scolaire</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             
             <div class="agenda-tabs">
                 <button class="agenda-tab-btn active" id="tab-btn-public" onclick="changerOngletAgenda('public')">📢 Devoirs communs (Classe)</button>
-                <button class="agenda-tab-btn" id="tab-btn-perso" onclick="changerOngletAgenda('perso')">🔒 Mes devoirs perso</button>
+                <button class="agenda-tab-btn" id="tab-btn-perso" onclick="changerOngletAgenda('perso')">🔒 Mes tâches perso</button>
             </div>
 
             <div class="devoirs-body">
-                <!-- Zone d'ajout uniquement pour l'agenda perso -->
                 <div id="form-ajout-perso" class="ajout-perso-box" style="display: none;">
-                    <input type="text" id="perso-titre" placeholder="Tâche perso (ex: Réviser Anglais)..." style="flex: 1;">
+                    <input type="text" id="perso-titre" placeholder="Tâche perso (ex: Réviser formule de maths)..." style="flex: 1;">
                     <input type="text" id="perso-date" placeholder="Date (ex: Demain 18h)" style="width: 140px;">
                     <button class="btn-add-submit" onclick="ajouterDevoirPerso()">Ajouter</button>
                 </div>
 
                 <div id="devoirs-liste" style="display: flex; flex-direction: column; gap: 10px;">
-                    <p style="color: #a4b0be; font-size: 13px;">Chargement...</p>
+                    <p style="color: #64748b; font-size: 13px;">Chargement...</p>
                 </div>
             </div>
         </div>
@@ -861,7 +951,7 @@
         <!-- Amis -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
-                <span style="color: #1dd1a1;">👥 Demandes d'amis & Contacts</span>
+                <span style="color: #10b981;">👥 Carnet d'amis & Contacts</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="friends-body">
@@ -870,10 +960,10 @@
                     <button class="btn-add-submit" onclick="envoyerDemandeAmi()">Envoyer</button>
                 </div>
 
-                <div class="section-subtitle">📩 Demandes reçues</div>
+                <div class="section-subtitle">📩 Demandes en attente</div>
                 <ul class="friends-list" id="demandes-list"></ul>
 
-                <div class="section-subtitle">🤝 Mes amis confirmés</div>
+                <div class="section-subtitle">🤝 Amis confirmés</div>
                 <ul class="friends-list" id="friends-list"></ul>
             </div>
         </div>
@@ -881,25 +971,25 @@
         <!-- Messagerie Privée -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
-                <span style="color: #ff9f43;" id="titre-chat-prive">💬 Messagerie Privée</span>
+                <span style="color: #f59e0b;" id="titre-chat-prive">💬 Messagerie Privée</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             
             <div class="messagerie-body">
                 <div class="contacts-panel">
-                    <div class="contacts-panel-title">🔒 Mes amis</div>
+                    <div class="contacts-panel-title">🔒 Contacts</div>
                     <ul class="contacts-list" id="contacts-list"></ul>
                 </div>
 
                 <div class="discussion-zone">
                     <div class="chat-messages" id="group-messages">
-                        <div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
-                            👈 Choisis un ami dans la liste à gauche pour ouvrir votre discussion privée !
+                        <div class="msg msg-group-other" style="text-align: center; color: #64748b;">
+                            👈 Choisis un contact à gauche pour ouvrir votre salon privé !
                         </div>
                     </div>
                     <div class="chat-input-zone">
-                        <input type="text" id="group-input" placeholder="Sélectionne un ami pour écrire..." disabled onkeydown="if(event.key==='Enter') envoyerMessagePrive()">
-                        <button class="btn-send" id="btn-send-msg" style="background-color: #ff9f43; color: #1e1e2e;" disabled onclick="envoyerMessagePrive()">Envoyer</button>
+                        <input type="text" id="group-input" placeholder="Choisis un contact..." disabled onkeydown="if(event.key==='Enter') envoyerMessagePrive()">
+                        <button class="btn-send" id="btn-send-msg" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a;" disabled onclick="envoyerMessagePrive()">Envoyer</button>
                     </div>
                 </div>
             </div>
@@ -908,33 +998,34 @@
         <!-- Meta IA -->
         <div id="chat-ia" class="modal-box">
             <div class="chat-header">
-                <span style="color: #00d2d3;">🤖 Meta IA - Assistant</span>
+                <span style="color: #38bdf8;">🤖 Tuteur Scolaire IA</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="chat-messages" id="chat-messages">
-                <div class="msg msg-ia">Salut ! Je suis ton assistant scolaire. Pose-moi une question sur tes cours !</div>
+                <div class="msg msg-ia">Salut ! Je suis ton tuteur scolaire. Une notion pas claire ? Un exercice à résoudre ? Pose ta question !</div>
             </div>
             <div class="chat-input-zone">
-                <input type="text" id="user-input" placeholder="Pose ta question ici..." onkeydown="if(event.key==='Enter') envoyerMessageIA()">
-                <button class="btn-send" style="background-color: #00d2d3; color: #1e1e2e;" onclick="envoyerMessageIA()">Envoyer</button>
+                <input type="text" id="user-input" placeholder="Pose ta question de cours..." onkeydown="if(event.key==='Enter') envoyerMessageIA()">
+                <button class="btn-send" style="background: linear-gradient(135deg, #06b6d4, #0284c7); color: white;" onclick="envoyerMessageIA()">Envoyer</button>
             </div>
         </div>
 
         <!-- Admin -->
         <div id="admin-panel">
-            <h3>Panel Admin</h3>
-            <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code secret :</p>
+            <h3 style="color: #f59e0b;">Panel Admin</h3>
+            <p style="font-size: 13px; color: #64748b; margin-top: 5px;">Code d'accès :</p>
             <input type="password" id="code-pin" maxlength="4" placeholder="••••">
             <br>
-            <button style="background-color: #ff9f43; color: #1e1e2e; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="validerPin()">Valider</button>
+            <button style="background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a; padding: 10px 22px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;" onclick="validerPin()">Valider</button>
             <p id="message-pin" style="margin-top: 12px; font-weight: bold; font-size: 14px;"></p>
             <button id="btn-admin-secret" class="btn-access-admin" onclick="allerVersAdmin()">👑 Ouvrir Panel Admin</button>
         </div>
     </div>
 
+    <!-- Barre latérale Droite -->
     <div class="sidebar-right">
         <div class="top-icons">
-            <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon compte">Moi</div>
+            <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon profil">Moi</div>
             <button class="hamburger-btn" onclick="toggleMenuAdmin()">☰</button>
         </div>
 
@@ -948,7 +1039,7 @@
             <button onclick="ouvrirAdmin()">Panel Admin</button>
         </div>
 
-        <button class="right-item" onclick="toggleMenu('menu-langues')" style="color: #00d2d3; font-weight: bold;">Langue ▾</button>
+        <button class="right-item" onclick="toggleMenu('menu-langues')" style="color: #38bdf8; font-weight: 700;">Langues ▾</button>
         <div class="sub-menu" id="menu-langues">
             <button class="sub-item" onclick="ouvrirMatiere('Anglais')">🇬🇧 Anglais</button>
             <button class="sub-item" onclick="ouvrirMatiere('Espagnol')">🇪🇸 Espagnol</button>
@@ -956,7 +1047,7 @@
             <button class="sub-item" onclick="ouvrirMatiere('Latin-Grec')">🏛️ Latin / Grec</button>
         </div>
 
-        <button class="right-item" onclick="toggleMenu('menu-sciences')" style="color: #ff9f43; font-weight: bold;">Science ▾</button>
+        <button class="right-item" onclick="toggleMenu('menu-sciences')" style="color: #f59e0b; font-weight: 700;">Sciences ▾</button>
         <div class="sub-menu" id="menu-sciences">
             <button class="sub-item" onclick="ouvrirMatiere('Maths')">📐 Maths</button>
             <button class="sub-item" onclick="ouvrirMatiere('Physique-Chimie')">🧪 Physique-Chimie</button>
@@ -964,12 +1055,12 @@
             <button class="sub-item" onclick="ouvrirMatiere('Technologie')">💻 Technologie</button>
         </div>
 
-        <button class="right-item" onclick="toggleMenu('menu-culture')" style="color: #1dd1a1; font-weight: bold;">Culture ▾</button>
+        <button class="right-item" onclick="toggleMenu('menu-culture')" style="color: #10b981; font-weight: 700;">Culture ▾</button>
         <div class="sub-menu" id="menu-culture">
             <button class="sub-item" onclick="ouvrirMatiere('Histoire')">📜 Histoire</button>
             <button class="sub-item" onclick="ouvrirMatiere('Géographie')">🌍 Géographie</button>
             <button class="sub-item" onclick="ouvrirMatiere('EMC')">⚖️ EMC</button>
-            <button class="sub-item" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques / Musique</button>
+            <button class="sub-item" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques</button>
         </div>
     </div>
 
@@ -985,14 +1076,14 @@
         }
 
         let amiActif = null;
-        let modeAgenda = "public"; // "public" ou "perso"
+        let modeAgenda = "public";
 
         async function verifierSiBanni() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/comptes/${encodeURIComponent(monPseudo.toLowerCase())}/banni.json`);
                 const banni = await res.json();
                 if (banni === true) {
-                    alert("🚫 Ton compte a été banni par l'administrateur.");
+                    alert("🚫 Ton compte a été suspendu par l'administration.");
                     seDeconnecter();
                 }
             } catch (e) {}
@@ -1005,7 +1096,7 @@
                 const texte = await res.json();
                 const bandeau = document.getElementById("bandeau-annonce");
                 if (texte) {
-                    bandeau.textContent = "📢 Annonce : " + texte;
+                    bandeau.textContent = "📢 Information : " + texte;
                     bandeau.style.display = "block";
                 } else {
                     bandeau.style.display = "none";
@@ -1054,18 +1145,16 @@
             document.getElementById("search-results-box").style.display = "none";
         }
 
-        // =======================================================
-        // 🔍 RECHERCHE
-        // =======================================================
+        // RECHERCHE
         const matieresDispos = [
-            { nom: "Anglais", cat: "Langue" },
-            { nom: "Espagnol", cat: "Langue" },
-            { nom: "Français", cat: "Langue" },
-            { nom: "Latin-Grec", cat: "Langue" },
-            { nom: "Maths", cat: "Science" },
-            { nom: "Physique-Chimie", cat: "Science" },
-            { nom: "SVT", cat: "Science" },
-            { nom: "Technologie", cat: "Science" },
+            { nom: "Anglais", cat: "Langues" },
+            { nom: "Espagnol", cat: "Langues" },
+            { nom: "Français", cat: "Langues" },
+            { nom: "Latin-Grec", cat: "Langues" },
+            { nom: "Maths", cat: "Sciences" },
+            { nom: "Physique-Chimie", cat: "Sciences" },
+            { nom: "SVT", cat: "Sciences" },
+            { nom: "Technologie", cat: "Sciences" },
             { nom: "Histoire", cat: "Culture" },
             { nom: "Géographie", cat: "Culture" },
             { nom: "EMC", cat: "Culture" },
@@ -1089,7 +1178,7 @@
                     resultatsTrouves++;
                     const div = document.createElement("div");
                     div.className = "search-result-item";
-                    div.innerHTML = `📚 <strong>Matière :</strong> ${m.nom} <span style="color:#a4b0be;">(${m.cat})</span>`;
+                    div.innerHTML = `📚 <strong>${m.nom}</strong> <span style="color:#64748b;">(${m.cat})</span>`;
                     div.onclick = () => ouvrirMatiere(m.nom);
                     box.appendChild(div);
                 }
@@ -1130,15 +1219,13 @@
             } catch (e) {}
 
             if (resultatsTrouves === 0) {
-                box.innerHTML = `<div style="color:#a4b0be; font-size:12px; padding:6px;">Aucun résultat trouvé pour "${saisie}".</div>`;
+                box.innerHTML = `<div style="color:#64748b; font-size:12px; padding:8px;">Aucun élément trouvé pour "${saisie}".</div>`;
             }
 
             box.style.display = "block";
         }
 
-        // =======================================================
-        // 📅 GESTION AGENDA (PUBLIC & PERSO SÉPARÉS)
-        // =======================================================
+        // AGENDA
         function ouvrirDevoirs() {
             fermerFenetres();
             document.getElementById("devoirs-panel").style.display = "flex";
@@ -1171,7 +1258,7 @@
                 const data = await res.json();
 
                 if (!data || Object.keys(data).length === 0) {
-                    container.innerHTML = `<p style="color:#a4b0be; font-size:13px;">🎉 Aucun devoir commun pour la classe en ce moment !</p>`;
+                    container.innerHTML = `<p style="color:#64748b; font-size:13px;">🎉 Aucun devoir pour l'ensemble de la classe.</p>`;
                     return;
                 }
 
@@ -1183,14 +1270,14 @@
                         <div>
                             <div class="devoir-matiere">${d.matiere}</div>
                             <div class="devoir-titre">${d.titre}</div>
-                            <div style="font-size: 12px; color: #c8d6e5; margin-top: 3px;">${d.description || ""}</div>
+                            <div style="font-size: 12px; color: #94a3b8; margin-top: 3px;">${d.description || ""}</div>
                         </div>
                         <div class="devoir-date">⏳ ${d.dateLimite}</div>
                     `;
                     container.appendChild(div);
                 });
             } catch (e) {
-                container.innerHTML = `<p style="color:#ee5253; font-size:13px;">Erreur de chargement.</p>`;
+                container.innerHTML = `<p style="color:#ef4444; font-size:13px;">Erreur de connexion.</p>`;
             }
         }
 
@@ -1203,7 +1290,7 @@
                 const data = await res.json();
 
                 if (!data || Object.keys(data).length === 0) {
-                    container.innerHTML = `<p style="color:#a4b0be; font-size:13px;">Tu n'as aucune tâche perso en cours. Ajoute-en une ci-dessus !</p>`;
+                    container.innerHTML = `<p style="color:#64748b; font-size:13px;">Aucune tâche personnelle planifiée.</p>`;
                     return;
                 }
 
@@ -1214,16 +1301,16 @@
                     div.className = "devoir-item perso";
                     div.innerHTML = `
                         <div>
-                            <div class="devoir-matiere perso">🔒 Tâche personnelle</div>
+                            <div class="devoir-matiere perso">🔒 Tâche perso</div>
                             <div class="devoir-titre">${d.titre}</div>
-                            <div class="devoir-date" style="color: #1dd1a1;">⏳ ${d.dateLimite}</div>
+                            <div class="devoir-date" style="color: #34d399;">⏳ ${d.dateLimite}</div>
                         </div>
-                        <button class="btn-refuse" onclick="supprimerDevoirPerso('${id}')">Terminé ✓</button>
+                        <button class="btn-refuse" onclick="supprimerDevoirPerso('${id}')">Fait ✓</button>
                     `;
                     container.appendChild(div);
                 });
             } catch (e) {
-                container.innerHTML = `<p style="color:#ee5253; font-size:13px;">Erreur de chargement de ton agenda.</p>`;
+                container.innerHTML = `<p style="color:#ef4444; font-size:13px;">Erreur de connexion.</p>`;
             }
         }
 
@@ -1232,10 +1319,7 @@
             const dateLimite = document.getElementById("perso-date").value.trim();
             const userKey = encodeURIComponent(monPseudo.toLowerCase());
 
-            if (!titre) {
-                alert("Entre un titre pour ta tâche personnelle.");
-                return;
-            }
+            if (!titre) return;
 
             await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}.json`, {
                 method: "POST",
@@ -1256,9 +1340,7 @@
             chargerDevoirsPersos();
         }
 
-        // =======================================================
-        // 🔒 MESSAGERIE PRIVÉE
-        // =======================================================
+        // MESSAGERIE PRIVÉE
         function identifiantDiscussion(u1, u2) {
             const tri = [u1.toLowerCase(), u2.toLowerCase()].sort();
             return `${tri[0]}_${tri[1]}`;
@@ -1272,13 +1354,13 @@
 
         function selectionnerAmiChat(ami) {
             amiActif = ami;
-            document.getElementById("titre-chat-prive").textContent = `💬 Discussion privée avec ${ami}`;
+            document.getElementById("titre-chat-prive").textContent = `💬 Salon privé : ${ami}`;
             
             const input = document.getElementById("group-input");
             const btn = document.getElementById("btn-send-msg");
             input.disabled = false;
             btn.disabled = false;
-            input.placeholder = `Écris en privé à ${ami}...`;
+            input.placeholder = `Écrire à ${ami}...`;
             input.focus();
 
             document.querySelectorAll(".contact-item").forEach(el => el.classList.remove("active"));
@@ -1301,8 +1383,8 @@
                 const data = await res.json();
 
                 if (!data) {
-                    conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
-                        🔒 C'est le début de votre discussion privée avec ${amiActif}. Aucun message pour l'instant !
+                    conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #64748b;">
+                        🔒 Début de la discussion privée avec ${amiActif}.
                     </div>`;
                     return;
                 }
@@ -1358,18 +1440,12 @@
             chargerMessagesPrives(true);
         }
 
-        // =======================================================
-        // 🌐 GESTION AMIS
-        // =======================================================
+        // AMIS
         async function envoyerDemandeAmi() {
             const input = document.getElementById("friend-pseudo-input");
             const cible = input.value.trim();
 
-            if (!cible) return;
-            if (cible.toLowerCase() === monPseudo.toLowerCase()) {
-                alert("Tu ne peux pas t'envoyer une demande à toi-même !");
-                return;
-            }
+            if (!cible || cible.toLowerCase() === monPseudo.toLowerCase()) return;
 
             try {
                 const res = await fetch(`${FIREBASE_URL}/demandes/${cible.toLowerCase()}/${monPseudo.toLowerCase()}.json`, {
@@ -1382,14 +1458,10 @@
                 });
 
                 if (res.ok) {
-                    alert(`Demande envoyée sur le compte de ${cible} !`);
+                    alert(`Demande envoyée à ${cible} !`);
                     input.value = "";
-                } else {
-                    alert("Erreur lors de l'envoi.");
                 }
-            } catch (e) {
-                alert("Erreur de connexion internet.");
-            }
+            } catch (e) {}
         }
 
         async function synchroniserDemandesEtAmis() {
@@ -1401,7 +1473,7 @@
                 const badge = document.getElementById("badge-demandes");
 
                 if (!dataDemandes || Object.keys(dataDemandes).length === 0) {
-                    boxDemandes.innerHTML = `<li style="color:#a4b0be; font-size:12px; padding:6px;">Aucune demande reçue.</li>`;
+                    boxDemandes.innerHTML = `<li style="color:#64748b; font-size:12px; padding:6px;">Aucune invitation reçue.</li>`;
                     badge.style.display = "none";
                 } else {
                     const liste = Object.values(dataDemandes);
@@ -1429,8 +1501,8 @@
                 const boxContacts = document.getElementById("contacts-list");
 
                 if (!dataAmis || Object.keys(dataAmis).length === 0) {
-                    boxAmis.innerHTML = `<li style="color:#a4b0be; font-size:12px; padding:6px;">Aucun ami confirmé.</li>`;
-                    boxContacts.innerHTML = `<li style="color:#a4b0be; font-size:11px; padding:10px;">Ajoute un ami pour discuter.</li>`;
+                    boxAmis.innerHTML = `<li style="color:#64748b; font-size:12px; padding:6px;">Aucun contact pour l'instant.</li>`;
+                    boxContacts.innerHTML = `<li style="color:#64748b; font-size:11px; padding:10px;">Ajoute un ami pour chatter.</li>`;
                 } else {
                     const amis = Object.keys(dataAmis);
                     boxAmis.innerHTML = "";
@@ -1457,27 +1529,14 @@
         }
 
         async function accepterDemande(demandeur) {
-            await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, {
-                method: "PUT",
-                body: JSON.stringify(true)
-            });
-
-            await fetch(`${FIREBASE_URL}/amis/${demandeur.toLowerCase()}/${monPseudo.toLowerCase()}.json`, {
-                method: "PUT",
-                body: JSON.stringify(true)
-            });
-
-            await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, {
-                method: "DELETE"
-            });
-
+            await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, { method: "PUT", body: JSON.stringify(true) });
+            await fetch(`${FIREBASE_URL}/amis/${demandeur.toLowerCase()}/${monPseudo.toLowerCase()}.json`, { method: "PUT", body: JSON.stringify(true) });
+            await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, { method: "DELETE" });
             synchroniserDemandesEtAmis();
         }
 
         async function refuserDemande(demandeur) {
-            await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, {
-                method: "DELETE"
-            });
+            await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, { method: "DELETE" });
             synchroniserDemandesEtAmis();
         }
 
@@ -1489,7 +1548,7 @@
                 document.getElementById("group-input").disabled = true;
                 document.getElementById("btn-send-msg").disabled = true;
                 document.getElementById("titre-chat-prive").textContent = "💬 Messagerie Privée";
-                document.getElementById("group-messages").innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">👈 Choisis un ami dans la liste à gauche !</div>`;
+                document.getElementById("group-messages").innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #64748b;">👈 Choisis un contact à gauche !</div>`;
             }
             synchroniserDemandesEtAmis();
         }
@@ -1500,9 +1559,7 @@
             synchroniserDemandesEtAmis();
         }
 
-        // =======================================================
-        // 🤖 META IA
-        // =======================================================
+        // TUTEUR IA
         function ouvrirChatIA() {
             fermerFenetres();
             document.getElementById("chat-ia").style.display = "flex";
@@ -1526,7 +1583,7 @@
 
             const msgIA = document.createElement("div");
             msgIA.className = "msg msg-ia";
-            msgIA.textContent = "⏳ En train d'écrire...";
+            msgIA.textContent = "⏳ Réflexion en cours...";
             box.appendChild(msgIA);
             box.scrollTop = box.scrollHeight;
 
@@ -1539,7 +1596,7 @@
                     },
                     body: JSON.stringify({
                         contents: [{
-                            parts: [{ text: "Tu es un tuteur scolaire pour le site Cour-halea. Réponds clairement : " + texte }]
+                            parts: [{ text: "Tu es un tuteur scolaire pédagogue et clair. Réponds à la question de l'élève : " + texte }]
                         }]
                     })
                 });
@@ -1548,21 +1605,17 @@
 
                 if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
                     msgIA.textContent = data.candidates[0].content.parts[0].text;
-                } else if (data.error) {
-                    msgIA.textContent = "Erreur : " + data.error.message;
                 } else {
-                    msgIA.textContent = "Désolé, aucune réponse reçue.";
+                    msgIA.textContent = "Désolé, je n'ai pas pu formuler de réponse.";
                 }
             } catch (err) {
-                msgIA.textContent = "Erreur de connexion.";
+                msgIA.textContent = "Erreur de connexion au serveur.";
             }
 
             box.scrollTop = box.scrollHeight;
         }
 
-        // =======================================================
-        // 📚 NAVIGATION & ADMIN (Code: 6767)
-        // =======================================================
+        // NAVIGATION & CODE PIN
         function toggleMenu(idMenu) {
             const menu = document.getElementById(idMenu);
             const estOuvert = (menu.style.display === "block");
@@ -1595,13 +1648,13 @@
             const boutonSecret = document.getElementById("btn-admin-secret");
             
             if (code === "6767") {
-                reponse.style.color = "#1dd1a1";
-                reponse.innerHTML = "✅ Code validé ! Option admin déverrouillée :";
+                reponse.style.color = "#10b981";
+                reponse.innerHTML = "✅ Identité confirmée. Accès débloqué :";
                 sessionStorage.setItem("admin_session", "active");
                 boutonSecret.style.display = "block";
             } else {
-                reponse.style.color = "#ee5253";
-                reponse.innerHTML = "❌ Code faux !";
+                reponse.style.color = "#ef4444";
+                reponse.innerHTML = "❌ Code invalide.";
                 boutonSecret.style.display = "none";
             }
         }
@@ -1610,7 +1663,6 @@
             window.location.href = "admin.html";
         }
 
-        // Rafraîchissements automatiques
         synchroniserDemandesEtAmis();
         setInterval(synchroniserDemandesEtAmis, 2500);
         setInterval(afficherAnnonceGenerale, 6000);
