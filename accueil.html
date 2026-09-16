@@ -61,7 +61,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        /* Topbar toujours visible */
+        /* Topbar */
         .top-navbar {
             height: 56px;
             min-height: 56px;
@@ -124,7 +124,7 @@
             transform: scale(0.95);
         }
 
-        /* Layout central */
+        /* Layout */
         .app-body {
             flex: 1;
             display: flex;
@@ -191,7 +191,7 @@
             font-weight: bold;
         }
 
-        /* Zone centrale scrollable */
+        /* Zone centrale */
         .main-content {
             flex: 1;
             display: flex;
@@ -347,6 +347,19 @@
             cursor: pointer;
             font-weight: 700;
             width: 100%;
+            margin-bottom: 6px;
+        }
+
+        .btn-apropos {
+            background: var(--card-bg);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 9px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            width: 100%;
             margin-bottom: 8px;
         }
 
@@ -396,6 +409,31 @@
             font-size: 20px;
             cursor: pointer;
             padding: 2px 6px;
+        }
+
+        /* Style spécifique À propos / Versions */
+        .version-card {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: #0b1120;
+            font-weight: 800;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            margin-bottom: 6px;
+        }
+
+        .version-badge.latest {
+            background: var(--success);
+            color: #ffffff;
         }
 
         /* Agenda */
@@ -452,10 +490,22 @@
             font-size: 11px;
             color: var(--text-muted);
             text-align: center;
-            opacity: 0.75;
+            opacity: 0.85;
+            line-height: 1.6;
         }
 
-        /* Adaptation Smartphone */
+        .version-tag-footer {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--primary);
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 10px;
+            margin-left: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        /* Responsive Mobile */
         @media (max-width: 768px) {
             .app-body {
                 flex-direction: column;
@@ -565,7 +615,7 @@
 </head>
 <body>
 
-    <!-- Barre d'en-tête (Toujours fixée et visible) -->
+    <!-- Barre d'en-tête -->
     <div class="top-navbar">
         <div class="brand-title">Cour-halea</div>
         <div class="top-actions">
@@ -598,6 +648,64 @@
         <div class="main-content" onclick="fermerHubMenu()">
             <input type="search" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher un cours, devoir..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="filtrerContenuRecherche()">
             <div id="search-results-box"></div>
+
+            <!-- Modal : À propos & Historique des versions -->
+            <div id="apropos-panel" class="modal-box">
+                <div class="chat-header">
+                    <span style="color: var(--primary);">ℹ️ À propos & Mises à jour</span>
+                    <button class="close-btn" onclick="fermerFenetres()">✕</button>
+                </div>
+                <div style="padding: 16px; overflow-y: auto;">
+                    <div style="text-align: center; margin-bottom: 16px;">
+                        <h2 style="color: var(--primary); font-size: 20px;">Cour-halea</h2>
+                        <p style="font-size: 13px; color: var(--text-muted);">Plateforme scolaire connectée — Développée par la team <strong>WEBNEX</strong></p>
+                    </div>
+
+                    <div class="hub-menu-section" style="margin-bottom: 10px;">📜 Historique des versions</div>
+
+                    <!-- v2.4 (Plus récente) -->
+                    <div class="version-card">
+                        <span class="version-badge latest">v2.4 (Actuelle)</span>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Menu Hub & Navigation tactile</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);">Intégration de toutes les matières dans les trois tirets (☰), barre mobile avec défilement fluide et correction de la visibilité sur smartphone.</p>
+                    </div>
+
+                    <!-- v2.3 -->
+                    <div class="version-card">
+                        <span class="version-badge">v2.3</span>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Sécurité par e-mail EmailJS</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);">Système complet de code de vérification à 6 chiffres par e-mail pour l'inscription et la réinitialisation du mot de passe.</p>
+                    </div>
+
+                    <!-- v2.2 -->
+                    <div class="version-card">
+                        <span class="version-badge">v2.2</span>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Espace Détente : Snake</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);">Ajout du mini-jeu Snake avec gestion du meilleur score et commandes adaptées au clavier et à l'écran tactile.</p>
+                    </div>
+
+                    <!-- v2.1 -->
+                    <div class="version-card">
+                        <span class="version-badge">v2.1</span>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Outils d'étude avancés</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);">Ajout du générateur de Flashcards IA, de la calculatrice intégrée et du minuteur Focus Pomodoro.</p>
+                    </div>
+
+                    <!-- v2.0 -->
+                    <div class="version-card">
+                        <span class="version-badge">v2.0</span>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Messagerie privée & Photos</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);">Salons privés chiffrés entre amis avec statut en ligne et partage d'images.</p>
+                    </div>
+
+                    <!-- v1.0 -->
+                    <div class="version-card">
+                        <span class="version-badge">v1.0</span>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Lancement initial</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);">Gestion des cours, agenda de classe collaboratif et intégration du tuteur Meta IA.</p>
+                    </div>
+                </div>
+            </div>
 
             <!-- Agenda -->
             <div id="devoirs-panel" class="modal-box">
@@ -693,7 +801,7 @@
                     <button class="close-btn" onclick="fermerFenetres()">✕</button>
                 </div>
                 <div class="devoirs-body">
-                    <div style="display: flex; gap: 6px;">
+                    <div style="flex: 1; padding: 6px 10px; display: flex; gap: 6px;">
                         <input type="text" id="flashcard-sujet" placeholder="Thème..." style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
                         <button class="btn-send" style="background: var(--primary); color: white;" onclick="genererFlashcards()">Go</button>
                     </div>
@@ -773,8 +881,10 @@
                 <button id="btn-admin-secret" class="btn-send" style="display: none; width: 100%; margin-top: 8px; background: var(--success); color: white;" onclick="allerVersAdmin()">👑 Accéder</button>
             </div>
 
+            <!-- Footer avec Version dynamique -->
             <div class="site-footer">
                 Créé par <strong>ZETA|Luffy</strong> de la team <strong>WEBNEX</strong>
+                <span class="version-tag-footer" id="footer-version-tag">v2.4</span>
             </div>
         </div>
     </div>
@@ -794,6 +904,9 @@
                 <span class="avatar-opt" onclick="changerAvatar('👑')">👑</span>
             </div>
         </div>
+
+        <div class="hub-menu-section">ℹ️ Informations</div>
+        <button class="btn-apropos" onclick="ouvrirApropos()">ℹ️ À propos & Versions</button>
 
         <div class="hub-menu-section">👑 Administration</div>
         <button class="btn-admin-hub" onclick="ouvrirAdmin()">Accès Panel Admin</button>
@@ -839,6 +952,9 @@
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
+        const VERSION_ACTUELLE = "v2.4";
+        document.getElementById("footer-version-tag").textContent = VERSION_ACTUELLE;
+
         const monPseudo = localStorage.getItem("utilisateur_pseudo");
         const monEmail = localStorage.getItem("utilisateur_email") || "";
 
@@ -860,6 +976,11 @@
         function toggleSousMenu(id) {
             const el = document.getElementById(id);
             el.style.display = (el.style.display === "flex") ? "none" : "flex";
+        }
+
+        function ouvrirApropos() {
+            fermerFenetres();
+            document.getElementById("apropos-panel").style.display = "flex";
         }
 
         function basculerTheme() {
