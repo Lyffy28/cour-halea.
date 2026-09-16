@@ -21,9 +21,7 @@
             overflow: hidden;
         }
 
-        /* =========================================
-           1. COLONNE GAUCHE (PC)
-           ========================================= */
+        /* 1. Colonne gauche */
         .sidebar-left {
             width: 90px;
             background-color: #26273b;
@@ -75,6 +73,11 @@
             position: relative;
         }
 
+        .add-friend-btn:hover {
+            background-color: #343650;
+            color: #10ac84;
+        }
+
         .notif-badge {
             display: none;
             position: absolute;
@@ -100,9 +103,7 @@
             width: 100%;
         }
 
-        /* =========================================
-           2. CONTENU CENTRAL (PC & MOBILE)
-           ========================================= */
+        /* 2. Centre */
         .main-content {
             flex: 1;
             display: flex;
@@ -132,7 +133,7 @@
             border-color: #00d2d3;
         }
 
-        /* Grille des matières sur mobile */
+        /* Matières sur mobile */
         .mobile-subjects {
             display: none;
             width: 100%;
@@ -191,9 +192,7 @@
             color: #00d2d3;
         }
 
-        /* =========================================
-           3. MODALES & FENÊTRES (Chat, Amis, Admin)
-           ========================================= */
+        /* Modales */
         .modal-box {
             display: none;
             flex-direction: column;
@@ -524,9 +523,7 @@
             font-size: 12px;
         }
 
-        /* =========================================
-           4. COLONNE DROITE (PC)
-           ========================================= */
+        /* 3. Colonne droite */
         .sidebar-right {
             width: 170px;
             background-color: #26273b;
@@ -682,9 +679,7 @@
             padding-left: 20px;
         }
 
-        /* =========================================
-           📱 ADAPTATION MOBILE STRICTE
-           ========================================= */
+        /* Adaptation Mobile */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -692,7 +687,6 @@
                 height: 100dvh;
             }
 
-            /* Barre du haut mobile */
             .sidebar-left {
                 width: 100%;
                 height: 52px;
@@ -737,7 +731,6 @@
                 border-left: 1px solid #3d3f58;
             }
 
-            /* Contenu central déroulant */
             .main-content {
                 order: 2;
                 padding: 12px;
@@ -746,17 +739,14 @@
                 overflow-y: auto;
             }
 
-            /* Affiche les cartes de matières au milieu de l'écran sur mobile */
             .mobile-subjects {
                 display: flex;
             }
 
-            /* Cache la colonne latérale droite sur mobile car elle est au centre */
             .sidebar-right {
                 display: none;
             }
 
-            /* Modales en plein écran sur smartphone */
             .modal-box {
                 position: fixed;
                 top: 52px;
@@ -829,7 +819,7 @@
 </head>
 <body>
 
-    <!-- Barre Gauche (Haut sur mobile) -->
+    <!-- Barre latérale Gauche (Haut sur mobile) -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
@@ -841,7 +831,7 @@
                 ✚
                 <span class="notif-badge" id="badge-demandes">0</span>
             </button>
-            <button class="settings-btn" title="Paramètres" onclick="ouvrirProfilMobile()">👤</button>
+            <button class="settings-btn" title="Profil & Options" onclick="ouvrirProfilMobile()">👤</button>
         </div>
     </div>
 
@@ -849,9 +839,8 @@
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
 
-        <!-- 📱 BLOC MATIÈRES SUR TÉLÉPHONE (Directement sous la recherche) -->
+        <!-- Matières sur Mobile -->
         <div class="mobile-subjects">
-            <!-- 1. Langues -->
             <div class="subject-card">
                 <div class="subject-card-header" onclick="toggleMobileCard('card-langues')" style="color: #00d2d3;">
                     <span>🌍 Langue</span>
@@ -865,7 +854,6 @@
                 </div>
             </div>
 
-            <!-- 2. Sciences -->
             <div class="subject-card">
                 <div class="subject-card-header" onclick="toggleMobileCard('card-sciences')" style="color: #ff9f43;">
                     <span>📐 Science</span>
@@ -879,7 +867,6 @@
                 </div>
             </div>
 
-            <!-- 3. Culture -->
             <div class="subject-card">
                 <div class="subject-card-header" onclick="toggleMobileCard('card-culture')" style="color: #1dd1a1;">
                     <span>🏛️ Culture</span>
@@ -1365,9 +1352,16 @@
         function validerPin() {
             const code = document.getElementById("code-pin").value;
             const reponse = document.getElementById("message-pin");
+            
             if (code === "1234") {
                 reponse.style.color = "#1dd1a1";
-                reponse.innerHTML = "✅ Connecté en administrateur !";
+                reponse.innerHTML = "✅ Code bon ! Redirection...";
+                
+                sessionStorage.setItem("admin_session", "active");
+                
+                setTimeout(() => {
+                    window.location.href = "admin.html";
+                }, 600);
             } else {
                 reponse.style.color = "#ee5253";
                 reponse.innerHTML = "❌ Code faux !";

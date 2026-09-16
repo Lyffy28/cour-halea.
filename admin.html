@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cour-halea - Administration</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #1e1e2e;
+            color: #ffffff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header-bar {
+            max-width: 900px;
+            margin: 0 auto 25px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #3d3f58;
+            padding-bottom: 15px;
+        }
+
+        h1 {
+            color: #ff9f43;
+            font-size: 22px;
+        }
+
+        .btn-quit {
+            background-color: #343650;
+            color: #c8d6e5;
+            border: 1px solid #484b6a;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .btn-quit:hover {
+            background-color: #ee5253;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background-color: #26273b;
+            border: 1px solid #3d3f58;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .users-table th, .users-table td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #3d3f58;
+        }
+
+        .users-table th {
+            color: #00d2d3;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .badge-pseudo {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .password-field {
+            background-color: #1e1e2e;
+            border: 1px solid #484b6a;
+            padding: 6px 10px;
+            color: #ff9f43;
+            border-radius: 6px;
+            font-family: monospace;
+            width: 130px;
+            outline: none;
+        }
+
+        .btn-update {
+            background-color: #1dd1a1;
+            color: #1e1e2e;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .btn-delete {
+            background-color: #ee5253;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-update:hover { opacity: 0.85; }
+        .btn-delete:hover { opacity: 0.85; }
+
+        .empty-msg {
+            text-align: center;
+            color: #a4b0be;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .users-table, .users-table tbody, .users-table tr, .users-table td {
+                display: block;
+                width: 100%;
+            }
+            .users-table thead { display: none; }
+            .users-table tr {
+                background-color: #1e1e2e;
+                margin-bottom: 15px;
+                border-radius: 8px;
+                padding: 12px;
+                border: 1px solid #3d3f58;
+            }
+            .users-table td {
+                border: none;
+                padding: 6px 0;
+            }
+            .password-field {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        // Sécurité : vérifie que l'administrateur a bien validé le code PIN
+        if (sessionStorage.getItem("admin_session") !== "active") {
+            window.location.href = "accueil.html";
+        }
+    </script>
+
+    <div class="header-bar">
+        <h1>⚙️ Panel Administrateur</h1>
+        <button class="btn-quit" onclick="quitterAdmin()">Retour à l'accueil</button>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2 style="font-size: 16px; color: #c8d6e5; margin-bottom: 15px;">Gestion des comptes utilisateurs</h2>
+            
+            <div id="loading" style="color: #00d2d3; text-align: center; padding: 20px;">Chargement des données...</div>
+
+            <table class="users-table" id="table-comptes" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>E-mail</th>
+                        <th>Mot de passe</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="comptes-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
+
+        async function chargerTousLesComptes() {
+            const table = document.getElementById("table-comptes");
+            const loading = document.getElementById("loading");
+            const tbody = document.getElementById("comptes-body");
+
+            try {
+                const res = await fetch(`${FIREBASE_URL}/comptes.json`);
+                const data = await res.json();
+
+                loading.style.display = "none";
+
+                if (!data || Object.keys(data).length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="empty-msg">Aucun compte enregistré dans la base.</td></tr>`;
+                    table.style.display = "table";
+                    return;
+                }
+
+                tbody.innerHTML = "";
+                Object.keys(data).forEach(cle => {
+                    const compte = data[cle];
+                    const tr = document.createElement("tr");
+
+                    tr.innerHTML = `
+                        <td class="badge-pseudo">${compte.pseudo}</td>
+                        <td style="color: #a4b0be;">${compte.email}</td>
+                        <td>
+                            <input type="text" class="password-field" id="pwd-${cle}" value="${compte.password}">
+                        </td>
+                        <td>
+                            <button class="btn-update" onclick="mettreAJourMotDePasse('${cle}')">Modifier MDP</button>
+                            <button class="btn-delete" onclick="supprimerCompte('${cle}', '${compte.pseudo}')">Supprimer</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                table.style.display = "table";
+
+            } catch (err) {
+                loading.textContent = "Erreur de chargement des comptes.";
+            }
+        }
+
+        async function mettreAJourMotDePasse(cle) {
+            const nouveauMDP = document.getElementById(`pwd-${cle}`).value.trim();
+
+            if (nouveauMDP.length < 4) {
+                alert("Le mot de passe doit comporter au moins 4 caractères.");
+                return;
+            }
+
+            try {
+                await fetch(`${FIREBASE_URL}/comptes/${cle}/password.json`, {
+                    method: "PUT",
+                    body: JSON.stringify(nouveauMDP)
+                });
+                alert("Mot de passe mis à jour avec succès !");
+            } catch (err) {
+                alert("Erreur lors de la mise à jour.");
+            }
+        }
+
+        async function supprimerCompte(cle, pseudo) {
+            if (!confirm(`Supprimer définitivement le compte de ${pseudo} ?`)) {
+                return;
+            }
+
+            try {
+                await fetch(`${FIREBASE_URL}/comptes/${cle}.json`, { method: "DELETE" });
+                alert(`Compte de ${pseudo} supprimé.`);
+                chargerTousLesComptes();
+            } catch (err) {
+                alert("Erreur lors de la suppression.");
+            }
+        }
+
+        function quitterAdmin() {
+            sessionStorage.removeItem("admin_session");
+            window.location.href = "accueil.html";
+        }
+
+        chargerTousLesComptes();
+    </script>
+</body>
+</html>
