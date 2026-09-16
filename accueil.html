@@ -484,7 +484,7 @@
             color: #0f172a;
         }
 
-        /* 🗂️ Flashcards Recto/Verso */
+        /* Flashcards Recto/Verso */
         .flashcards-body {
             padding: 16px;
             overflow-y: auto;
@@ -548,7 +548,7 @@
             transform: rotateY(180deg);
         }
 
-        /* 🧮 Calculatrice */
+        /* Calculatrice */
         .calc-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -588,7 +588,7 @@
         .calc-btn.op { color: var(--accent); }
         .calc-btn.equal { background: var(--primary); color: white; }
 
-        /* ⏱️ Pomodoro */
+        /* Pomodoro */
         .pomodoro-container {
             display: flex;
             flex-direction: column;
@@ -884,7 +884,7 @@
             </div>
         </div>
 
-        <!-- 4. 🗂️ Flashcards IA Recto/Verso -->
+        <!-- 4. Flashcards IA Recto/Verso -->
         <div id="flashcards-panel" class="modal-box">
             <div class="chat-header">
                 <span style="color: var(--primary);">🗂️ Générateur de Fiches Mémo (Flashcards)</span>
@@ -901,7 +901,7 @@
             </div>
         </div>
 
-        <!-- 5. 🧮 Calculatrice Scientifique -->
+        <!-- 5. Calculatrice Scientifique -->
         <div id="calc-panel" class="modal-box" style="max-width: 380px; height: 500px;">
             <div class="chat-header">
                 <span style="color: var(--accent);">🧮 Calculatrice</span>
@@ -936,7 +936,7 @@
             </div>
         </div>
 
-        <!-- 6. ⏱️ Pomodoro Timer -->
+        <!-- 6. Pomodoro Timer -->
         <div id="pomodoro-panel" class="modal-box" style="max-width: 440px; height: 380px;">
             <div class="chat-header">
                 <span style="color: var(--primary);">⏱️ Focus Pomodoro</span>
@@ -1386,14 +1386,214 @@
             box.scrollTop = box.scrollHeight;
         }
 
+        // ==========================================
+        // 📅 AGENDA
+        // ==========================================
+        function ouvrirDevoirs() {
+            fermerFenetres();
+            document.getElementById("devoirs-panel").style.display = "flex";
+            changerOngletAgenda("public");
+        }
+
+        function changerOngletAgenda(mode) {
+            modeAgenda = mode;
+            const btnPublic = document.getElementById("tab-btn-public");
+            const btnPerso = document.getElementById("tab-btn-perso");
+            const formPerso = document.getElementById("form-ajout-perso");
+
+            if (mode === "public") {
+                btnPublic.classList.add("active");
+                btnPerso.classList.remove("active");
+                formPerso.style.display = "none";
+                chargerDevoirsPublics();
+            } else {
+                btnPerso.classList.add("active");
+                btnPublic.classList.remove("active");
+                formPerso.style.display = "flex";
+                chargerDevoirsPersos();
+            }
+        }
+
+        async function chargerDevoirsPublics() {
+            const container = document.getElementById("devoirs-liste");
+            try {
+                const res = await fetch(`${FIREBASE_URL}/devoirs.json`);
+                const data = await res.json();
+
+                if (!data || Object.keys(data).length === 0) {
+                    container.innerHTML = `<p style="color:var(--text-muted); font-size:13px;">🎉 Aucun devoir commun pour la classe.</p>`;
+                    return;
+                }
+
+                container.innerHTML = "";
+                Object.values(data).forEach(d => {
+                    const div = document.createElement("div");
+                    div.className = "devoir-item";
+                    div.innerHTML = `
+                        <div>
+                            <div class="devoir-matiere">${d.matiere}</div>
+                            <div class="devoir-titre">${d.titre}</div>
+                            <div style="font-size: 12px; color: var(--text-muted); margin-top: 3px;">${d.description || ""}</div>
+                        </div>
+                        <div class="devoir-date">⏳ ${d.dateLimite}</div>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (e) {
+                container.innerHTML = `<p style="color:var(--danger); font-size:13px;">Erreur de connexion.</p>`;
+            }
+        }
+
+        async function chargerDevoirsPersos() {
+            const container = document.getElementById("devoirs-liste");
+            const userKey = encodeURIComponent(monPseudo.toLowerCase());
+
+            try {
+                const res = await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}.json`);
+                const data = await res.json();
+
+                if (!data || Object.keys(data).length === 0) {
+                    container.innerHTML = `<p style="color:var(--text-muted); font-size:13px;">Aucune tâche personnelle planifiée.</p>`;
+                    return;
+                }
+
+                container.innerHTML = "";
+                Object.keys(data).forEach(id => {
+                    const d = data[id];
+                    const div = document.createElement("div");
+                    div.className = "devoir-item perso";
+                    div.innerHTML = `
+                        <div>
+                            <div class="devoir-matiere perso">🔒 Tâche perso</div>
+                            <div class="devoir-titre">${d.titre}</div>
+                            <div class="devoir-date" style="color: var(--success);">⏳ ${d.dateLimite}</div>
+                        </div>
+                        <button class="btn-send" style="background:var(--danger); color:white; padding:4px 10px; font-size:11px;" onclick="supprimerDevoirPerso('${id}')">Fait ✓</button>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (e) {
+                container.innerHTML = `<p style="color:var(--danger); font-size:13px;">Erreur de connexion.</p>`;
+            }
+        }
+
+        async function ajouterDevoirPerso() {
+            const titre = document.getElementById("perso-titre").value.trim();
+            const dateLimite = document.getElementById("perso-date").value.trim();
+            const userKey = encodeURIComponent(monPseudo.toLowerCase());
+
+            if (!titre) return;
+
+            await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}.json`, {
+                method: "POST",
+                body: JSON.stringify({
+                    titre: titre,
+                    dateLimite: dateLimite || "Non spécifié"
+                })
+            });
+
+            document.getElementById("perso-titre").value = "";
+            document.getElementById("perso-date").value = "";
+            chargerDevoirsPersos();
+        }
+
+        async function supprimerDevoirPerso(id) {
+            const userKey = encodeURIComponent(monPseudo.toLowerCase());
+            await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}/${id}.json`, { method: "DELETE" });
+            chargerDevoirsPersos();
+        }
+
+        // ==========================================
+        // 🔍 RECHERCHE
+        // ==========================================
+        const matieresDispos = [
+            { nom: "Anglais", cat: "Langues" },
+            { nom: "Espagnol", cat: "Langues" },
+            { nom: "Français", cat: "Langues" },
+            { nom: "Latin-Grec", cat: "Langues" },
+            { nom: "Maths", cat: "Sciences" },
+            { nom: "Physique-Chimie", cat: "Sciences" },
+            { nom: "SVT", cat: "Sciences" },
+            { nom: "Technologie", cat: "Sciences" },
+            { nom: "Histoire", cat: "Culture" },
+            { nom: "Géographie", cat: "Culture" },
+            { nom: "EMC", cat: "Culture" },
+            { nom: "Arts", cat: "Culture" }
+        ];
+
+        async function filtrerContenuRecherche() {
+            const saisie = document.getElementById("input-recherche").value.trim().toLowerCase();
+            const box = document.getElementById("search-results-box");
+
+            if (saisie.length < 2) {
+                box.style.display = "none";
+                return;
+            }
+
+            box.innerHTML = "";
+            let resultatsTrouves = 0;
+
+            matieresDispos.forEach(m => {
+                if (m.nom.toLowerCase().includes(saisie) || m.cat.toLowerCase().includes(saisie)) {
+                    resultatsTrouves++;
+                    const div = document.createElement("div");
+                    div.className = "search-result-item";
+                    div.innerHTML = `📚 <strong>${m.nom}</strong> <span style="color:var(--text-muted);">(${m.cat})</span>`;
+                    div.onclick = () => ouvrirMatiere(m.nom);
+                    box.appendChild(div);
+                }
+            });
+
+            try {
+                const resLecons = await fetch(`${FIREBASE_URL}/lecons.json`);
+                const lecons = await resLecons.json();
+                if (lecons) {
+                    Object.values(lecons).forEach(l => {
+                        if (l.titre.toLowerCase().includes(saisie) || l.contenu.toLowerCase().includes(saisie) || l.matiere.toLowerCase().includes(saisie)) {
+                            resultatsTrouves++;
+                            const div = document.createElement("div");
+                            div.className = "search-result-item";
+                            div.innerHTML = `📝 <strong>Cours [${l.matiere}] :</strong> ${l.titre}`;
+                            div.onclick = () => alert(`[${l.matiere}] ${l.titre}\n\n${l.contenu}`);
+                            box.appendChild(div);
+                        }
+                    });
+                }
+            } catch (e) {}
+
+            try {
+                const resDevoirs = await fetch(`${FIREBASE_URL}/devoirs.json`);
+                const devoirs = await resDevoirs.json();
+                if (devoirs) {
+                    Object.values(devoirs).forEach(d => {
+                        if (d.titre.toLowerCase().includes(saisie) || d.matiere.toLowerCase().includes(saisie)) {
+                            resultatsTrouves++;
+                            const div = document.createElement("div");
+                            div.className = "search-result-item";
+                            div.innerHTML = `📅 <strong>Devoir [${d.matiere}] :</strong> ${d.titre} (Pour le ${d.dateLimite})`;
+                            div.onclick = () => ouvrirDevoirs();
+                            box.appendChild(div);
+                        }
+                    });
+                }
+            } catch (e) {}
+
+            if (resultatsTrouves === 0) {
+                box.innerHTML = `<div style="color:var(--text-muted); font-size:12px; padding:8px;">Aucun élément trouvé pour "${saisie}".</div>`;
+            }
+
+            box.style.display = "block";
+        }
+
         function fermerFenetres() {
             document.querySelectorAll(".modal-box").forEach(m => m.style.display = "none");
             document.getElementById("admin-panel").style.display = "none";
             document.getElementById("menu-profil").style.display = "none";
+            document.getElementById("search-results-box").style.display = "none";
         }
 
         // ==========================================
-        // 👑 ADMIN & CODE 2107 EXCLUSIF
+        // 👑 ADMIN & CODE 2107 (ZETA|Luffy + Nathan)
         // ==========================================
         function toggleMenuAdmin() {
             const menu = document.getElementById("dropdown-menu");
@@ -1414,9 +1614,12 @@
             const code = document.getElementById("code-pin").value;
             const reponse = document.getElementById("message-pin");
             const boutonSecret = document.getElementById("btn-admin-secret");
-            const pseudoAdminAutorise = "ZETA|Luffy";
             
-            if (code === "2107" && monPseudo.toLowerCase() === pseudoAdminAutorise.toLowerCase()) {
+            // Pseudos avec droits admin
+            const adminsAutorises = ["zeta|luffy", "nathan"];
+            const monPseudoMinuscule = (monPseudo || "").toLowerCase();
+            
+            if (code === "2107" && adminsAutorises.includes(monPseudoMinuscule)) {
                 reponse.style.color = "#10b981";
                 reponse.innerHTML = "✅ Identité confirmée. Accès débloqué :";
                 sessionStorage.setItem("admin_session", "active");
@@ -1446,6 +1649,14 @@
         function toggleMenuProfil() {
             const m = document.getElementById("menu-profil");
             m.style.display = (m.style.display === "block") ? "none" : "block";
+        }
+        function ouvrirProfilMobile() {
+            const reponse = confirm(`Compte : ${monPseudo}\n${monEmail}\n\nAppuie sur "OK" pour te déconnecter, ou "Annuler" pour ouvrir le code admin.`);
+            if (reponse) {
+                seDeconnecter();
+            } else {
+                ouvrirAdmin();
+            }
         }
         function seDeconnecter() {
             localStorage.removeItem("utilisateur_pseudo");

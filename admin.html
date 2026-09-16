@@ -214,12 +214,12 @@
 <body>
 
     <script>
-        const pseudoAdminAutorise = "ZETA|Luffy";
+        const adminsAutorises = ["zeta|luffy", "nathan"];
         const sessionActive = sessionStorage.getItem("admin_session");
-        const sessionUser = sessionStorage.getItem("admin_user");
+        const sessionUser = (sessionStorage.getItem("admin_user") || "").toLowerCase();
 
-        if (sessionActive !== "active" || !sessionUser || sessionUser.toLowerCase() !== pseudoAdminAutorise.toLowerCase()) {
-            alert("Accès réservé exclusivement à l'administrateur.");
+        if (sessionActive !== "active" || !adminsAutorises.includes(sessionUser)) {
+            alert("Accès réservé exclusivement aux administrateurs autorisés.");
             window.location.href = "accueil.html";
         }
     </script>
