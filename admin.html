@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cour-halea - Administration</title>
+    <title>Cour-halea - Super Panel Admin</title>
     <style>
         * {
             box-sizing: border-box;
@@ -20,8 +20,8 @@
         }
 
         .header-bar {
-            max-width: 900px;
-            margin: 0 auto 25px auto;
+            max-width: 1000px;
+            margin: 0 auto 20px auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -32,6 +32,9 @@
         h1 {
             color: #ff9f43;
             font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .btn-quit {
@@ -42,7 +45,6 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            text-decoration: none;
             font-size: 13px;
         }
 
@@ -52,219 +54,467 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
+        /* 1. Statistiques */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            background-color: #26273b;
+            border: 1px solid #3d3f58;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 13px;
+            color: #a4b0be;
+            text-transform: uppercase;
+        }
+
+        .stat-card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00d2d3;
+            margin-top: 5px;
+        }
+
+        /* Cartes de sections */
         .card {
             background-color: #26273b;
             border: 1px solid #3d3f58;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
         }
 
-        .users-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
+        .card h2 {
+            font-size: 16px;
+            color: #ff9f43;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #3d3f58;
+            padding-bottom: 8px;
+        }
+
+        /* Formulaires */
+        .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        input, select, textarea {
+            background-color: #1e1e2e;
+            border: 1px solid #484b6a;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 6px;
+            outline: none;
             font-size: 14px;
         }
 
-        .users-table th, .users-table td {
-            padding: 12px 10px;
+        input:focus, select:focus, textarea:focus {
+            border-color: #00d2d3;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .btn-primary { background-color: #00d2d3; color: #1e1e2e; }
+        .btn-success { background-color: #1dd1a1; color: #1e1e2e; }
+        .btn-danger { background-color: #ee5253; color: white; }
+        .btn-warning { background-color: #ff9f43; color: #1e1e2e; }
+
+        .btn:hover { opacity: 0.85; }
+
+        /* Tables */
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 10px;
             text-align: left;
             border-bottom: 1px solid #3d3f58;
         }
 
-        .users-table th {
+        .admin-table th {
             color: #00d2d3;
-            font-size: 13px;
             text-transform: uppercase;
-        }
-
-        .badge-pseudo {
-            font-weight: bold;
-            color: #ffffff;
+            font-size: 11px;
         }
 
         .password-field {
-            background-color: #1e1e2e;
-            border: 1px solid #484b6a;
-            padding: 6px 10px;
-            color: #ff9f43;
-            border-radius: 6px;
+            width: 120px;
+            padding: 5px;
             font-family: monospace;
-            width: 130px;
-            outline: none;
         }
 
-        .btn-update {
-            background-color: #1dd1a1;
-            color: #1e1e2e;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 12px;
-            margin-right: 5px;
-        }
-
-        .btn-delete {
+        .badge-banned {
             background-color: #ee5253;
             color: white;
-            border: none;
-            padding: 6px 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .badge-ok {
+            background-color: #1dd1a1;
+            color: #1e1e2e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Modération chat scrollable */
+        .chat-mod-box {
+            max-height: 250px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+            border: 1px solid #3d3f58;
+            padding: 10px;
             border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
+            background-color: #1e1e2e;
         }
 
-        .btn-update:hover { opacity: 0.85; }
-        .btn-delete:hover { opacity: 0.85; }
-
-        .empty-msg {
-            text-align: center;
-            color: #a4b0be;
-            padding: 30px;
-        }
-
-        @media (max-width: 768px) {
-            .users-table, .users-table tbody, .users-table tr, .users-table td {
-                display: block;
-                width: 100%;
-            }
-            .users-table thead { display: none; }
-            .users-table tr {
-                background-color: #1e1e2e;
-                margin-bottom: 15px;
-                border-radius: 8px;
-                padding: 12px;
-                border: 1px solid #3d3f58;
-            }
-            .users-table td {
-                border: none;
-                padding: 6px 0;
-            }
-            .password-field {
-                width: 100%;
-                margin: 5px 0;
-            }
+        .chat-mod-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #26273b;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
 
     <script>
-        // Sécurité : vérifie que l'administrateur a bien validé le code PIN
         if (sessionStorage.getItem("admin_session") !== "active") {
             window.location.href = "accueil.html";
         }
     </script>
 
     <div class="header-bar">
-        <h1>⚙️ Panel Administrateur</h1>
-        <button class="btn-quit" onclick="quitterAdmin()">Retour à l'accueil</button>
+        <h1>👑 Centre de Contrôle Admin</h1>
+        <button class="btn-quit" onclick="quitterAdmin()">Retour au site</button>
     </div>
 
     <div class="container">
-        <div class="card">
-            <h2 style="font-size: 16px; color: #c8d6e5; margin-bottom: 15px;">Gestion des comptes utilisateurs</h2>
-            
-            <div id="loading" style="color: #00d2d3; text-align: center; padding: 20px;">Chargement des données...</div>
 
-            <table class="users-table" id="table-comptes" style="display: none;">
-                <thead>
-                    <tr>
-                        <th>Pseudo</th>
-                        <th>E-mail</th>
-                        <th>Mot de passe</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="comptes-body"></tbody>
-            </table>
+        <!-- 1. Statistiques -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>👥 Inscrits</h3>
+                <p id="stat-utilisateurs">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>💬 Messages envoyés</h3>
+                <p id="stat-messages">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>📚 Fiches de cours</h3>
+                <p id="stat-cours">0</p>
+            </div>
         </div>
+
+        <!-- 2. Annonce Générale (Bandeau Flash) -->
+        <div class="card">
+            <h2>📢 Publier une annonce flash sur le site</h2>
+            <div class="form-row">
+                <input type="text" id="input-annonce" placeholder="Texte de l'annonce (ex: Devoir de SVT vendredi !)" style="flex: 1;">
+                <button class="btn btn-warning" onclick="publierAnnonce()">Publier l'annonce</button>
+                <button class="btn btn-danger" onclick="supprimerAnnonce()">Retirer l'annonce</button>
+            </div>
+            <p id="statut-annonce" style="font-size: 12px; color: #a4b0be; margin-top: 5px;">Annonce actuelle : Aucune</p>
+        </div>
+
+        <!-- 3. Gestion des comptes & Bannissements -->
+        <div class="card">
+            <h2>👥 Gestion des comptes utilisateurs</h2>
+            <div style="overflow-x: auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Pseudo</th>
+                            <th>E-mail</th>
+                            <th>Mot de passe</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comptes-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4. Modération du Salon de Chat -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <h2 style="margin: 0; border: none; padding: 0;">💬 Modération du chat en direct</h2>
+                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 11px;" onclick="viderToutLeChat()">🗑️ Effacer tous les messages</button>
+            </div>
+            <div class="chat-mod-box" id="chat-mod-list">
+                <p style="color: #a4b0be; font-size: 12px;">Chargement des messages...</p>
+            </div>
+        </div>
+
+        <!-- 5. Gestionnaire de fiches de cours -->
+        <div class="card">
+            <h2>📚 Ajouter une fiche de cours</h2>
+            <div class="form-row">
+                <select id="cours-matiere">
+                    <option value="Anglais">🇬🇧 Anglais</option>
+                    <option value="Espagnol">🇪🇸 Espagnol</option>
+                    <option value="Français">🇫🇷 Français</option>
+                    <option value="Maths">📐 Maths</option>
+                    <option value="Physique-Chimie">🧪 Physique-Chimie</option>
+                    <option value="SVT">🌿 SVT</option>
+                    <option value="Histoire">📜 Histoire</option>
+                    <option value="Géographie">🌍 Géographie</option>
+                </select>
+                <input type="text" id="cours-titre" placeholder="Titre de la leçon..." style="flex: 1;">
+            </div>
+            <textarea id="cours-contenu" placeholder="Contenu du cours ou devoirs à réviser..." rows="3" style="width: 100%; margin-bottom: 10px;"></textarea>
+            <button class="btn btn-success" onclick="ajouterCours()">Ajouter la leçon</button>
+
+            <h3 style="font-size: 13px; color: #a4b0be; margin: 15px 0 8px 0;">Fiches déjà publiées :</h3>
+            <ul id="liste-cours" style="list-style: none; display: flex; flex-direction: column; gap: 6px;"></ul>
+        </div>
+
     </div>
 
     <script>
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
 
-        async function chargerTousLesComptes() {
-            const table = document.getElementById("table-comptes");
-            const loading = document.getElementById("loading");
-            const tbody = document.getElementById("comptes-body");
+        // ==========================================
+        // 1. STATS & ANNONCE
+        // ==========================================
+        async function chargerAnnonce() {
+            try {
+                const res = await fetch(`${FIREBASE_URL}/annonce.json`);
+                const texte = await res.json();
+                const p = document.getElementById("statut-annonce");
+                p.textContent = texte ? `Annonce active : "${texte}"` : "Annonce actuelle : Aucune";
+            } catch (e) {}
+        }
 
+        async function publierAnnonce() {
+            const texte = document.getElementById("input-annonce").value.trim();
+            if (!texte) return;
+            await fetch(`${FIREBASE_URL}/annonce.json`, { method: "PUT", body: JSON.stringify(texte) });
+            document.getElementById("input-annonce").value = "";
+            chargerAnnonce();
+            alert("Annonce publiée en direct sur tout le site !");
+        }
+
+        async function supprimerAnnonce() {
+            await fetch(`${FIREBASE_URL}/annonce.json`, { method: "DELETE" });
+            chargerAnnonce();
+            alert("Annonce retirée !");
+        }
+
+        // ==========================================
+        // 2. COMPTES & BANS
+        // ==========================================
+        async function chargerComptes() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/comptes.json`);
                 const data = await res.json();
+                const tbody = document.getElementById("comptes-body");
+                const statUsers = document.getElementById("stat-utilisateurs");
 
-                loading.style.display = "none";
-
-                if (!data || Object.keys(data).length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" class="empty-msg">Aucun compte enregistré dans la base.</td></tr>`;
-                    table.style.display = "table";
+                if (!data) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#a4b0be;">Aucun compte.</td></tr>`;
+                    statUsers.textContent = 0;
                     return;
                 }
 
+                const cles = Object.keys(data);
+                statUsers.textContent = cles.length;
                 tbody.innerHTML = "";
-                Object.keys(data).forEach(cle => {
-                    const compte = data[cle];
+
+                cles.forEach(cle => {
+                    const c = data[cle];
+                    const estBanni = c.banni === true;
                     const tr = document.createElement("tr");
 
                     tr.innerHTML = `
-                        <td class="badge-pseudo">${compte.pseudo}</td>
-                        <td style="color: #a4b0be;">${compte.email}</td>
+                        <td><strong>${c.pseudo}</strong></td>
+                        <td style="color: #a4b0be;">${c.email}</td>
+                        <td><input type="text" class="password-field" id="pwd-${cle}" value="${c.password}"></td>
+                        <td><span class="${estBanni ? 'badge-banned' : 'badge-ok'}">${estBanni ? 'Banni' : 'Actif'}</span></td>
                         <td>
-                            <input type="text" class="password-field" id="pwd-${cle}" value="${compte.password}">
-                        </td>
-                        <td>
-                            <button class="btn-update" onclick="mettreAJourMotDePasse('${cle}')">Modifier MDP</button>
-                            <button class="btn-delete" onclick="supprimerCompte('${cle}', '${compte.pseudo}')">Supprimer</button>
+                            <button class="btn btn-success" style="padding:4px 8px; font-size:11px;" onclick="modifierMotDePasse('${cle}')">Modifier MDP</button>
+                            <button class="btn ${estBanni ? 'btn-warning' : 'btn-danger'}" style="padding:4px 8px; font-size:11px;" onclick="basculerBan('${cle}', ${!estBanni})">${estBanni ? 'Débannir' : 'Bannir'}</button>
+                            <button class="btn btn-danger" style="padding:4px 8px; font-size:11px;" onclick="supprimerCompte('${cle}', '${c.pseudo}')">Supprimer</button>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
-
-                table.style.display = "table";
-
-            } catch (err) {
-                loading.textContent = "Erreur de chargement des comptes.";
-            }
+            } catch (e) {}
         }
 
-        async function mettreAJourMotDePasse(cle) {
-            const nouveauMDP = document.getElementById(`pwd-${cle}`).value.trim();
-
-            if (nouveauMDP.length < 4) {
-                alert("Le mot de passe doit comporter au moins 4 caractères.");
+        async function modifierMotDePasse(cle) {
+            const mdp = document.getElementById(`pwd-${cle}`).value.trim();
+            if (mdp.length < 4) {
+                alert("Le mot de passe doit faire au moins 4 caractères.");
                 return;
             }
+            await fetch(`${FIREBASE_URL}/comptes/${cle}/password.json`, { method: "PUT", body: JSON.stringify(mdp) });
+            alert("Mot de passe mis à jour !");
+        }
 
-            try {
-                await fetch(`${FIREBASE_URL}/comptes/${cle}/password.json`, {
-                    method: "PUT",
-                    body: JSON.stringify(nouveauMDP)
-                });
-                alert("Mot de passe mis à jour avec succès !");
-            } catch (err) {
-                alert("Erreur lors de la mise à jour.");
-            }
+        async function basculerBan(cle, statutBan) {
+            await fetch(`${FIREBASE_URL}/comptes/${cle}/banni.json`, { method: "PUT", body: JSON.stringify(statutBan) });
+            chargerComptes();
         }
 
         async function supprimerCompte(cle, pseudo) {
-            if (!confirm(`Supprimer définitivement le compte de ${pseudo} ?`)) {
+            if (!confirm(`Supprimer le compte de ${pseudo} ?`)) return;
+            await fetch(`${FIREBASE_URL}/comptes/${cle}.json`, { method: "DELETE" });
+            chargerComptes();
+        }
+
+        // ==========================================
+        // 3. MODÉRATION DU CHAT
+        // ==========================================
+        async function chargerChatMod() {
+            try {
+                const res = await fetch(`${FIREBASE_URL}/messages.json`);
+                const data = await res.json();
+                const box = document.getElementById("chat-mod-list");
+                const statMessages = document.getElementById("stat-messages");
+
+                if (!data) {
+                    box.innerHTML = `<p style="color:#a4b0be; font-size:12px;">Aucun message dans le chat.</p>`;
+                    statMessages.textContent = 0;
+                    return;
+                }
+
+                const cles = Object.keys(data);
+                statMessages.textContent = cles.length;
+                box.innerHTML = "";
+
+                cles.forEach(idMsg => {
+                    const m = data[idMsg];
+                    const div = document.createElement("div");
+                    div.className = "chat-mod-item";
+                    div.innerHTML = `
+                        <div>
+                            <span style="color:#ff9f43; font-weight:bold;">${m.pseudo}</span>
+                            <span style="color:#a4b0be; font-size:11px;">(${m.heure})</span> :
+                            <span>${m.texte}</span>
+                        </div>
+                        <button class="btn btn-danger" style="padding:2px 8px; font-size:11px;" onclick="supprimerMessage('${idMsg}')">Supprimer</button>
+                    `;
+                    box.appendChild(div);
+                });
+            } catch (e) {}
+        }
+
+        async function supprimerMessage(idMsg) {
+            await fetch(`${FIREBASE_URL}/messages/${idMsg}.json`, { method: "DELETE" });
+            chargerChatMod();
+        }
+
+        async function viderToutLeChat() {
+            if (!confirm("Voulez-vous vraiment effacer tout l'historique de la discussion ?")) return;
+            await fetch(`${FIREBASE_URL}/messages.json`, { method: "DELETE" });
+            chargerChatMod();
+            alert("Chat vidé avec succès.");
+        }
+
+        // ==========================================
+        // 4. COURS ET FICHES
+        // ==========================================
+        async function chargerFichesCours() {
+            try {
+                const res = await fetch(`${FIREBASE_URL}/lecons.json`);
+                const data = await res.json();
+                const ul = document.getElementById("liste-cours");
+                const statCours = document.getElementById("stat-cours");
+
+                if (!data) {
+                    ul.innerHTML = `<li style="color:#a4b0be; font-size:12px;">Aucune fiche créée.</li>`;
+                    statCours.textContent = 0;
+                    return;
+                }
+
+                const cles = Object.keys(data);
+                statCours.textContent = cles.length;
+                ul.innerHTML = "";
+
+                cles.forEach(idCours => {
+                    const c = data[idCours];
+                    const li = document.createElement("li");
+                    li.style.display = "flex";
+                    li.style.justifyContent = "space-between";
+                    li.style.padding = "8px";
+                    li.style.backgroundColor = "#1e1e2e";
+                    li.style.borderRadius = "6px";
+                    li.style.fontSize = "13px";
+
+                    li.innerHTML = `
+                        <span><strong>[${c.matiere}]</strong> ${c.titre}</span>
+                        <button class="btn btn-danger" style="padding:2px 8px; font-size:11px;" onclick="supprimerFiche('${idCours}')">Supprimer</button>
+                    `;
+                    ul.appendChild(li);
+                });
+            } catch (e) {}
+        }
+
+        async function ajouterCours() {
+            const matiere = document.getElementById("cours-matiere").value;
+            const titre = document.getElementById("cours-titre").value.trim();
+            const contenu = document.getElementById("cours-contenu").value.trim();
+
+            if (!titre || !contenu) {
+                alert("Renseigne un titre et un contenu pour la leçon.");
                 return;
             }
 
-            try {
-                await fetch(`${FIREBASE_URL}/comptes/${cle}.json`, { method: "DELETE" });
-                alert(`Compte de ${pseudo} supprimé.`);
-                chargerTousLesComptes();
-            } catch (err) {
-                alert("Erreur lors de la suppression.");
-            }
+            await fetch(`${FIREBASE_URL}/lecons.json`, {
+                method: "POST",
+                body: JSON.stringify({ matiere, titre, contenu, date: new Date().toISOString() })
+            });
+
+            document.getElementById("cours-titre").value = "";
+            document.getElementById("cours-contenu").value = "";
+            chargerFichesCours();
+            alert("Leçon publiée !");
+        }
+
+        async function supprimerFiche(id) {
+            await fetch(`${FIREBASE_URL}/lecons/${id}.json`, { method: "DELETE" });
+            chargerFichesCours();
         }
 
         function quitterAdmin() {
@@ -272,7 +522,11 @@
             window.location.href = "accueil.html";
         }
 
-        chargerTousLesComptes();
+        // Lancement et rafraîchissement
+        chargerAnnonce();
+        chargerComptes();
+        chargerChatMod();
+        chargerFichesCours();
     </script>
 </body>
 </html>

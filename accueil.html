@@ -21,6 +21,22 @@
             overflow: hidden;
         }
 
+        /* Bandeau d'alerte générale Admin */
+        .admin-banner {
+            display: none;
+            background-color: #ff9f43;
+            color: #1e1e2e;
+            font-weight: bold;
+            text-align: center;
+            padding: 8px 15px;
+            font-size: 13px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
         /* 1. Colonne gauche */
         .sidebar-left {
             width: 90px;
@@ -207,20 +223,9 @@
             flex-shrink: 0;
         }
 
-        #chat-ia {
-            border: 1px solid #00d2d3;
-        }
-
-        #chat-entraide {
-            border: 1px solid #ff9f43;
-        }
-
-        #friends-panel {
-            border: 1px solid #1dd1a1;
-            height: auto;
-            max-height: 520px;
-            padding-bottom: 15px;
-        }
+        #chat-ia { border: 1px solid #00d2d3; }
+        #chat-entraide { border: 1px solid #ff9f43; }
+        #friends-panel { border: 1px solid #1dd1a1; height: auto; max-height: 520px; padding-bottom: 15px; }
 
         #admin-panel {
             display: none;
@@ -249,7 +254,6 @@
             outline: none;
         }
 
-        /* Bouton débloqué par le code 6767 */
         .btn-access-admin {
             display: none;
             background-color: #1dd1a1;
@@ -263,10 +267,6 @@
             margin-top: 15px;
             width: 100%;
             transition: 0.2s;
-        }
-
-        .btn-access-admin:hover {
-            background-color: #10ac84;
         }
 
         .chat-header {
@@ -289,9 +289,7 @@
             padding: 0 6px;
         }
 
-        .close-btn:hover {
-            color: #ee5253;
-        }
+        .close-btn:hover { color: #ee5253; }
 
         /* Messagerie */
         .messagerie-body {
@@ -321,9 +319,7 @@
             border-bottom: 1px solid #3d3f58;
         }
 
-        .contacts-list {
-            list-style: none;
-        }
+        .contacts-list { list-style: none; }
 
         .contact-item {
             padding: 10px;
@@ -336,10 +332,7 @@
             transition: 0.2s;
         }
 
-        .contact-item:hover {
-            background-color: #2b2c40;
-            color: #00d2d3;
-        }
+        .contact-item:hover { background-color: #2b2c40; color: #00d2d3; }
 
         .contact-dot {
             width: 8px;
@@ -381,47 +374,13 @@
             flex-shrink: 0;
         }
 
-        .msg-ia {
-            background-color: #343650;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-            color: #ffffff;
-        }
+        .msg-ia { background-color: #343650; align-self: flex-start; border-bottom-left-radius: 2px; color: #ffffff; }
+        .msg-user { background-color: #00d2d3; color: #1e1e2e; font-weight: 500; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .msg-group-other { background-color: #343650; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg-group-me { background-color: #ff9f43; color: #1e1e2e; font-weight: 500; align-self: flex-end; border-bottom-right-radius: 2px; }
 
-        .msg-user {
-            background-color: #00d2d3;
-            color: #1e1e2e;
-            font-weight: 500;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-
-        .msg-group-other {
-            background-color: #343650;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-        }
-
-        .msg-group-me {
-            background-color: #ff9f43;
-            color: #1e1e2e;
-            font-weight: 500;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-
-        .msg-author {
-            font-size: 11px;
-            font-weight: bold;
-            margin-bottom: 3px;
-            opacity: 0.85;
-        }
-
-        .msg-time {
-            font-size: 10px;
-            margin-left: 6px;
-            opacity: 0.7;
-        }
+        .msg-author { font-size: 11px; font-weight: bold; margin-bottom: 3px; opacity: 0.85; }
+        .msg-time { font-size: 10px; margin-left: 6px; opacity: 0.7; }
 
         .chat-input-zone {
             display: flex;
@@ -462,12 +421,7 @@
             max-height: 420px;
         }
 
-        .friends-input-zone {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
+        .friends-input-zone { display: flex; gap: 10px; margin-bottom: 15px; }
         .friends-input-zone input {
             flex: 1;
             background-color: #1e1e2e;
@@ -499,12 +453,7 @@
             padding-bottom: 4px;
         }
 
-        .friends-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .friends-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 
         .friend-item {
             display: flex;
@@ -517,11 +466,7 @@
             font-size: 13px;
         }
 
-        .action-btns {
-            display: flex;
-            gap: 6px;
-        }
-
+        .action-btns { display: flex; gap: 6px; }
         .btn-accept {
             background-color: #1dd1a1;
             color: #1e1e2e;
@@ -597,21 +542,8 @@
             text-align: center;
         }
 
-        .profile-menu .info-name {
-            font-size: 14px;
-            font-weight: bold;
-            color: #00d2d3;
-            word-break: break-word;
-        }
-
-        .profile-menu .info-email {
-            font-size: 11px;
-            color: #a4b0be;
-            margin-top: 4px;
-            margin-bottom: 12px;
-            word-break: break-word;
-        }
-
+        .profile-menu .info-name { font-size: 14px; font-weight: bold; color: #00d2d3; word-break: break-word; }
+        .profile-menu .info-email { font-size: 11px; color: #a4b0be; margin-top: 4px; margin-bottom: 12px; word-break: break-word; }
         .btn-logout {
             background-color: #ee5253;
             color: white;
@@ -624,13 +556,7 @@
             width: 100%;
         }
 
-        .hamburger-btn {
-            background: none;
-            border: none;
-            color: #ffffff;
-            font-size: 24px;
-            cursor: pointer;
-        }
+        .hamburger-btn { background: none; border: none; color: #ffffff; font-size: 24px; cursor: pointer; }
 
         .admin-dropdown {
             display: none;
@@ -669,16 +595,9 @@
             transition: 0.2s;
         }
 
-        .right-item:hover {
-            background-color: #343650;
-            color: #ffffff;
-        }
+        .right-item:hover { background-color: #343650; color: #ffffff; }
 
-        .sub-menu {
-            display: none;
-            background-color: #1e1e2e;
-            border-bottom: 1px solid #3d3f58;
-        }
+        .sub-menu { display: none; background-color: #1e1e2e; border-bottom: 1px solid #3d3f58; }
 
         .sub-item {
             display: block;
@@ -694,152 +613,39 @@
             transition: 0.2s;
         }
 
-        .sub-item:hover {
-            background-color: #2b2c40;
-            padding-left: 20px;
-        }
+        .sub-item:hover { background-color: #2b2c40; padding-left: 20px; }
 
-        /* Adaptation Mobile */
+        /* Mobile */
         @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-                height: 100vh;
-                height: 100dvh;
-            }
-
-            .sidebar-left {
-                width: 100%;
-                height: 52px;
-                flex-direction: row;
-                border-right: none;
-                border-bottom: 1px solid #3d3f58;
-                order: 1;
-                flex-shrink: 0;
-            }
-
-            .sidebar-left > div:first-child {
-                display: flex;
-                flex: 1;
-            }
-
-            .left-btn {
-                writing-mode: horizontal-tb;
-                transform: none;
-                padding: 10px 5px;
-                border-bottom: none;
-                border-right: 1px solid #3d3f58;
-                font-size: 13px;
-                flex: 1;
-            }
-
-            .bottom-left-group {
-                flex-direction: row;
-            }
-
-            .add-friend-btn {
-                width: 48px;
-                padding: 8px 0;
-                border-top: none;
-                border-left: 1px solid #3d3f58;
-                font-size: 20px;
-            }
-
-            .settings-btn {
-                width: 48px;
-                padding: 8px 0;
-                border-top: none;
-                border-left: 1px solid #3d3f58;
-            }
-
-            .main-content {
-                order: 2;
-                padding: 12px;
-                flex: 1;
-                width: 100%;
-                overflow-y: auto;
-            }
-
-            .mobile-subjects {
-                display: flex;
-            }
-
-            .sidebar-right {
-                display: none;
-            }
-
-            .modal-box {
-                position: fixed;
-                top: 52px;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                width: 100%;
-                max-width: 100%;
-                height: calc(100dvh - 52px);
-                max-height: calc(100dvh - 52px);
-                margin: 0;
-                border-radius: 0;
-                z-index: 100;
-            }
-
-            .messagerie-body {
-                flex-direction: column;
-            }
-
-            .contacts-panel {
-                width: 100%;
-                height: 44px;
-                max-height: 44px;
-                border-right: none;
-                border-bottom: 1px solid #3d3f58;
-                flex-direction: row;
-                overflow-x: auto;
-                overflow-y: hidden;
-            }
-
-            .contacts-panel-title {
-                display: none;
-            }
-
-            .contacts-list {
-                display: flex;
-                flex-direction: row;
-            }
-
-            .contact-item {
-                white-space: nowrap;
-                padding: 6px 12px;
-                border-bottom: none;
-                border-right: 1px solid #2b2c40;
-                font-size: 12px;
-            }
-
-            .discussion-zone {
-                flex: 1;
-                min-height: 0;
-                height: 100%;
-            }
-
-            .chat-messages {
-                flex: 1;
-                min-height: 0;
-                padding: 10px;
-            }
-
-            .chat-input-zone {
-                padding: 8px;
-            }
-
-            .chat-input-zone input {
-                padding: 10px 14px;
-                font-size: 15px;
-            }
+            body { flex-direction: column; height: 100vh; height: 100dvh; }
+            .sidebar-left { width: 100%; height: 52px; flex-direction: row; border-right: none; border-bottom: 1px solid #3d3f58; order: 1; flex-shrink: 0; }
+            .sidebar-left > div:first-child { display: flex; flex: 1; }
+            .left-btn { writing-mode: horizontal-tb; transform: none; padding: 10px 5px; border-bottom: none; border-right: 1px solid #3d3f58; font-size: 13px; flex: 1; }
+            .bottom-left-group { flex-direction: row; }
+            .add-friend-btn { width: 48px; padding: 8px 0; border-top: none; border-left: 1px solid #3d3f58; font-size: 20px; }
+            .settings-btn { width: 48px; padding: 8px 0; border-top: none; border-left: 1px solid #3d3f58; }
+            .main-content { order: 2; padding: 12px; flex: 1; width: 100%; overflow-y: auto; }
+            .mobile-subjects { display: flex; }
+            .sidebar-right { display: none; }
+            .modal-box { position: fixed; top: 52px; left: 0; right: 0; bottom: 0; width: 100%; max-width: 100%; height: calc(100dvh - 52px); max-height: calc(100dvh - 52px); margin: 0; border-radius: 0; z-index: 100; }
+            .messagerie-body { flex-direction: column; }
+            .contacts-panel { width: 100%; height: 44px; max-height: 44px; border-right: none; border-bottom: 1px solid #3d3f58; flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+            .contacts-panel-title { display: none; }
+            .contacts-list { display: flex; flex-direction: row; }
+            .contact-item { white-space: nowrap; padding: 6px 12px; border-bottom: none; border-right: 1px solid #2b2c40; font-size: 12px; }
+            .discussion-zone { flex: 1; min-height: 0; height: 100%; }
+            .chat-messages { flex: 1; min-height: 0; padding: 10px; }
+            .chat-input-zone { padding: 8px; }
+            .chat-input-zone input { padding: 10px 14px; font-size: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Barre latérale Gauche -->
+    <!-- Bandeau Flash d'annonce Admin -->
+    <div id="bandeau-annonce" class="admin-banner"></div>
+
+    <!-- Barre Gauche (Haut sur mobile) -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
@@ -959,7 +765,7 @@
             </div>
         </div>
 
-        <!-- 4. Panneau Admin avec déverrouillage par 6767 -->
+        <!-- 4. Panneau Admin (Déverrouillage par 6767) -->
         <div id="admin-panel">
             <h3>Panel Admin</h3>
             <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code secret :</p>
@@ -967,8 +773,6 @@
             <br>
             <button style="background-color: #ff9f43; color: #1e1e2e; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="validerPin()">Valider</button>
             <p id="message-pin" style="margin-top: 12px; font-weight: bold; font-size: 14px;"></p>
-            
-            <!-- Ce bouton n'apparaît QUE si le code 6767 a été entré -->
             <button id="btn-admin-secret" class="btn-access-admin" onclick="allerVersAdmin()">👑 Ouvrir Panel Admin</button>
         </div>
     </div>
@@ -990,10 +794,7 @@
             <button onclick="ouvrirAdmin()">Panel Admin</button>
         </div>
 
-        <!-- Langue -->
-        <button class="right-item" onclick="toggleMenu('menu-langues')" style="color: #00d2d3; font-weight: bold;">
-            Langue ▾
-        </button>
+        <button class="right-item" onclick="toggleMenu('menu-langues')" style="color: #00d2d3; font-weight: bold;">Langue ▾</button>
         <div class="sub-menu" id="menu-langues">
             <button class="sub-item" onclick="ouvrirMatiere('Anglais')">🇬🇧 Anglais</button>
             <button class="sub-item" onclick="ouvrirMatiere('Espagnol')">🇪🇸 Espagnol</button>
@@ -1001,10 +802,7 @@
             <button class="sub-item" onclick="ouvrirMatiere('Latin-Grec')">🏛️ Latin / Grec</button>
         </div>
 
-        <!-- Science -->
-        <button class="right-item" onclick="toggleMenu('menu-sciences')" style="color: #ff9f43; font-weight: bold;">
-            Science ▾
-        </button>
+        <button class="right-item" onclick="toggleMenu('menu-sciences')" style="color: #ff9f43; font-weight: bold;">Science ▾</button>
         <div class="sub-menu" id="menu-sciences">
             <button class="sub-item" onclick="ouvrirMatiere('Maths')">📐 Maths</button>
             <button class="sub-item" onclick="ouvrirMatiere('Physique-Chimie')">🧪 Physique-Chimie</button>
@@ -1012,10 +810,7 @@
             <button class="sub-item" onclick="ouvrirMatiere('Technologie')">💻 Technologie</button>
         </div>
 
-        <!-- Culture -->
-        <button class="right-item" onclick="toggleMenu('menu-culture')" style="color: #1dd1a1; font-weight: bold;">
-            Culture ▾
-        </button>
+        <button class="right-item" onclick="toggleMenu('menu-culture')" style="color: #1dd1a1; font-weight: bold;">Culture ▾</button>
         <div class="sub-menu" id="menu-culture">
             <button class="sub-item" onclick="ouvrirMatiere('Histoire')">📜 Histoire</button>
             <button class="sub-item" onclick="ouvrirMatiere('Géographie')">🌍 Géographie</button>
@@ -1034,6 +829,35 @@
         if (!monPseudo) {
             window.location.href = "index.html";
         }
+
+        // Vérification de sécurité : si le compte est banni par l'admin
+        async function verifierSiBanni() {
+            try {
+                const res = await fetch(`${FIREBASE_URL}/comptes/${encodeURIComponent(monPseudo.toLowerCase())}/banni.json`);
+                const banni = await res.json();
+                if (banni === true) {
+                    alert("🚫 Ton compte a été banni par l'administrateur.");
+                    seDeconnecter();
+                }
+            } catch (e) {}
+        }
+        verifierSiBanni();
+
+        // Récupérer et afficher l'annonce générale de l'admin
+        async function afficherAnnonceGenerale() {
+            try {
+                const res = await fetch(`${FIREBASE_URL}/annonce.json`);
+                const texte = await res.json();
+                const bandeau = document.getElementById("bandeau-annonce");
+                if (texte) {
+                    bandeau.textContent = "📢 Annonce : " + texte;
+                    bandeau.style.display = "block";
+                } else {
+                    bandeau.style.display = "none";
+                }
+            } catch (e) {}
+        }
+        afficherAnnonceGenerale();
 
         document.getElementById("icone-profil").textContent = monPseudo.slice(0, 2).toUpperCase();
         document.getElementById("nom-utilisateur").textContent = monPseudo;
@@ -1350,7 +1174,7 @@
         }
 
         // =======================================================
-        // 📚 NAVIGATION & ADMIN (Code secret: 6767)
+        // 📚 NAVIGATION & ADMIN (Code: 6767)
         // =======================================================
         function toggleMenu(idMenu) {
             const menu = document.getElementById(idMenu);
@@ -1378,7 +1202,6 @@
             document.getElementById("code-pin").value = "";
         }
 
-        // Vérification avec le code 6767
         function validerPin() {
             const code = document.getElementById("code-pin").value;
             const reponse = document.getElementById("message-pin");
@@ -1387,11 +1210,7 @@
             if (code === "6767") {
                 reponse.style.color = "#1dd1a1";
                 reponse.innerHTML = "✅ Code validé ! Option admin déverrouillée :";
-                
-                // Mémorise la session admin autorisée
                 sessionStorage.setItem("admin_session", "active");
-                
-                // Affiche le bouton d'accès secret
                 boutonSecret.style.display = "block";
             } else {
                 reponse.style.color = "#ee5253";
@@ -1404,9 +1223,11 @@
             window.location.href = "admin.html";
         }
 
-        // Rafraîchissement automatique
+        // Rafraîchissements automatiques
         synchroniserDemandesEtAmis();
         setInterval(synchroniserDemandesEtAmis, 2500);
+        setInterval(afficherAnnonceGenerale, 6000);
+        setInterval(verifierSiBanni, 5000);
         setInterval(() => {
             if (document.getElementById("chat-entraide").style.display === "flex") {
                 chargerMessagesEnLigne(false);
