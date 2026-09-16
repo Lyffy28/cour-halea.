@@ -1,283 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cour-halea - Authentification</title>
-    <!-- SDK EmailJS -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: #0f172a;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-            color: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .auth-card {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
-            border-radius: 20px;
-            padding: 32px 28px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-        }
-
-        .auth-title {
-            font-size: 24px;
-            font-weight: 800;
-            text-align: center;
-            color: #38bdf8;
-            margin-bottom: 6px;
-        }
-
-        .auth-subtitle {
-            font-size: 13px;
-            text-align: center;
-            color: #94a3b8;
-            margin-bottom: 24px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #cbd5e1;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 16px;
-            background: #0b1120;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-            color: #ffffff;
-            font-size: 14px;
-            outline: none;
-            transition: all 0.2s;
-        }
-
-        input:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
-        }
-
-        .input-code {
-            text-align: center;
-            font-size: 22px;
-            letter-spacing: 8px;
-            font-family: monospace;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #0284c7, #0369a1);
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 10px;
-        }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #94a3b8;
-            padding: 10px;
-            border-radius: 8px;
-            width: 100%;
-            font-size: 13px;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-
-        .btn-secondary:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .switch-links {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 18px;
-            font-size: 12px;
-        }
-
-        .switch-link {
-            color: #38bdf8;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .switch-link:hover {
-            text-decoration: underline;
-        }
-
-        .status-msg {
-            margin-top: 15px;
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            text-align: center;
-            display: none;
-        }
-
-        .status-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid #ef4444;
-            color: #f87171;
-            display: block;
-        }
-
-        .status-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid #10b981;
-            color: #34d399;
-            display: block;
-        }
-
-        .footer-note {
-            text-align: center;
-            font-size: 11px;
-            color: #64748b;
-            margin-top: 24px;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="auth-card">
-
-        <!-- 1. VUE : CONNEXION -->
-        <div id="vue-connexion">
-            <h2 class="auth-title">Connexion</h2>
-            <p class="auth-subtitle">Accède à ton espace d'étude Cour-halea</p>
-
-            <form onsubmit="traiterConnexion(event)">
-                <div class="form-group">
-                    <label>Pseudo ou E-mail</label>
-                    <input type="text" id="connexion-identifiant" required placeholder="Pseudo ou e-mail">
-                </div>
-                <div class="form-group">
-                    <label>Mot de passe</label>
-                    <input type="password" id="connexion-mdp" required placeholder="••••••••">
-                </div>
-                <button type="submit" class="btn-primary" id="btn-submit-connexion">Se connecter</button>
-            </form>
-
-            <div class="switch-links">
-                <span class="switch-link" onclick="basculerVue('vue-oubli')">Mot de passe oublié ?</span>
-                <span class="switch-link" onclick="basculerVue('vue-inscription')">Créer un compte</span>
-            </div>
-        </div>
-
-        <!-- 2. VUE : INSCRIPTION -->
-        <div id="vue-inscription" style="display: none;">
-            <h2 class="auth-title">Inscription</h2>
-            <p class="auth-subtitle">Un code de vérification te sera envoyé par e-mail</p>
-
-            <form onsubmit="demanderCodeInscription(event)">
-                <div class="form-group">
-                    <label>Pseudo</label>
-                    <input type="text" id="inscr-pseudo" required placeholder="Ton pseudo">
-                </div>
-                <div class="form-group">
-                    <label>Adresse e-mail</label>
-                    <input type="email" id="inscr-email" required placeholder="nom@exemple.com">
-                </div>
-                <div class="form-group">
-                    <label>Mot de passe</label>
-                    <input type="password" id="inscr-mdp" required minlength="4" placeholder="Minimum 4 caractères">
-                </div>
-                <button type="submit" class="btn-primary" id="btn-submit-inscr">Recevoir le code</button>
-            </form>
-
-            <div class="switch-links" style="justify-content: center;">
-                <span class="switch-link" onclick="basculerVue('vue-connexion')">Déjà un compte ? Se connecter</span>
-            </div>
-        </div>
-
-        <!-- 3. VUE : MOT DE PASSE OUBLIÉ -->
-        <div id="vue-oubli" style="display: none;">
-            <h2 class="auth-title">Récupération</h2>
-            <p class="auth-subtitle">Reçois un code pour réinitialiser ton mot de passe</p>
-
-            <form onsubmit="demanderCodeRecuperation(event)">
-                <div class="form-group">
-                    <label>Adresse e-mail du compte</label>
-                    <input type="email" id="oubli-email" required placeholder="nom@exemple.com">
-                </div>
-                <button type="submit" class="btn-primary" id="btn-submit-oubli">Envoyer le code</button>
-            </form>
-
-            <div class="switch-links" style="justify-content: center;">
-                <span class="switch-link" onclick="basculerVue('vue-connexion')">Retour à la connexion</span>
-            </div>
-        </div>
-
-        <!-- 4. VUE : VALIDATION DU CODE -->
-        <div id="vue-validation-code" style="display: none;">
-            <h2 class="auth-title">Vérification</h2>
-            <p class="auth-subtitle" id="texte-info-code">Entre le code reçu par e-mail</p>
-
-            <form onsubmit="validerCodeRecu(event)">
-                <div class="form-group">
-                    <label>Code reçu (6 chiffres)</label>
-                    <input type="text" id="input-code-verif" class="input-code" maxlength="6" required placeholder="••••••">
-                </div>
-
-                <div class="form-group" id="champ-nouveau-mdp" style="display: none;">
-                    <label>Nouveau mot de passe</label>
-                    <input type="password" id="input-nouveau-mdp" minlength="4" placeholder="Nouveau mot de passe">
-                </div>
-
-                <button type="submit" class="btn-primary">Valider</button>
-                <button type="button" class="btn-secondary" onclick="basculerVue('vue-connexion')">Annuler</button>
-            </form>
-        </div>
-
-        <div id="boite-statut" class="status-msg"></div>
-
-        <div class="footer-note">
-            Créé par <strong>ZETA|Luffy</strong> de la team <strong>WEBNEX</strong>
-        </div>
-    </div>
-
-    <script>
+<script>
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
 
         // Configuration EmailJS avec tes clés réelles
@@ -285,7 +6,11 @@
         const EMAILJS_SERVICE_ID = "service_lc5s6yo";
         const EMAILJS_TEMPLATE_ID = "cf97ges";
 
-        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        try {
+            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        } catch (e) {
+            console.error("Erreur init EmailJS", e);
+        }
 
         let actionEnCours = null;
         let codeAttendu = null;
@@ -296,6 +21,7 @@
             const boite = document.getElementById("boite-statut");
             boite.className = "status-msg " + (type === "success" ? "status-success" : "status-error");
             boite.textContent = texte;
+            boite.style.display = "block";
         }
 
         function masquerMessage() {
@@ -313,6 +39,7 @@
             return Math.floor(100000 + Math.random() * 900000).toString();
         }
 
+        // --- 1. CONNEXION NORMALE ---
         async function traiterConnexion(e) {
             e.preventDefault();
             masquerMessage();
@@ -333,7 +60,8 @@
                 }
 
                 const compteTrouve = Object.values(comptes).find(c => 
-                    c.pseudo.toLowerCase() === identifiant || (c.email && c.email.toLowerCase() === identifiant)
+                    (c.pseudo && c.pseudo.toLowerCase() === identifiant) || 
+                    (c.email && c.email.toLowerCase() === identifiant)
                 );
 
                 if (!compteTrouve || compteTrouve.password !== mdp) {
@@ -350,13 +78,14 @@
                 localStorage.setItem("utilisateur_email", compteTrouve.email || "");
                 window.location.href = "accueil.html";
             } catch (err) {
-                afficherMessage("Erreur de connexion au serveur.");
+                afficherMessage("Erreur de connexion à Firebase.");
             } finally {
                 btn.textContent = "Se connecter";
                 btn.disabled = false;
             }
         }
 
+        // --- 2. INSCRIPTION AVEC CODE ---
         async function demanderCodeInscription(e) {
             e.preventDefault();
             masquerMessage();
@@ -374,7 +103,8 @@
                 const comptes = await res.json() || {};
 
                 const existeDeja = Object.values(comptes).some(c => 
-                    c.pseudo.toLowerCase() === pseudo.toLowerCase() || (c.email && c.email.toLowerCase() === email)
+                    (c.pseudo && c.pseudo.toLowerCase() === pseudo.toLowerCase()) || 
+                    (c.email && c.email.toLowerCase() === email)
                 );
 
                 if (existeDeja) {
@@ -387,24 +117,31 @@
                 actionEnCours = "inscription";
                 donneesTemporaires = { pseudo, email, password: mdp };
 
-                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                // On envoie à la fois to_email et email pour être 100% sûr que le template le reçoive
+                const reponseEmailJS = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_name: pseudo,
                     to_email: email,
+                    email: email,
                     code: codeAttendu
                 });
+
+                console.log("Succès EmailJS :", reponseEmailJS);
 
                 document.getElementById("champ-nouveau-mdp").style.display = "none";
                 document.getElementById("texte-info-code").textContent = `Code envoyé à ${email}`;
                 basculerVue("vue-validation-code");
-                afficherMessage("Code envoyé par e-mail !", "success");
+                afficherMessage("Code envoyé avec succès ! Vérifie tes spams.", "success");
             } catch (err) {
-                afficherMessage("Erreur lors de l'envoi de l'e-mail. Vérifie ton adresse mail.");
+                console.error("Détail Erreur EmailJS :", err);
+                const detail = err.text || err.message || JSON.stringify(err);
+                afficherMessage(`Échec EmailJS : ${detail}`);
             } finally {
                 btn.textContent = "Recevoir le code";
                 btn.disabled = false;
             }
         }
 
+        // --- 3. MOT DE PASSE OUBLIÉ AVEC CODE ---
         async function demanderCodeRecuperation(e) {
             e.preventDefault();
             masquerMessage();
@@ -412,7 +149,7 @@
             const email = document.getElementById("oubli-email").value.trim().toLowerCase();
             const btn = document.getElementById("btn-submit-oubli");
 
-            btn.textContent = "Vérification...";
+            btn.textContent = "Recherche du compte...";
             btn.disabled = true;
 
             try {
@@ -424,7 +161,7 @@
                 );
 
                 if (!cleCompte) {
-                    afficherMessage("Aucun compte associé à cette adresse e-mail.");
+                    afficherMessage("Aucun compte avec cette adresse mail. Crée d'abord un compte via 'Créer un compte'.");
                     return;
                 }
 
@@ -437,21 +174,25 @@
                 await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_name: compte.pseudo,
                     to_email: email,
+                    email: email,
                     code: codeAttendu
                 });
 
                 document.getElementById("champ-nouveau-mdp").style.display = "block";
                 document.getElementById("texte-info-code").textContent = `Code envoyé à ${email}`;
                 basculerVue("vue-validation-code");
-                afficherMessage("Code envoyé par e-mail !", "success");
+                afficherMessage("Code envoyé par e-mail ! (Pense aux spams)", "success");
             } catch (err) {
-                afficherMessage("Impossible d'envoyer l'e-mail.");
+                console.error("Détail Erreur EmailJS :", err);
+                const detail = err.text || err.message || JSON.stringify(err);
+                afficherMessage(`Échec EmailJS : ${detail}`);
             } finally {
                 btn.textContent = "Envoyer le code";
                 btn.disabled = false;
             }
         }
 
+        // --- 4. VALIDATION DU CODE ---
         async function validerCodeRecu(e) {
             e.preventDefault();
             masquerMessage();
@@ -464,7 +205,7 @@
             }
 
             if (saisie !== codeAttendu) {
-                afficherMessage("Code incorrect. Pense à vérifier tes spams.");
+                afficherMessage("Code incorrect. Vérifie bien les 6 chiffres.");
                 return;
             }
 
@@ -480,7 +221,7 @@
                     })
                 });
 
-                alert("Compte validé avec succès ! Connecte-toi.");
+                alert("Compte validé avec succès ! Tu peux te connecter.");
                 basculerVue("vue-connexion");
             } 
             else if (actionEnCours === "oubli") {
@@ -500,5 +241,3 @@
             }
         }
     </script>
-</body>
-</html>
