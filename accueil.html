@@ -238,7 +238,7 @@
         #admin-panel input {
             padding: 10px;
             font-size: 18px;
-            width: 120px;
+            width: 130px;
             text-align: center;
             border-radius: 6px;
             border: 1px solid #484b6a;
@@ -247,6 +247,26 @@
             letter-spacing: 4px;
             margin: 15px 0;
             outline: none;
+        }
+
+        /* Bouton débloqué par le code 6767 */
+        .btn-access-admin {
+            display: none;
+            background-color: #1dd1a1;
+            color: #1e1e2e;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            transition: 0.2s;
+        }
+
+        .btn-access-admin:hover {
+            background-color: #10ac84;
         }
 
         .chat-header {
@@ -819,7 +839,7 @@
 </head>
 <body>
 
-    <!-- Barre latérale Gauche (Haut sur mobile) -->
+    <!-- Barre latérale Gauche -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
@@ -939,14 +959,17 @@
             </div>
         </div>
 
-        <!-- 4. Panneau Admin -->
+        <!-- 4. Panneau Admin avec déverrouillage par 6767 -->
         <div id="admin-panel">
             <h3>Panel Admin</h3>
-            <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code à 4 chiffres :</p>
+            <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code secret :</p>
             <input type="password" id="code-pin" maxlength="4" placeholder="••••">
             <br>
-            <button style="background-color: #ff9f43; color: #1e1e2e; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="validerPin()">Accéder</button>
+            <button style="background-color: #ff9f43; color: #1e1e2e; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;" onclick="validerPin()">Valider</button>
             <p id="message-pin" style="margin-top: 12px; font-weight: bold; font-size: 14px;"></p>
+            
+            <!-- Ce bouton n'apparaît QUE si le code 6767 a été entré -->
+            <button id="btn-admin-secret" class="btn-access-admin" onclick="allerVersAdmin()">👑 Ouvrir Panel Admin</button>
         </div>
     </div>
 
@@ -1022,8 +1045,11 @@
         }
 
         function ouvrirProfilMobile() {
-            if (confirm(`Compte : ${monPseudo}\n${monEmail}\n\nVeux-tu te déconnecter ?`)) {
+            const reponse = confirm(`Compte : ${monPseudo}\n${monEmail}\n\nAppuie sur "OK" pour te déconnecter, ou "Annuler" pour ouvrir le code admin.`);
+            if (reponse) {
                 seDeconnecter();
+            } else {
+                ouvrirAdmin();
             }
         }
 
@@ -1324,7 +1350,7 @@
         }
 
         // =======================================================
-        // 📚 NAVIGATION & ADMIN
+        // 📚 NAVIGATION & ADMIN (Code secret: 6767)
         // =======================================================
         function toggleMenu(idMenu) {
             const menu = document.getElementById(idMenu);
@@ -1347,25 +1373,35 @@
             fermerFenetres();
             document.getElementById("dropdown-menu").style.display = "none";
             document.getElementById("admin-panel").style.display = "block";
+            document.getElementById("btn-admin-secret").style.display = "none";
+            document.getElementById("message-pin").textContent = "";
+            document.getElementById("code-pin").value = "";
         }
 
+        // Vérification avec le code 6767
         function validerPin() {
             const code = document.getElementById("code-pin").value;
             const reponse = document.getElementById("message-pin");
+            const boutonSecret = document.getElementById("btn-admin-secret");
             
-            if (code === "1234") {
+            if (code === "6767") {
                 reponse.style.color = "#1dd1a1";
-                reponse.innerHTML = "✅ Code bon ! Redirection...";
+                reponse.innerHTML = "✅ Code validé ! Option admin déverrouillée :";
                 
+                // Mémorise la session admin autorisée
                 sessionStorage.setItem("admin_session", "active");
                 
-                setTimeout(() => {
-                    window.location.href = "admin.html";
-                }, 600);
+                // Affiche le bouton d'accès secret
+                boutonSecret.style.display = "block";
             } else {
                 reponse.style.color = "#ee5253";
                 reponse.innerHTML = "❌ Code faux !";
+                boutonSecret.style.display = "none";
             }
+        }
+
+        function allerVersAdmin() {
+            window.location.href = "admin.html";
         }
 
         // Rafraîchissement automatique
