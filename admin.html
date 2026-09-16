@@ -61,10 +61,10 @@
             gap: 20px;
         }
 
-        /* 1. Statistiques */
+        /* Stats */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
         }
 
@@ -83,13 +83,13 @@
         }
 
         .stat-card p {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
             color: #00d2d3;
             margin-top: 5px;
         }
 
-        /* Cartes de sections */
+        /* Cartes */
         .card {
             background-color: #26273b;
             border: 1px solid #3d3f58;
@@ -106,7 +106,6 @@
             padding-bottom: 8px;
         }
 
-        /* Formulaires */
         .form-row {
             display: flex;
             gap: 10px;
@@ -138,14 +137,11 @@
             transition: 0.2s;
         }
 
-        .btn-primary { background-color: #00d2d3; color: #1e1e2e; }
         .btn-success { background-color: #1dd1a1; color: #1e1e2e; }
         .btn-danger { background-color: #ee5253; color: white; }
         .btn-warning { background-color: #ff9f43; color: #1e1e2e; }
-
         .btn:hover { opacity: 0.85; }
 
-        /* Tables */
         .admin-table {
             width: 100%;
             border-collapse: collapse;
@@ -189,9 +185,8 @@
             font-weight: bold;
         }
 
-        /* Modération chat scrollable */
         .chat-mod-box {
-            max-height: 250px;
+            max-height: 220px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -229,34 +224,62 @@
 
     <div class="container">
 
-        <!-- 1. Statistiques -->
+        <!-- Statistiques -->
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>👥 Inscrits</h3>
                 <p id="stat-utilisateurs">0</p>
             </div>
             <div class="stat-card">
-                <h3>💬 Messages envoyés</h3>
+                <h3>💬 Messages</h3>
                 <p id="stat-messages">0</p>
             </div>
             <div class="stat-card">
-                <h3>📚 Fiches de cours</h3>
+                <h3>📚 Leçons</h3>
                 <p id="stat-cours">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>📅 Devoirs</h3>
+                <p id="stat-devoirs">0</p>
             </div>
         </div>
 
-        <!-- 2. Annonce Générale (Bandeau Flash) -->
+        <!-- Annonce Flash -->
         <div class="card">
             <h2>📢 Publier une annonce flash sur le site</h2>
             <div class="form-row">
-                <input type="text" id="input-annonce" placeholder="Texte de l'annonce (ex: Devoir de SVT vendredi !)" style="flex: 1;">
-                <button class="btn btn-warning" onclick="publierAnnonce()">Publier l'annonce</button>
-                <button class="btn btn-danger" onclick="supprimerAnnonce()">Retirer l'annonce</button>
+                <input type="text" id="input-annonce" placeholder="Texte de l'annonce..." style="flex: 1;">
+                <button class="btn btn-warning" onclick="publierAnnonce()">Publier</button>
+                <button class="btn btn-danger" onclick="supprimerAnnonce()">Retirer</button>
             </div>
             <p id="statut-annonce" style="font-size: 12px; color: #a4b0be; margin-top: 5px;">Annonce actuelle : Aucune</p>
         </div>
 
-        <!-- 3. Gestion des comptes & Bannissements -->
+        <!-- Agenda / Gestionnaire de Devoirs -->
+        <div class="card">
+            <h2>📅 Ajouter un devoir ou un contrôle à l'agenda</h2>
+            <div class="form-row">
+                <select id="devoir-matiere">
+                    <option value="Maths">📐 Maths</option>
+                    <option value="Français">🇫🇷 Français</option>
+                    <option value="Anglais">🇬🇧 Anglais</option>
+                    <option value="Espagnol">🇪🇸 Espagnol</option>
+                    <option value="Physique-Chimie">🧪 Physique-Chimie</option>
+                    <option value="SVT">🌿 SVT</option>
+                    <option value="Histoire-Géo">📜 Histoire-Géo</option>
+                    <option value="Autre">📌 Autre</option>
+                </select>
+                <input type="text" id="devoir-titre" placeholder="Titre (ex: Contrôle chapitre 3)" style="flex: 1;">
+                <input type="text" id="devoir-date" placeholder="Date (ex: Vendredi 20)" style="width: 140px;">
+            </div>
+            <textarea id="devoir-desc" placeholder="Détails (ex: Exercices 4 et 5 page 62)..." rows="2" style="width: 100%; margin-bottom: 10px;"></textarea>
+            <button class="btn btn-success" onclick="ajouterDevoir()">Ajouter à l'agenda</button>
+
+            <h3 style="font-size: 13px; color: #a4b0be; margin: 15px 0 8px 0;">Devoirs en cours :</h3>
+            <ul id="liste-devoirs-admin" style="list-style: none; display: flex; flex-direction: column; gap: 6px;"></ul>
+        </div>
+
+        <!-- Gestion des comptes -->
         <div class="card">
             <h2>👥 Gestion des comptes utilisateurs</h2>
             <div style="overflow-x: auto;">
@@ -275,20 +298,20 @@
             </div>
         </div>
 
-        <!-- 4. Modération du Salon de Chat -->
+        <!-- Modération Chat -->
         <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <h2 style="margin: 0; border: none; padding: 0;">💬 Modération du chat en direct</h2>
-                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 11px;" onclick="viderToutLeChat()">🗑️ Effacer tous les messages</button>
+                <h2 style="margin: 0; border: none; padding: 0;">💬 Modération du chat</h2>
+                <button class="btn btn-danger" style="padding: 6px 12px; font-size: 11px;" onclick="viderToutLeChat()">🗑️ Effacer tout</button>
             </div>
             <div class="chat-mod-box" id="chat-mod-list">
                 <p style="color: #a4b0be; font-size: 12px;">Chargement des messages...</p>
             </div>
         </div>
 
-        <!-- 5. Gestionnaire de fiches de cours -->
+        <!-- Fiches de cours -->
         <div class="card">
-            <h2>📚 Ajouter une fiche de cours</h2>
+            <h2>📚 Fiches de cours</h2>
             <div class="form-row">
                 <select id="cours-matiere">
                     <option value="Anglais">🇬🇧 Anglais</option>
@@ -302,10 +325,10 @@
                 </select>
                 <input type="text" id="cours-titre" placeholder="Titre de la leçon..." style="flex: 1;">
             </div>
-            <textarea id="cours-contenu" placeholder="Contenu du cours ou devoirs à réviser..." rows="3" style="width: 100%; margin-bottom: 10px;"></textarea>
+            <textarea id="cours-contenu" placeholder="Contenu..." rows="3" style="width: 100%; margin-bottom: 10px;"></textarea>
             <button class="btn btn-success" onclick="ajouterCours()">Ajouter la leçon</button>
 
-            <h3 style="font-size: 13px; color: #a4b0be; margin: 15px 0 8px 0;">Fiches déjà publiées :</h3>
+            <h3 style="font-size: 13px; color: #a4b0be; margin: 15px 0 8px 0;">Fiches publiées :</h3>
             <ul id="liste-cours" style="list-style: none; display: flex; flex-direction: column; gap: 6px;"></ul>
         </div>
 
@@ -314,15 +337,12 @@
     <script>
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
 
-        // ==========================================
-        // 1. STATS & ANNONCE
-        // ==========================================
+        // Annonce
         async function chargerAnnonce() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/annonce.json`);
                 const texte = await res.json();
-                const p = document.getElementById("statut-annonce");
-                p.textContent = texte ? `Annonce active : "${texte}"` : "Annonce actuelle : Aucune";
+                document.getElementById("statut-annonce").textContent = texte ? `Annonce active : "${texte}"` : "Annonce actuelle : Aucune";
             } catch (e) {}
         }
 
@@ -332,7 +352,7 @@
             await fetch(`${FIREBASE_URL}/annonce.json`, { method: "PUT", body: JSON.stringify(texte) });
             document.getElementById("input-annonce").value = "";
             chargerAnnonce();
-            alert("Annonce publiée en direct sur tout le site !");
+            alert("Annonce publiée !");
         }
 
         async function supprimerAnnonce() {
@@ -341,9 +361,72 @@
             alert("Annonce retirée !");
         }
 
-        // ==========================================
-        // 2. COMPTES & BANS
-        // ==========================================
+        // Devoirs
+        async function chargerDevoirsAdmin() {
+            try {
+                const res = await fetch(`${FIREBASE_URL}/devoirs.json`);
+                const data = await res.json();
+                const ul = document.getElementById("liste-devoirs-admin");
+                const statDevoirs = document.getElementById("stat-devoirs");
+
+                if (!data) {
+                    ul.innerHTML = `<li style="color:#a4b0be; font-size:12px;">Aucun devoir programmé.</li>`;
+                    statDevoirs.textContent = 0;
+                    return;
+                }
+
+                const cles = Object.keys(data);
+                statDevoirs.textContent = cles.length;
+                ul.innerHTML = "";
+
+                cles.forEach(id => {
+                    const d = data[id];
+                    const li = document.createElement("li");
+                    li.style.display = "flex";
+                    li.style.justifyContent = "space-between";
+                    li.style.padding = "8px";
+                    li.style.backgroundColor = "#1e1e2e";
+                    li.style.borderRadius = "6px";
+                    li.style.fontSize = "13px";
+
+                    li.innerHTML = `
+                        <span><strong>[${d.matiere}]</strong> ${d.titre} (Pour le ${d.dateLimite})</span>
+                        <button class="btn btn-danger" style="padding:2px 8px; font-size:11px;" onclick="supprimerDevoir('${id}')">Supprimer</button>
+                    `;
+                    ul.appendChild(li);
+                });
+            } catch (e) {}
+        }
+
+        async function ajouterDevoir() {
+            const matiere = document.getElementById("devoir-matiere").value;
+            const titre = document.getElementById("devoir-titre").value.trim();
+            const dateLimite = document.getElementById("devoir-date").value.trim();
+            const description = document.getElementById("devoir-desc").value.trim();
+
+            if (!titre || !dateLimite) {
+                alert("Remplis le titre et la date limite.");
+                return;
+            }
+
+            await fetch(`${FIREBASE_URL}/devoirs.json`, {
+                method: "POST",
+                body: JSON.stringify({ matiere, titre, dateLimite, description })
+            });
+
+            document.getElementById("devoir-titre").value = "";
+            document.getElementById("devoir-date").value = "";
+            document.getElementById("devoir-desc").value = "";
+            chargerDevoirsAdmin();
+            alert("Devoir ajouté à l'agenda !");
+        }
+
+        async function supprimerDevoir(id) {
+            await fetch(`${FIREBASE_URL}/devoirs/${id}.json`, { method: "DELETE" });
+            chargerDevoirsAdmin();
+        }
+
+        // Comptes
         async function chargerComptes() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/comptes.json`);
@@ -403,9 +486,7 @@
             chargerComptes();
         }
 
-        // ==========================================
-        // 3. MODÉRATION DU CHAT
-        // ==========================================
+        // Chat
         async function chargerChatMod() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/messages.json`);
@@ -446,15 +527,12 @@
         }
 
         async function viderToutLeChat() {
-            if (!confirm("Voulez-vous vraiment effacer tout l'historique de la discussion ?")) return;
+            if (!confirm("Effacer tout l'historique ?")) return;
             await fetch(`${FIREBASE_URL}/messages.json`, { method: "DELETE" });
             chargerChatMod();
-            alert("Chat vidé avec succès.");
         }
 
-        // ==========================================
-        // 4. COURS ET FICHES
-        // ==========================================
+        // Cours
         async function chargerFichesCours() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/lecons.json`);
@@ -496,10 +574,7 @@
             const titre = document.getElementById("cours-titre").value.trim();
             const contenu = document.getElementById("cours-contenu").value.trim();
 
-            if (!titre || !contenu) {
-                alert("Renseigne un titre et un contenu pour la leçon.");
-                return;
-            }
+            if (!titre || !contenu) return;
 
             await fetch(`${FIREBASE_URL}/lecons.json`, {
                 method: "POST",
@@ -509,7 +584,7 @@
             document.getElementById("cours-titre").value = "";
             document.getElementById("cours-contenu").value = "";
             chargerFichesCours();
-            alert("Leçon publiée !");
+            alert("Leçon ajoutée !");
         }
 
         async function supprimerFiche(id) {
@@ -522,8 +597,8 @@
             window.location.href = "accueil.html";
         }
 
-        // Lancement et rafraîchissement
         chargerAnnonce();
+        chargerDevoirsAdmin();
         chargerComptes();
         chargerChatMod();
         chargerFichesCours();

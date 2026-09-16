@@ -21,7 +21,6 @@
             overflow: hidden;
         }
 
-        /* Bandeau d'alerte générale Admin */
         .admin-banner {
             display: none;
             background-color: #ff9f43;
@@ -54,8 +53,8 @@
             border: none;
             border-bottom: 1px solid #3d3f58;
             color: #c8d6e5;
-            padding: 25px 5px;
-            font-size: 13px;
+            padding: 20px 5px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
             text-align: center;
@@ -149,6 +148,34 @@
             border-color: #00d2d3;
         }
 
+        /* Résultats de la recherche */
+        #search-results-box {
+            display: none;
+            width: 100%;
+            max-width: 550px;
+            background-color: #26273b;
+            border: 1px solid #00d2d3;
+            border-radius: 10px;
+            margin-top: 10px;
+            padding: 12px;
+            max-height: 250px;
+            overflow-y: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            flex-shrink: 0;
+        }
+
+        .search-result-item {
+            padding: 8px 10px;
+            border-bottom: 1px solid #3d3f58;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .search-result-item:hover {
+            background-color: #343650;
+            color: #00d2d3;
+        }
+
         /* Matières sur mobile */
         .mobile-subjects {
             display: none;
@@ -203,11 +230,6 @@
             border-bottom: none;
         }
 
-        .mobile-sub-btn:active {
-            background-color: #2b2c40;
-            color: #00d2d3;
-        }
-
         /* Modales */
         .modal-box {
             display: none;
@@ -226,6 +248,7 @@
         #chat-ia { border: 1px solid #00d2d3; }
         #chat-entraide { border: 1px solid #ff9f43; }
         #friends-panel { border: 1px solid #1dd1a1; height: auto; max-height: 520px; padding-bottom: 15px; }
+        #devoirs-panel { border: 1px solid #feca57; }
 
         #admin-panel {
             display: none;
@@ -290,6 +313,46 @@
         }
 
         .close-btn:hover { color: #ee5253; }
+
+        /* Agenda & Devoirs */
+        .devoirs-body {
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .devoir-item {
+            background-color: #1e1e2e;
+            border: 1px solid #3d3f58;
+            border-left: 4px solid #feca57;
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .devoir-matiere {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #feca57;
+            font-weight: bold;
+        }
+
+        .devoir-titre {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .devoir-date {
+            font-size: 12px;
+            color: #ee5253;
+            font-weight: bold;
+            margin-top: 4px;
+        }
 
         /* Messagerie */
         .messagerie-body {
@@ -620,7 +683,7 @@
             body { flex-direction: column; height: 100vh; height: 100dvh; }
             .sidebar-left { width: 100%; height: 52px; flex-direction: row; border-right: none; border-bottom: 1px solid #3d3f58; order: 1; flex-shrink: 0; }
             .sidebar-left > div:first-child { display: flex; flex: 1; }
-            .left-btn { writing-mode: horizontal-tb; transform: none; padding: 10px 5px; border-bottom: none; border-right: 1px solid #3d3f58; font-size: 13px; flex: 1; }
+            .left-btn { writing-mode: horizontal-tb; transform: none; padding: 10px 5px; border-bottom: none; border-right: 1px solid #3d3f58; font-size: 12px; flex: 1; }
             .bottom-left-group { flex-direction: row; }
             .add-friend-btn { width: 48px; padding: 8px 0; border-top: none; border-left: 1px solid #3d3f58; font-size: 20px; }
             .settings-btn { width: 48px; padding: 8px 0; border-top: none; border-left: 1px solid #3d3f58; }
@@ -642,7 +705,7 @@
 </head>
 <body>
 
-    <!-- Bandeau Flash d'annonce Admin -->
+    <!-- Bandeau Flash Admin -->
     <div id="bandeau-annonce" class="admin-banner"></div>
 
     <!-- Barre Gauche (Haut sur mobile) -->
@@ -650,6 +713,7 @@
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
             <button class="left-btn" onclick="ouvrirChatIA()">🤖 Meta IA</button>
+            <button class="left-btn" onclick="ouvrirDevoirs()" style="color: #feca57;">📅 Agenda</button>
         </div>
         
         <div class="bottom-left-group">
@@ -663,7 +727,11 @@
 
     <!-- Centre de l'écran -->
     <div class="main-content">
-        <input type="text" class="search-bar" placeholder="Rechercher...">
+        <!-- Barre de recherche intelligente -->
+        <input type="text" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher un cours, un devoir, une matière..." oninput="filtrerContenuRecherche()">
+        
+        <!-- Fenêtre de résultats de recherche -->
+        <div id="search-results-box"></div>
 
         <!-- Matières sur Mobile -->
         <div class="mobile-subjects">
@@ -707,7 +775,18 @@
             </div>
         </div>
 
-        <!-- 1. Fenêtre Amis -->
+        <!-- Modal 1 : Agenda & Devoirs partagés -->
+        <div id="devoirs-panel" class="modal-box">
+            <div class="chat-header">
+                <span style="color: #feca57;">📅 Agenda & Devoirs à venir</span>
+                <button class="close-btn" onclick="fermerFenetres()">✕</button>
+            </div>
+            <div class="devoirs-body" id="devoirs-liste">
+                <p style="color: #a4b0be; font-size: 13px;">Chargement de l'agenda...</p>
+            </div>
+        </div>
+
+        <!-- Modal 2 : Amis -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
                 <span style="color: #1dd1a1;">👥 Demandes d'amis & Contacts</span>
@@ -727,7 +806,7 @@
             </div>
         </div>
 
-        <!-- 2. Salon de Messagerie -->
+        <!-- Modal 3 : Salon de Messagerie -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
                 <span style="color: #ff9f43;">💬 Salon de révision</span>
@@ -750,7 +829,7 @@
             </div>
         </div>
 
-        <!-- 3. Meta IA -->
+        <!-- Modal 4 : Meta IA -->
         <div id="chat-ia" class="modal-box">
             <div class="chat-header">
                 <span style="color: #00d2d3;">🤖 Meta IA - Assistant</span>
@@ -765,7 +844,7 @@
             </div>
         </div>
 
-        <!-- 4. Panneau Admin (Déverrouillage par 6767) -->
+        <!-- Modal 5 : Panel Admin (Code: 6767) -->
         <div id="admin-panel">
             <h3>Panel Admin</h3>
             <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code secret :</p>
@@ -830,7 +909,7 @@
             window.location.href = "index.html";
         }
 
-        // Vérification de sécurité : si le compte est banni par l'admin
+        // Vérification de bannissement
         async function verifierSiBanni() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/comptes/${encodeURIComponent(monPseudo.toLowerCase())}/banni.json`);
@@ -843,7 +922,7 @@
         }
         verifierSiBanni();
 
-        // Récupérer et afficher l'annonce générale de l'admin
+        // Annonce Flash
         async function afficherAnnonceGenerale() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/annonce.json`);
@@ -894,7 +973,135 @@
             document.getElementById("chat-entraide").style.display = "none";
             document.getElementById("friends-panel").style.display = "none";
             document.getElementById("admin-panel").style.display = "none";
+            document.getElementById("devoirs-panel").style.display = "none";
             document.getElementById("menu-profil").style.display = "none";
+            document.getElementById("search-results-box").style.display = "none";
+        }
+
+        // =======================================================
+        // 🔍 FILTRE DE RECHERCHE INTELLIGENT
+        // =======================================================
+        const matieresDispos = [
+            { nom: "Anglais", cat: "Langue" },
+            { nom: "Espagnol", cat: "Langue" },
+            { nom: "Français", cat: "Langue" },
+            { nom: "Latin-Grec", cat: "Langue" },
+            { nom: "Maths", cat: "Science" },
+            { nom: "Physique-Chimie", cat: "Science" },
+            { nom: "SVT", cat: "Science" },
+            { nom: "Technologie", cat: "Science" },
+            { nom: "Histoire", cat: "Culture" },
+            { nom: "Géographie", cat: "Culture" },
+            { nom: "EMC", cat: "Culture" },
+            { nom: "Arts", cat: "Culture" }
+        ];
+
+        async function filtrerContenuRecherche() {
+            const saisie = document.getElementById("input-recherche").value.trim().toLowerCase();
+            const box = document.getElementById("search-results-box");
+
+            if (saisie.length < 2) {
+                box.style.display = "none";
+                return;
+            }
+
+            box.innerHTML = "";
+            let resultatsTrouves = 0;
+
+            // 1. Filtrer les matières
+            matieresDispos.forEach(m => {
+                if (m.nom.toLowerCase().includes(saisie) || m.cat.toLowerCase().includes(saisie)) {
+                    resultatsTrouves++;
+                    const div = document.createElement("div");
+                    div.className = "search-result-item";
+                    div.innerHTML = `📚 <strong>Matière :</strong> ${m.nom} <span style="color:#a4b0be;">(${m.cat})</span>`;
+                    div.onclick = () => ouvrirMatiere(m.nom);
+                    box.appendChild(div);
+                }
+            });
+
+            // 2. Filtrer dans les fiches de cours Firebase
+            try {
+                const resLecons = await fetch(`${FIREBASE_URL}/lecons.json`);
+                const lecons = await resLecons.json();
+                if (lecons) {
+                    Object.values(lecons).forEach(l => {
+                        if (l.titre.toLowerCase().includes(saisie) || l.contenu.toLowerCase().includes(saisie) || l.matiere.toLowerCase().includes(saisie)) {
+                            resultatsTrouves++;
+                            const div = document.createElement("div");
+                            div.className = "search-result-item";
+                            div.innerHTML = `📝 <strong>Cours [${l.matiere}] :</strong> ${l.titre}`;
+                            div.onclick = () => {
+                                alert(`[${l.matiere}] ${l.titre}\n\n${l.contenu}`);
+                            };
+                            box.appendChild(div);
+                        }
+                    });
+                }
+            } catch (e) {}
+
+            // 3. Filtrer dans les devoirs
+            try {
+                const resDevoirs = await fetch(`${FIREBASE_URL}/devoirs.json`);
+                const devoirs = await resDevoirs.json();
+                if (devoirs) {
+                    Object.values(devoirs).forEach(d => {
+                        if (d.titre.toLowerCase().includes(saisie) || d.matiere.toLowerCase().includes(saisie)) {
+                            resultatsTrouves++;
+                            const div = document.createElement("div");
+                            div.className = "search-result-item";
+                            div.innerHTML = `📅 <strong>Devoir [${d.matiere}] :</strong> ${d.titre} (Pour le ${d.dateLimite})`;
+                            div.onclick = () => ouvrirDevoirs();
+                            box.appendChild(div);
+                        }
+                    });
+                }
+            } catch (e) {}
+
+            if (resultatsTrouves === 0) {
+                box.innerHTML = `<div style="color:#a4b0be; font-size:12px; padding:6px;">Aucun résultat trouvé pour "${saisie}".</div>`;
+            }
+
+            box.style.display = "block";
+        }
+
+        // =======================================================
+        // 📅 AGENDA & DEVOIRS PARTAGÉS
+        // =======================================================
+        function ouvrirDevoirs() {
+            fermerFenetres();
+            document.getElementById("devoirs-panel").style.display = "flex";
+            chargerDevoirs();
+        }
+
+        async function chargerDevoirs() {
+            const container = document.getElementById("devoirs-liste");
+            try {
+                const res = await fetch(`${FIREBASE_URL}/devoirs.json`);
+                const data = await res.json();
+
+                if (!data || Object.keys(data).length === 0) {
+                    container.innerHTML = `<p style="color:#a4b0be; font-size:13px;">🎉 Aucun devoir ou contrôle programmé pour le moment !</p>`;
+                    return;
+                }
+
+                container.innerHTML = "";
+                Object.values(data).forEach(d => {
+                    const div = document.createElement("div");
+                    div.className = "devoir-item";
+                    div.innerHTML = `
+                        <div>
+                            <div class="devoir-matiere">${d.matiere}</div>
+                            <div class="devoir-titre">${d.titre}</div>
+                            <div style="font-size: 12px; color: #c8d6e5; margin-top: 3px;">${d.description || ""}</div>
+                        </div>
+                        <div class="devoir-date">⏳ ${d.dateLimite}</div>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (e) {
+                container.innerHTML = `<p style="color:#ee5253; font-size:13px;">Erreur de connexion à l'agenda.</p>`;
+            }
         }
 
         // =======================================================
