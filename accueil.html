@@ -165,51 +165,6 @@
             box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
         }
 
-        .dashboard-home {
-            width: 100%;
-            max-width: 640px;
-            margin-top: 35px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .dashboard-card {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .dashboard-card:hover {
-            transform: translateY(-3px);
-            border-color: #38bdf8;
-            background: rgba(30, 41, 59, 0.95);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .dashboard-icon {
-            font-size: 30px;
-        }
-
-        .dashboard-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #f8fafc;
-        }
-
-        .dashboard-desc {
-            font-size: 12px;
-            color: #94a3b8;
-            line-height: 1.4;
-        }
-
         #search-results-box {
             display: none;
             width: 100%;
@@ -854,7 +809,6 @@
             .add-friend-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid rgba(255, 255, 255, 0.08); font-size: 20px; }
             .settings-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid rgba(255, 255, 255, 0.08); }
             .main-content { order: 2; padding: 14px; flex: 1; width: 100%; overflow-y: auto; }
-            .dashboard-home { grid-template-columns: 1fr; margin-top: 20px; }
             .mobile-subjects { display: flex; }
             .sidebar-right { display: none; }
             .modal-box { position: fixed; top: 54px; left: 0; right: 0; bottom: 0; width: 100%; max-width: 100%; height: calc(100dvh - 54px); max-height: calc(100dvh - 54px); margin: 0; border-radius: 0; z-index: 100; }
@@ -874,7 +828,6 @@
 
     <div id="bandeau-annonce" class="admin-banner"></div>
 
-    <!-- Barre latérale Gauche -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
@@ -891,36 +844,10 @@
         </div>
     </div>
 
-    <!-- Centre -->
     <div class="main-content">
         <input type="text" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher une formule, un cours, un devoir..." oninput="filtrerContenuRecherche()">
         <div id="search-results-box"></div>
 
-        <!-- Dashboard visuel pour habiller le centre de l'écran -->
-        <div class="dashboard-home" id="dashboard-central">
-            <div class="dashboard-card" onclick="ouvrirMatiere('Maths')">
-                <span class="dashboard-icon">📐</span>
-                <span class="dashboard-title">Cahier de cours</span>
-                <span class="dashboard-desc">Consulte tes fiches de cours, scanne tes cahiers et génère des exercices.</span>
-            </div>
-            <div class="dashboard-card" onclick="ouvrirDevoirs()">
-                <span class="dashboard-icon">📅</span>
-                <span class="dashboard-title">Agenda & Devoirs</span>
-                <span class="dashboard-desc">Retrouve les devoirs de la classe et organise tes tâches personnelles.</span>
-            </div>
-            <div class="dashboard-card" onclick="ouvrirMessagerie()">
-                <span class="dashboard-icon">💬</span>
-                <span class="dashboard-title">Discussions privées</span>
-                <span class="dashboard-desc">Échange en direct avec tes camarades pour réviser en équipe.</span>
-            </div>
-            <div class="dashboard-card" onclick="ouvrirChatIA()">
-                <span class="dashboard-icon">🤖</span>
-                <span class="dashboard-title">Tuteur IA</span>
-                <span class="dashboard-desc">Pose toutes tes questions scolaires pour obtenir une explication immédiate.</span>
-            </div>
-        </div>
-
-        <!-- Matières Mobile -->
         <div class="mobile-subjects">
             <div class="subject-card">
                 <div class="subject-card-header" onclick="toggleMobileCard('card-langues')" style="color: #38bdf8;">
@@ -962,7 +889,6 @@
             </div>
         </div>
 
-        <!-- Agenda -->
         <div id="devoirs-panel" class="modal-box">
             <div class="chat-header">
                 <span style="color: #eab308;">📅 Agenda scolaire</span>
@@ -987,7 +913,6 @@
             </div>
         </div>
 
-        <!-- Amis -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
                 <span style="color: #10b981;">👥 Carnet d'amis & Contacts</span>
@@ -1007,7 +932,6 @@
             </div>
         </div>
 
-        <!-- Messagerie Privée -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
                 <span style="color: #f59e0b;" id="titre-chat-prive">💬 Messagerie Privée</span>
@@ -1034,7 +958,6 @@
             </div>
         </div>
 
-        <!-- Meta IA -->
         <div id="chat-ia" class="modal-box">
             <div class="chat-header">
                 <span style="color: #38bdf8;">🤖 Tuteur Scolaire IA</span>
@@ -1049,7 +972,6 @@
             </div>
         </div>
 
-        <!-- Admin -->
         <div id="admin-panel">
             <h3 style="color: #f59e0b;">Panel Admin</h3>
             <p style="font-size: 13px; color: #64748b; margin-top: 5px;">Code d'accès :</p>
@@ -1061,7 +983,6 @@
         </div>
     </div>
 
-    <!-- Barre latérale Droite -->
     <div class="sidebar-right">
         <div class="top-icons">
             <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon profil">Moi</div>
@@ -1182,11 +1103,6 @@
             document.getElementById("devoirs-panel").style.display = "none";
             document.getElementById("menu-profil").style.display = "none";
             document.getElementById("search-results-box").style.display = "none";
-            document.getElementById("dashboard-central").style.display = "grid";
-        }
-
-        function masquerDashboard() {
-            document.getElementById("dashboard-central").style.display = "none";
         }
 
         // RECHERCHE
@@ -1272,7 +1188,6 @@
         // AGENDA
         function ouvrirDevoirs() {
             fermerFenetres();
-            masquerDashboard();
             document.getElementById("devoirs-panel").style.display = "flex";
             changerOngletAgenda("public");
         }
@@ -1393,7 +1308,6 @@
 
         function ouvrirMessagerie() {
             fermerFenetres();
-            masquerDashboard();
             document.getElementById("chat-entraide").style.display = "flex";
             synchroniserDemandesEtAmis();
         }
@@ -1601,7 +1515,6 @@
 
         function ouvrirGestionAmis() {
             fermerFenetres();
-            masquerDashboard();
             document.getElementById("friends-panel").style.display = "flex";
             synchroniserDemandesEtAmis();
         }
@@ -1609,7 +1522,6 @@
         // TUTEUR IA
         function ouvrirChatIA() {
             fermerFenetres();
-            masquerDashboard();
             document.getElementById("chat-ia").style.display = "flex";
             document.getElementById("user-input").focus();
         }
@@ -1663,7 +1575,7 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // NAVIGATION & CODE PIN (2107 EXCLUSIF POUR ZETA|Luffy)
+        // NAVIGATION & CODE PIN
         function toggleMenu(idMenu) {
             const menu = document.getElementById(idMenu);
             const estOuvert = (menu.style.display === "block");
@@ -1683,7 +1595,6 @@
 
         function ouvrirAdmin() {
             fermerFenetres();
-            masquerDashboard();
             document.getElementById("dropdown-menu").style.display = "none";
             document.getElementById("admin-panel").style.display = "block";
             document.getElementById("btn-admin-secret").style.display = "none";
