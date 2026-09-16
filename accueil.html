@@ -21,7 +21,9 @@
             overflow: hidden;
         }
 
-        /* 1. Colonne gauche (PC) */
+        /* =========================================
+           1. COLONNE GAUCHE (PC)
+           ========================================= */
         .sidebar-left {
             width: 90px;
             background-color: #26273b;
@@ -73,16 +75,11 @@
             position: relative;
         }
 
-        .add-friend-btn:hover {
-            background-color: #343650;
-            color: #10ac84;
-        }
-
         .notif-badge {
             display: none;
             position: absolute;
-            top: 8px;
-            right: 15px;
+            top: 6px;
+            right: 14px;
             background-color: #ee5253;
             color: white;
             font-size: 11px;
@@ -103,7 +100,9 @@
             width: 100%;
         }
 
-        /* 2. Centre */
+        /* =========================================
+           2. CONTENU CENTRAL (PC & MOBILE)
+           ========================================= */
         .main-content {
             flex: 1;
             display: flex;
@@ -117,10 +116,10 @@
         }
 
         .search-bar {
-            width: 90%;
+            width: 100%;
             max-width: 550px;
-            padding: 12px 20px;
-            font-size: 16px;
+            padding: 14px 20px;
+            font-size: 15px;
             border-radius: 25px;
             border: 1px solid #484b6a;
             background-color: #2b2c40;
@@ -133,7 +132,68 @@
             border-color: #00d2d3;
         }
 
-        /* Modales */
+        /* Grille des matières sur mobile */
+        .mobile-subjects {
+            display: none;
+            width: 100%;
+            max-width: 550px;
+            margin-top: 20px;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .subject-card {
+            background-color: #26273b;
+            border: 1px solid #3d3f58;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .subject-card-header {
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .subject-card-content {
+            display: none;
+            background-color: #1e1e2e;
+            border-top: 1px solid #3d3f58;
+            padding: 8px 0;
+        }
+
+        .mobile-sub-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            border-bottom: 1px solid #2d2f44;
+            color: #c8d6e5;
+            font-size: 14px;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mobile-sub-btn:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-sub-btn:active {
+            background-color: #2b2c40;
+            color: #00d2d3;
+        }
+
+        /* =========================================
+           3. MODALES & FENÊTRES (Chat, Amis, Admin)
+           ========================================= */
         .modal-box {
             display: none;
             flex-direction: column;
@@ -207,7 +267,7 @@
             color: #a4b0be;
             font-size: 24px;
             cursor: pointer;
-            padding: 0 5px;
+            padding: 0 6px;
         }
 
         .close-btn:hover {
@@ -267,6 +327,7 @@
             height: 8px;
             border-radius: 50%;
             background-color: #1dd1a1;
+            flex-shrink: 0;
         }
 
         .discussion-zone {
@@ -361,6 +422,7 @@
             border-radius: 20px;
             outline: none;
             font-size: 15px;
+            min-width: 0;
         }
 
         .btn-send {
@@ -395,6 +457,7 @@
             border-radius: 8px;
             color: #ffffff;
             outline: none;
+            min-width: 0;
         }
 
         .btn-add-submit {
@@ -405,6 +468,7 @@
             padding: 10px 15px;
             border-radius: 8px;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .section-subtitle {
@@ -431,6 +495,7 @@
             padding: 10px 12px;
             border-radius: 8px;
             border: 1px solid #3d3f58;
+            font-size: 13px;
         }
 
         .action-btns {
@@ -459,7 +524,9 @@
             font-size: 12px;
         }
 
-        /* 3. Colonne droite (Matières & Profil) */
+        /* =========================================
+           4. COLONNE DROITE (PC)
+           ========================================= */
         .sidebar-right {
             width: 170px;
             background-color: #26273b;
@@ -470,6 +537,7 @@
             -webkit-overflow-scrolling: touch;
             flex-shrink: 0;
             position: relative;
+            z-index: 15;
         }
 
         .top-icons {
@@ -497,11 +565,6 @@
             user-select: none;
         }
 
-        .profile-badge:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 10px rgba(0, 210, 211, 0.5);
-        }
-
         .profile-menu {
             display: none;
             position: absolute;
@@ -512,7 +575,7 @@
             border: 1px solid #00d2d3;
             border-radius: 8px;
             padding: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
             z-index: 100;
             text-align: center;
         }
@@ -542,7 +605,6 @@
             cursor: pointer;
             font-weight: bold;
             width: 100%;
-            transition: 0.2s;
         }
 
         .hamburger-btn {
@@ -620,18 +682,20 @@
             padding-left: 20px;
         }
 
-        /* 📱 Adaptation Mobile complète */
+        /* =========================================
+           📱 ADAPTATION MOBILE STRICTE
+           ========================================= */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
                 height: 100vh;
                 height: 100dvh;
-                overflow-y: auto;
             }
 
+            /* Barre du haut mobile */
             .sidebar-left {
                 width: 100%;
-                height: 50px;
+                height: 52px;
                 flex-direction: row;
                 border-right: none;
                 border-bottom: 1px solid #3d3f58;
@@ -647,7 +711,7 @@
             .left-btn {
                 writing-mode: horizontal-tb;
                 transform: none;
-                padding: 10px;
+                padding: 10px 5px;
                 border-bottom: none;
                 border-right: 1px solid #3d3f58;
                 font-size: 13px;
@@ -659,7 +723,7 @@
             }
 
             .add-friend-btn {
-                width: 50px;
+                width: 48px;
                 padding: 8px 0;
                 border-top: none;
                 border-left: 1px solid #3d3f58;
@@ -667,52 +731,55 @@
             }
 
             .settings-btn {
-                width: 50px;
+                width: 48px;
                 padding: 8px 0;
                 border-top: none;
                 border-left: 1px solid #3d3f58;
             }
 
+            /* Contenu central déroulant */
             .main-content {
                 order: 2;
-                padding: 12px 10px;
-                flex: none;
-                height: auto;
-                min-height: auto;
+                padding: 12px;
+                flex: 1;
                 width: 100%;
+                overflow-y: auto;
             }
 
-            .search-bar {
-                width: 100%;
-                margin-bottom: 10px;
+            /* Affiche les cartes de matières au milieu de l'écran sur mobile */
+            .mobile-subjects {
+                display: flex;
             }
 
-            /* Fenêtres pop-up plein écran sur mobile quand elles sont ouvertes */
+            /* Cache la colonne latérale droite sur mobile car elle est au centre */
+            .sidebar-right {
+                display: none;
+            }
+
+            /* Modales en plein écran sur smartphone */
             .modal-box {
                 position: fixed;
-                top: 50px;
+                top: 52px;
                 left: 0;
                 right: 0;
                 bottom: 0;
                 width: 100%;
                 max-width: 100%;
-                height: calc(100dvh - 50px);
-                max-height: calc(100dvh - 50px);
+                height: calc(100dvh - 52px);
+                max-height: calc(100dvh - 52px);
                 margin: 0;
                 border-radius: 0;
-                z-index: 99;
+                z-index: 100;
             }
 
             .messagerie-body {
                 flex-direction: column;
-                flex: 1;
-                min-height: 0;
             }
 
             .contacts-panel {
                 width: 100%;
-                height: 48px;
-                max-height: 48px;
+                height: 44px;
+                max-height: 44px;
                 border-right: none;
                 border-bottom: 1px solid #3d3f58;
                 flex-direction: row;
@@ -731,10 +798,10 @@
 
             .contact-item {
                 white-space: nowrap;
-                padding: 8px 12px;
+                padding: 6px 12px;
                 border-bottom: none;
                 border-right: 1px solid #2b2c40;
-                font-size: 13px;
+                font-size: 12px;
             }
 
             .discussion-zone {
@@ -757,31 +824,6 @@
                 padding: 10px 14px;
                 font-size: 15px;
             }
-
-            /* La colonne des matières réapparaît sous la barre de recherche sur téléphone */
-            .sidebar-right {
-                order: 3;
-                width: 100%;
-                height: auto;
-                border-left: none;
-                border-top: 1px solid #3d3f58;
-                margin-top: 10px;
-            }
-
-            .top-icons {
-                padding: 10px 15px;
-                justify-content: space-between;
-            }
-
-            .right-item {
-                padding: 14px 10px;
-                font-size: 16px;
-            }
-
-            .sub-item {
-                padding: 14px 20px;
-                font-size: 15px;
-            }
         }
     </style>
 </head>
@@ -799,13 +841,58 @@
                 ✚
                 <span class="notif-badge" id="badge-demandes">0</span>
             </button>
-            <button class="settings-btn" title="Paramètres" onclick="alert('Paramètres')">⚙</button>
+            <button class="settings-btn" title="Paramètres" onclick="ouvrirProfilMobile()">👤</button>
         </div>
     </div>
 
-    <!-- Centre -->
+    <!-- Centre de l'écran -->
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
+
+        <!-- 📱 BLOC MATIÈRES SUR TÉLÉPHONE (Directement sous la recherche) -->
+        <div class="mobile-subjects">
+            <!-- 1. Langues -->
+            <div class="subject-card">
+                <div class="subject-card-header" onclick="toggleMobileCard('card-langues')" style="color: #00d2d3;">
+                    <span>🌍 Langue</span>
+                    <span>▾</span>
+                </div>
+                <div class="subject-card-content" id="card-langues">
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Anglais')">🇬🇧 Anglais</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Espagnol')">🇪🇸 Espagnol</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Français')">🇫🇷 Français</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Latin-Grec')">🏛️ Latin / Grec</button>
+                </div>
+            </div>
+
+            <!-- 2. Sciences -->
+            <div class="subject-card">
+                <div class="subject-card-header" onclick="toggleMobileCard('card-sciences')" style="color: #ff9f43;">
+                    <span>📐 Science</span>
+                    <span>▾</span>
+                </div>
+                <div class="subject-card-content" id="card-sciences">
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Maths')">📐 Maths</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Physique-Chimie')">🧪 Physique-Chimie</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('SVT')">🌿 SVT</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Technologie')">💻 Technologie</button>
+                </div>
+            </div>
+
+            <!-- 3. Culture -->
+            <div class="subject-card">
+                <div class="subject-card-header" onclick="toggleMobileCard('card-culture')" style="color: #1dd1a1;">
+                    <span>🏛️ Culture</span>
+                    <span>▾</span>
+                </div>
+                <div class="subject-card-content" id="card-culture">
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Histoire')">📜 Histoire</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Géographie')">🌍 Géographie</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('EMC')">⚖️ EMC</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques / Musique</button>
+                </div>
+            </div>
+        </div>
 
         <!-- 1. Fenêtre Amis -->
         <div id="friends-panel" class="modal-box">
@@ -876,7 +963,7 @@
         </div>
     </div>
 
-    <!-- Barre Droite (Matières & Profil bien visibles sur Mobile) -->
+    <!-- Barre latérale Droite (PC) -->
     <div class="sidebar-right">
         <div class="top-icons">
             <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon compte">Moi</div>
@@ -941,6 +1028,17 @@
         document.getElementById("icone-profil").textContent = monPseudo.slice(0, 2).toUpperCase();
         document.getElementById("nom-utilisateur").textContent = monPseudo;
         document.getElementById("email-utilisateur").textContent = monEmail;
+
+        function toggleMobileCard(id) {
+            const content = document.getElementById(id);
+            content.style.display = (content.style.display === "block") ? "none" : "block";
+        }
+
+        function ouvrirProfilMobile() {
+            if (confirm(`Compte : ${monPseudo}\n${monEmail}\n\nVeux-tu te déconnecter ?`)) {
+                seDeconnecter();
+            }
+        }
 
         function toggleMenuProfil() {
             const menu = document.getElementById("menu-profil");
@@ -1100,7 +1198,7 @@
         }
 
         // =======================================================
-        // 💬 MESSAGERIE : DÉFILEMENT FLUIDE & SCROLL AUTOMATIQUE
+        // 💬 MESSAGERIE
         // =======================================================
         let dernierNombreMessages = 0;
 
@@ -1114,7 +1212,7 @@
             setTimeout(() => {
                 const zone = document.getElementById("group-messages");
                 zone.scrollTop = zone.scrollHeight;
-            }, 100);
+            }, 80);
         }
 
         async function chargerMessagesEnLigne(forcerScroll = false) {
@@ -1125,14 +1223,14 @@
 
                 if (!data) {
                     conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
-                        Aucun message. Discutez ici de vos cours !
+                        Aucun message. Discutez ici de vos révisions !
                     </div>`;
                     return;
                 }
 
                 const cles = Object.keys(data);
                 const nouveauMessageArrive = (cles.length !== dernierNombreMessages);
-                const estProcheDuBas = (conteneur.scrollHeight - conteneur.scrollTop - conteneur.clientHeight) < 150;
+                const estProcheDuBas = (conteneur.scrollHeight - conteneur.scrollTop - conteneur.clientHeight) < 140;
 
                 conteneur.innerHTML = "";
                 Object.values(data).forEach(m => {
@@ -1239,7 +1337,7 @@
         }
 
         // =======================================================
-        // 📚 MENUS MATIERES & ADMIN
+        // 📚 NAVIGATION & ADMIN
         // =======================================================
         function toggleMenu(idMenu) {
             const menu = document.getElementById(idMenu);
@@ -1276,7 +1374,7 @@
             }
         }
 
-        // Synchronisation continue
+        // Rafraîchissement automatique
         synchroniserDemandesEtAmis();
         setInterval(synchroniserDemandesEtAmis, 2500);
         setInterval(() => {
