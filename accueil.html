@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cour-halea - Accueil</title>
     <style>
         * {
@@ -110,6 +110,7 @@
             padding: 20px;
             position: relative;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .search-bar {
@@ -191,6 +192,7 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #3d3f58;
+            flex-shrink: 0;
         }
 
         .close-btn {
@@ -209,6 +211,7 @@
         .messagerie-body {
             display: flex;
             flex: 1;
+            min-height: 0; /* Permet le scroll interne correct */
             overflow: hidden;
         }
 
@@ -219,6 +222,8 @@
             display: flex;
             flex-direction: column;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            flex-shrink: 0;
         }
 
         .contacts-panel-title {
@@ -261,15 +266,19 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            min-height: 0; /* Essentiel pour que les messages défilent */
+            overflow: hidden;
         }
 
         .chat-messages {
             flex: 1;
             padding: 15px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch; /* Défilement fluide iOS & Android */
             display: flex;
             flex-direction: column;
             gap: 12px;
+            min-height: 0;
         }
 
         .msg {
@@ -279,6 +288,7 @@
             font-size: 14px;
             line-height: 1.4;
             white-space: pre-wrap;
+            word-break: break-word;
         }
 
         .msg-ia {
@@ -329,6 +339,7 @@
             background-color: #1e1e2e;
             padding: 10px;
             gap: 10px;
+            flex-shrink: 0;
         }
 
         .chat-input-zone input {
@@ -348,12 +359,14 @@
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         /* Panneau Amis & Demandes */
         .friends-body {
             padding: 15px;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
             max-height: 420px;
         }
 
@@ -595,12 +608,13 @@
             padding-left: 20px;
         }
 
+        /* 📱 Adaptation Mobile Optimisée */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-                overflow-y: auto;
+                height: 100vh;
+                height: 100dvh; /* Hauteur dynamique plein écran smartphone */
+                overflow: hidden;
             }
 
             .sidebar-left {
@@ -648,16 +662,26 @@
 
             .main-content {
                 order: 2;
-                padding: 15px 10px;
-                min-height: calc(100vh - 280px);
+                padding: 10px 8px;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden; /* Évite les doubles barres de scroll */
             }
 
             .search-bar {
-                width: 95%;
+                width: 100%;
+                margin-bottom: 8px;
+                flex-shrink: 0;
             }
 
             .modal-box {
-                height: 460px;
+                margin-top: 0;
+                height: 100%;
+                max-height: calc(100vh - 125px);
+                max-height: calc(100dvh - 125px);
+                flex: 1;
+                border-radius: 8px;
             }
 
             .messagerie-body {
@@ -666,27 +690,32 @@
 
             .contacts-panel {
                 width: 100%;
-                max-height: 100px;
+                max-height: 75px;
                 border-right: none;
                 border-bottom: 1px solid #3d3f58;
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .contacts-panel-title {
+                display: none;
+            }
+
+            .contacts-list {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .contact-item {
+                white-space: nowrap;
+                padding: 8px 12px;
+                border-bottom: none;
+                border-right: 1px solid #2b2c40;
             }
 
             .sidebar-right {
-                width: 100%;
-                height: auto;
-                border-left: none;
-                border-top: 2px solid #00d2d3;
-                order: 3;
-            }
-
-            .right-item {
-                padding: 14px;
-                font-size: 16px;
-            }
-
-            .sub-item {
-                padding: 14px 20px;
-                font-size: 15px;
+                display: none; /* Accessible via un toggle si besoin pour garder l'espace de chat */
             }
         }
     </style>
@@ -711,6 +740,7 @@
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
 
+        <!-- 1. Fenêtre Amis -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
                 <span style="color: #1dd1a1;">👥 Demandes d'amis & Contacts</span>
@@ -719,10 +749,10 @@
             <div class="friends-body">
                 <div class="friends-input-zone">
                     <input type="text" id="friend-pseudo-input" placeholder="Pseudo exact de ton ami...">
-                    <button class="btn-add-submit" onclick="envoyerDemandeAmi()">Envoyer la demande</button>
+                    <button class="btn-add-submit" onclick="envoyerDemandeAmi()">Envoyer</button>
                 </div>
 
-                <div class="section-subtitle">📩 Demandes reçues (en attente de ta réponse)</div>
+                <div class="section-subtitle">📩 Demandes reçues</div>
                 <ul class="friends-list" id="demandes-list"></ul>
 
                 <div class="section-subtitle">🤝 Mes amis confirmés</div>
@@ -730,9 +760,10 @@
             </div>
         </div>
 
+        <!-- 2. Salon de Messagerie -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
-                <span style="color: #ff9f43;">💬 Salon de révision (Entre amis)</span>
+                <span style="color: #ff9f43;">💬 Salon de révision</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             
@@ -752,6 +783,7 @@
             </div>
         </div>
 
+        <!-- 3. Meta IA -->
         <div id="chat-ia" class="modal-box">
             <div class="chat-header">
                 <span style="color: #00d2d3;">🤖 Meta IA - Assistant</span>
@@ -766,6 +798,7 @@
             </div>
         </div>
 
+        <!-- 4. Panneau Admin -->
         <div id="admin-panel">
             <h3>Panel Admin</h3>
             <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code à 4 chiffres :</p>
@@ -824,7 +857,6 @@
     </div>
 
     <script>
-        // Configuration de ta base Firebase en direct
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
@@ -860,7 +892,7 @@
         }
 
         // =======================================================
-        // 🌐 SYSTEME EN DIRECT : DEMANDES & AMIS SYNCHRONISES
+        // 🌐 DEMANDES & AMIS EN LIGNE
         // =======================================================
 
         async function envoyerDemandeAmi() {
@@ -874,7 +906,6 @@
             }
 
             try {
-                // Envoi en ligne directement vers le compte cible
                 const res = await fetch(`${FIREBASE_URL}/demandes/${cible.toLowerCase()}/${monPseudo.toLowerCase()}.json`, {
                     method: "PUT",
                     body: JSON.stringify({
@@ -897,7 +928,6 @@
 
         async function synchroniserDemandesEtAmis() {
             try {
-                // Récupération des demandes reçues pour MON compte
                 const resDemandes = await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}.json`);
                 const dataDemandes = await resDemandes.json();
                 
@@ -927,7 +957,6 @@
                     });
                 }
 
-                // Récupération des amis confirmés
                 const resAmis = await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}.json`);
                 const dataAmis = await resAmis.json();
                 const boxAmis = document.getElementById("friends-list");
@@ -965,7 +994,6 @@
         }
 
         async function accepterDemande(demandeur) {
-            // S'ajoute mutuellement
             await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, {
                 method: "PUT",
                 body: JSON.stringify(true)
@@ -976,7 +1004,6 @@
                 body: JSON.stringify(true)
             });
 
-            // Supprime la demande acceptée
             await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, {
                 method: "DELETE"
             });
@@ -1001,22 +1028,22 @@
             fermerFenetres();
             document.getElementById("friends-panel").style.display = "flex";
             synchroniserDemandesEtAmis();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // =======================================================
-        // 💬 MESSAGERIE EN LIGNE
+        // 💬 MESSAGERIE SYNCHRONISÉE AVEC DÉFILEMENT AUTOMATIQUE
         // =======================================================
+        let dernierNombreMessages = 0;
+
         function ouvrirMessagerie() {
             fermerFenetres();
             document.getElementById("chat-entraide").style.display = "flex";
             synchroniserDemandesEtAmis();
-            chargerMessagesEnLigne();
+            chargerMessagesEnLigne(true); // Défilement forcé à l'ouverture
             document.getElementById("group-input").focus();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        async function chargerMessagesEnLigne() {
+        async function chargerMessagesEnLigne(forcerScroll = false) {
             try {
                 const res = await fetch(`${FIREBASE_URL}/messages.json?orderBy="$key"&limitToLast=40`);
                 const data = await res.json();
@@ -1029,6 +1056,12 @@
                     return;
                 }
 
+                const cles = Object.keys(data);
+                const nouveauMessageArrive = (cles.length !== dernierNombreMessages);
+
+                // Vérifier si l'utilisateur est déjà tout en bas avant d'actualiser
+                const estProcheDuBas = (conteneur.scrollHeight - conteneur.scrollTop - conteneur.clientHeight) < 120;
+
                 conteneur.innerHTML = "";
                 Object.values(data).forEach(m => {
                     const estMoi = (m.pseudo.toLowerCase() === monPseudo.toLowerCase());
@@ -1040,7 +1073,15 @@
                     `;
                     conteneur.appendChild(bulle);
                 });
-                conteneur.scrollTop = conteneur.scrollHeight;
+
+                dernierNombreMessages = cles.length;
+
+                // Fait défiler tout en bas si demandé ou si un nouveau message arrive et qu'on était déjà en bas
+                if (forcerScroll || (nouveauMessageArrive && estProcheDuBas)) {
+                    setTimeout(() => {
+                        conteneur.scrollTop = conteneur.scrollHeight;
+                    }, 50);
+                }
             } catch (e) {}
         }
 
@@ -1063,7 +1104,7 @@
             });
 
             input.value = "";
-            chargerMessagesEnLigne();
+            chargerMessagesEnLigne(true); // Descend immédiatement tout en bas
         }
 
         // =======================================================
@@ -1073,7 +1114,6 @@
             fermerFenetres();
             document.getElementById("chat-ia").style.display = "flex";
             document.getElementById("user-input").focus();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         async function envoyerMessageIA() {
@@ -1149,7 +1189,6 @@
             fermerFenetres();
             document.getElementById("dropdown-menu").style.display = "none";
             document.getElementById("admin-panel").style.display = "block";
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function validerPin() {
@@ -1164,14 +1203,14 @@
             }
         }
 
-        // Rafraîchissement automatique toutes les 3 secondes
+        // Rafraîchissement automatique toutes les 2.5 secondes
         synchroniserDemandesEtAmis();
-        setInterval(synchroniserDemandesEtAmis, 3000);
+        setInterval(synchroniserDemandesEtAmis, 2500);
         setInterval(() => {
             if (document.getElementById("chat-entraide").style.display === "flex") {
-                chargerMessagesEnLigne();
+                chargerMessagesEnLigne(false);
             }
-        }, 3000);
+        }, 2000);
     </script>
 
 </body>
