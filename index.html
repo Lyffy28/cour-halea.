@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cour-halea - Connexion</title>
     <style>
         * {
@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -19,14 +20,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
         }
 
         .login-card {
             background-color: #26273b;
             border: 1px solid #3d3f58;
             border-radius: 12px;
-            padding: 30px;
+            padding: 25px 20px;
             width: 100%;
             max-width: 400px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.4);
@@ -74,7 +75,7 @@
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 14px;
             margin-bottom: 20px;
             text-align: left;
         }
@@ -83,7 +84,7 @@
             font-size: 13px;
             color: #c8d6e5;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             display: block;
         }
 
@@ -120,6 +121,12 @@
             background-color: #01a3a4;
         }
 
+        .btn-submit:disabled {
+            background-color: #484b6a;
+            cursor: not-allowed;
+            color: #a4b0be;
+        }
+
         .error-msg {
             color: #ee5253;
             font-size: 13px;
@@ -143,7 +150,7 @@
         <h1>Cour-halea</h1>
         <p class="subtitle">Espace d'études & de révisions</p>
 
-        <!-- Onglets -->
+        <!-- Onglets Connexion / Inscription -->
         <div class="tabs">
             <button class="tab-btn active" id="btn-tab-connexion" onclick="changerOnglet('connexion')">Connexion</button>
             <button class="tab-btn" id="btn-tab-inscription" onclick="changerOnglet('inscription')">Créer un compte</button>
@@ -153,7 +160,7 @@
             <div class="input-group">
                 <div>
                     <label for="pseudo">Pseudo</label>
-                    <input type="text" id="pseudo" placeholder="Ton pseudo" required autocomplete="username">
+                    <input type="text" id="pseudo" placeholder="Ex: Max" required autocomplete="username">
                 </div>
 
                 <div>
@@ -174,7 +181,10 @@
     </div>
 
     <script>
-        // Si l'utilisateur est déjà connecté, aller directement à l'accueil
+        // Ta base Firebase centrale en direct
+        const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
+
+        // Redirige si déjà connecté
         if (localStorage.getItem("utilisateur_pseudo")) {
             window.location.href = "accueil.html";
         }
@@ -200,31 +210,25 @@
             } else {
                 btnInscription.classList.add("active");
                 btnConnexion.classList.remove("active");
-                btnAction.textContent = "S'inscrire";
+                btnAction.textContent = "Créer mon compte";
                 btnAction.style.backgroundColor = "#1dd1a1";
             }
         }
 
-        function recupererComptes() {
-            return JSON.parse(localStorage.getItem("comptes_utilisateurs") || "[]");
-        }
-
-        function sauvegarderComptes(comptes) {
-            localStorage.setItem("comptes_utilisateurs", JSON.stringify(comptes));
-        }
-
-        function gererSoumission(event) {
+        async function gererSoumission(event) {
             event.preventDefault();
 
             const pseudo = document.getElementById("pseudo").value.trim();
             const email = document.getElementById("email").value.trim().toLowerCase();
             const password = document.getElementById("password").value;
+            const btnAction = document.getElementById("btn-action");
             const msgErreur = document.getElementById("msg-erreur");
             const msgSucces = document.getElementById("msg-succes");
 
             msgErreur.textContent = "";
             msgSucces.textContent = "";
 
+            // Vérifications de saisie
             if (pseudo.length < 2) {
                 msgErreur.textContent = "Le pseudo doit comporter au moins 2 caractères.";
                 return;
@@ -241,56 +245,91 @@
                 return;
             }
 
-            let comptes = recupererComptes();
+            btnAction.disabled = true;
+            btnAction.textContent = "⏳ Traitement...";
 
-            // Inscription
-            if (modeActuel === "inscription") {
-                const pseudoExiste = comptes.some(c => c.pseudo.toLowerCase() === pseudo.toLowerCase());
-                if (pseudoExiste) {
-                    msgErreur.textContent = "Ce pseudo est déjà utilisé.";
+            try {
+                // Clé unique propre pour le compte dans Firebase : pseudo en minuscules
+                const pseudoCle = encodeURIComponent(pseudo.toLowerCase());
+
+                // ==========================================
+                // 1. INSCRIPTION DANS FIREBASE
+                // ==========================================
+                if (modeActuel === "inscription") {
+                    // Vérifier si le pseudo existe déjà dans Firebase
+                    const checkRes = await fetch(`${FIREBASE_URL}/comptes/${pseudoCle}.json`);
+                    const existant = await checkRes.json();
+
+                    if (existant) {
+                        msgErreur.textContent = "Ce pseudo est déjà utilisé. Choisis-en un autre.";
+                        btnAction.disabled = false;
+                        btnAction.textContent = "Créer mon compte";
+                        return;
+                    }
+
+                    // Enregistrer le compte avec mot de passe dans Firebase
+                    const saveRes = await fetch(`${FIREBASE_URL}/comptes/${pseudoCle}.json`, {
+                        method: "PUT",
+                        body: JSON.stringify({
+                            pseudo: pseudo,
+                            email: email,
+                            password: password,
+                            dateCreation: new Date().toISOString()
+                        })
+                    });
+
+                    if (saveRes.ok) {
+                        msgSucces.textContent = "Compte créé avec succès dans la base ! Basculement...";
+                        setTimeout(() => {
+                            changerOnglet("connexion");
+                            document.getElementById("password").value = "";
+                            btnAction.disabled = false;
+                        }, 1200);
+                    } else {
+                        msgErreur.textContent = "Erreur lors de l'enregistrement sur le serveur.";
+                        btnAction.disabled = false;
+                        btnAction.textContent = "Créer mon compte";
+                    }
                     return;
                 }
 
-                const emailExiste = comptes.some(c => c.email.toLowerCase() === email);
-                if (emailExiste) {
-                    msgErreur.textContent = "Cette adresse e-mail possède déjà un compte.";
-                    return;
+                // ==========================================
+                // 2. CONNEXION AVEC VÉRIFICATION FIREBASE
+                // ==========================================
+                if (modeActuel === "connexion") {
+                    // Récupérer le compte depuis Firebase
+                    const res = await fetch(`${FIREBASE_URL}/comptes/${pseudoCle}.json`);
+                    const compte = await res.json();
+
+                    if (!compte) {
+                        msgErreur.textContent = "Aucun compte trouvé avec ce pseudo.";
+                        btnAction.disabled = false;
+                        btnAction.textContent = "Se connecter";
+                        return;
+                    }
+
+                    // Vérifier l'e-mail et le mot de passe
+                    if (compte.email.toLowerCase() !== email || compte.password !== password) {
+                        msgErreur.textContent = "Identifiants incorrects (vérifie ton e-mail ou ton mot de passe).";
+                        btnAction.disabled = false;
+                        btnAction.textContent = "Se connecter";
+                        return;
+                    }
+
+                    // Connexion validée : on mémorise la session active de cet utilisateur
+                    localStorage.setItem("utilisateur_pseudo", compte.pseudo);
+                    localStorage.setItem("utilisateur_email", compte.email);
+
+                    msgSucces.textContent = "Connexion réussie ! Redirection...";
+                    setTimeout(() => {
+                        window.location.href = "accueil.html";
+                    }, 500);
                 }
 
-                comptes.push({
-                    pseudo: pseudo,
-                    email: email,
-                    password: password
-                });
-
-                sauvegarderComptes(comptes);
-
-                msgSucces.textContent = "Compte créé ! Tu peux maintenant te connecter.";
-                setTimeout(() => {
-                    changerOnglet("connexion");
-                    document.getElementById("password").value = "";
-                }, 1000);
-                return;
-            }
-
-            // Connexion
-            if (modeActuel === "connexion") {
-                const compteValide = comptes.find(c => 
-                    c.pseudo.toLowerCase() === pseudo.toLowerCase() &&
-                    c.email.toLowerCase() === email &&
-                    c.password === password
-                );
-
-                if (!compteValide) {
-                    msgErreur.textContent = "Combinaison incorrecte (pseudo, e-mail et mot de passe doivent correspondre).";
-                    return;
-                }
-
-                // Session active
-                localStorage.setItem("utilisateur_pseudo", compteValide.pseudo);
-                localStorage.setItem("utilisateur_email", compteValide.email);
-
-                window.location.href = "accueil.html";
+            } catch (err) {
+                msgErreur.textContent = "Erreur de connexion avec le serveur Firebase. Vérifie ta connexion internet.";
+                btnAction.disabled = false;
+                btnAction.textContent = (modeActuel === "connexion") ? "Se connecter" : "Créer mon compte";
             }
         }
     </script>
