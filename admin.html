@@ -13,7 +13,11 @@
         }
 
         body {
-            background-color: #1e1e2e;
+            background-color: #0b1120;
+            background-image: 
+                linear-gradient(to right, rgba(51, 65, 85, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(51, 65, 85, 0.2) 1px, transparent 1px);
+            background-size: 26px 26px;
             color: #ffffff;
             padding: 20px;
             min-height: 100vh;
@@ -25,12 +29,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #3d3f58;
+            border-bottom: 1px solid #1e293b;
             padding-bottom: 15px;
         }
 
         h1 {
-            color: #ff9f43;
+            color: #f59e0b;
             font-size: 22px;
             display: flex;
             align-items: center;
@@ -38,9 +42,9 @@
         }
 
         .btn-quit {
-            background-color: #343650;
+            background-color: #1e293b;
             color: #c8d6e5;
-            border: 1px solid #484b6a;
+            border: 1px solid #334155;
             padding: 8px 14px;
             border-radius: 6px;
             cursor: pointer;
@@ -49,7 +53,7 @@
         }
 
         .btn-quit:hover {
-            background-color: #ee5253;
+            background-color: #ef4444;
             color: #ffffff;
         }
 
@@ -61,7 +65,6 @@
             gap: 20px;
         }
 
-        /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -69,8 +72,8 @@
         }
 
         .stat-card {
-            background-color: #26273b;
-            border: 1px solid #3d3f58;
+            background-color: #0f172a;
+            border: 1px solid #1e293b;
             border-radius: 10px;
             padding: 15px;
             text-align: center;
@@ -78,31 +81,30 @@
 
         .stat-card h3 {
             font-size: 13px;
-            color: #a4b0be;
+            color: #94a3b8;
             text-transform: uppercase;
         }
 
         .stat-card p {
             font-size: 26px;
             font-weight: bold;
-            color: #00d2d3;
+            color: #38bdf8;
             margin-top: 5px;
         }
 
-        /* Cartes */
         .card {
-            background-color: #26273b;
-            border: 1px solid #3d3f58;
+            background-color: #0f172a;
+            border: 1px solid #1e293b;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .card h2 {
             font-size: 16px;
-            color: #ff9f43;
+            color: #f59e0b;
             margin-bottom: 12px;
-            border-bottom: 1px solid #3d3f58;
+            border-bottom: 1px solid #1e293b;
             padding-bottom: 8px;
         }
 
@@ -114,8 +116,8 @@
         }
 
         input, select, textarea {
-            background-color: #1e1e2e;
-            border: 1px solid #484b6a;
+            background-color: #0b1120;
+            border: 1px solid #334155;
             color: #ffffff;
             padding: 10px;
             border-radius: 6px;
@@ -124,7 +126,7 @@
         }
 
         input:focus, select:focus, textarea:focus {
-            border-color: #00d2d3;
+            border-color: #38bdf8;
         }
 
         .btn {
@@ -137,9 +139,9 @@
             transition: 0.2s;
         }
 
-        .btn-success { background-color: #1dd1a1; color: #1e1e2e; }
-        .btn-danger { background-color: #ee5253; color: white; }
-        .btn-warning { background-color: #ff9f43; color: #1e1e2e; }
+        .btn-success { background-color: #10b981; color: #ffffff; }
+        .btn-danger { background-color: #ef4444; color: white; }
+        .btn-warning { background-color: #f59e0b; color: #0f172a; }
         .btn:hover { opacity: 0.85; }
 
         .admin-table {
@@ -152,11 +154,11 @@
         .admin-table th, .admin-table td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid #3d3f58;
+            border-bottom: 1px solid #1e293b;
         }
 
         .admin-table th {
-            color: #00d2d3;
+            color: #38bdf8;
             text-transform: uppercase;
             font-size: 11px;
         }
@@ -168,7 +170,7 @@
         }
 
         .badge-banned {
-            background-color: #ee5253;
+            background-color: #ef4444;
             color: white;
             padding: 2px 6px;
             border-radius: 4px;
@@ -177,8 +179,8 @@
         }
 
         .badge-ok {
-            background-color: #1dd1a1;
-            color: #1e1e2e;
+            background-color: #10b981;
+            color: #ffffff;
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 10px;
@@ -192,17 +194,17 @@
             flex-direction: column;
             gap: 8px;
             margin-top: 10px;
-            border: 1px solid #3d3f58;
+            border: 1px solid #1e293b;
             padding: 10px;
             border-radius: 6px;
-            background-color: #1e1e2e;
+            background-color: #0b1120;
         }
 
         .chat-mod-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #26273b;
+            background-color: #0f172a;
             padding: 8px 12px;
             border-radius: 6px;
             font-size: 13px;
@@ -212,7 +214,12 @@
 <body>
 
     <script>
-        if (sessionStorage.getItem("admin_session") !== "active") {
+        const pseudoAdminAutorise = "ZETA|Luffy";
+        const sessionActive = sessionStorage.getItem("admin_session");
+        const sessionUser = sessionStorage.getItem("admin_user");
+
+        if (sessionActive !== "active" || !sessionUser || sessionUser.toLowerCase() !== pseudoAdminAutorise.toLowerCase()) {
+            alert("Accès réservé exclusivement à l'administrateur.");
             window.location.href = "accueil.html";
         }
     </script>
@@ -224,7 +231,6 @@
 
     <div class="container">
 
-        <!-- Statistiques -->
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>👥 Inscrits</h3>
@@ -244,7 +250,6 @@
             </div>
         </div>
 
-        <!-- Annonce Flash -->
         <div class="card">
             <h2>📢 Publier une annonce flash sur le site</h2>
             <div class="form-row">
@@ -252,10 +257,9 @@
                 <button class="btn btn-warning" onclick="publierAnnonce()">Publier</button>
                 <button class="btn btn-danger" onclick="supprimerAnnonce()">Retirer</button>
             </div>
-            <p id="statut-annonce" style="font-size: 12px; color: #a4b0be; margin-top: 5px;">Annonce actuelle : Aucune</p>
+            <p id="statut-annonce" style="font-size: 12px; color: #94a3b8; margin-top: 5px;">Annonce actuelle : Aucune</p>
         </div>
 
-        <!-- Agenda / Gestionnaire de Devoirs -->
         <div class="card">
             <h2>📅 Ajouter un devoir ou un contrôle à l'agenda</h2>
             <div class="form-row">
@@ -275,11 +279,10 @@
             <textarea id="devoir-desc" placeholder="Détails (ex: Exercices 4 et 5 page 62)..." rows="2" style="width: 100%; margin-bottom: 10px;"></textarea>
             <button class="btn btn-success" onclick="ajouterDevoir()">Ajouter à l'agenda</button>
 
-            <h3 style="font-size: 13px; color: #a4b0be; margin: 15px 0 8px 0;">Devoirs en cours :</h3>
+            <h3 style="font-size: 13px; color: #94a3b8; margin: 15px 0 8px 0;">Devoirs en cours :</h3>
             <ul id="liste-devoirs-admin" style="list-style: none; display: flex; flex-direction: column; gap: 6px;"></ul>
         </div>
 
-        <!-- Gestion des comptes -->
         <div class="card">
             <h2>👥 Gestion des comptes utilisateurs</h2>
             <div style="overflow-x: auto;">
@@ -298,18 +301,16 @@
             </div>
         </div>
 
-        <!-- Modération Chat -->
         <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <h2 style="margin: 0; border: none; padding: 0;">💬 Modération du chat</h2>
                 <button class="btn btn-danger" style="padding: 6px 12px; font-size: 11px;" onclick="viderToutLeChat()">🗑️ Effacer tout</button>
             </div>
             <div class="chat-mod-box" id="chat-mod-list">
-                <p style="color: #a4b0be; font-size: 12px;">Chargement des messages...</p>
+                <p style="color: #94a3b8; font-size: 12px;">Chargement des messages...</p>
             </div>
         </div>
 
-        <!-- Fiches de cours -->
         <div class="card">
             <h2>📚 Fiches de cours</h2>
             <div class="form-row">
@@ -328,7 +329,7 @@
             <textarea id="cours-contenu" placeholder="Contenu..." rows="3" style="width: 100%; margin-bottom: 10px;"></textarea>
             <button class="btn btn-success" onclick="ajouterCours()">Ajouter la leçon</button>
 
-            <h3 style="font-size: 13px; color: #a4b0be; margin: 15px 0 8px 0;">Fiches publiées :</h3>
+            <h3 style="font-size: 13px; color: #94a3b8; margin: 15px 0 8px 0;">Fiches publiées :</h3>
             <ul id="liste-cours" style="list-style: none; display: flex; flex-direction: column; gap: 6px;"></ul>
         </div>
 
@@ -337,7 +338,6 @@
     <script>
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
 
-        // Annonce
         async function chargerAnnonce() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/annonce.json`);
@@ -361,7 +361,6 @@
             alert("Annonce retirée !");
         }
 
-        // Devoirs
         async function chargerDevoirsAdmin() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/devoirs.json`);
@@ -370,7 +369,7 @@
                 const statDevoirs = document.getElementById("stat-devoirs");
 
                 if (!data) {
-                    ul.innerHTML = `<li style="color:#a4b0be; font-size:12px;">Aucun devoir programmé.</li>`;
+                    ul.innerHTML = `<li style="color:#94a3b8; font-size:12px;">Aucun devoir programmé.</li>`;
                     statDevoirs.textContent = 0;
                     return;
                 }
@@ -385,7 +384,7 @@
                     li.style.display = "flex";
                     li.style.justifyContent = "space-between";
                     li.style.padding = "8px";
-                    li.style.backgroundColor = "#1e1e2e";
+                    li.style.backgroundColor = "#0b1120";
                     li.style.borderRadius = "6px";
                     li.style.fontSize = "13px";
 
@@ -426,7 +425,6 @@
             chargerDevoirsAdmin();
         }
 
-        // Comptes
         async function chargerComptes() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/comptes.json`);
@@ -435,7 +433,7 @@
                 const statUsers = document.getElementById("stat-utilisateurs");
 
                 if (!data) {
-                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#a4b0be;">Aucun compte.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">Aucun compte.</td></tr>`;
                     statUsers.textContent = 0;
                     return;
                 }
@@ -451,7 +449,7 @@
 
                     tr.innerHTML = `
                         <td><strong>${c.pseudo}</strong></td>
-                        <td style="color: #a4b0be;">${c.email}</td>
+                        <td style="color: #94a3b8;">${c.email}</td>
                         <td><input type="text" class="password-field" id="pwd-${cle}" value="${c.password}"></td>
                         <td><span class="${estBanni ? 'badge-banned' : 'badge-ok'}">${estBanni ? 'Banni' : 'Actif'}</span></td>
                         <td>
@@ -486,7 +484,6 @@
             chargerComptes();
         }
 
-        // Chat
         async function chargerChatMod() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/messages.json`);
@@ -495,7 +492,7 @@
                 const statMessages = document.getElementById("stat-messages");
 
                 if (!data) {
-                    box.innerHTML = `<p style="color:#a4b0be; font-size:12px;">Aucun message dans le chat.</p>`;
+                    box.innerHTML = `<p style="color:#94a3b8; font-size:12px;">Aucun message dans le chat.</p>`;
                     statMessages.textContent = 0;
                     return;
                 }
@@ -510,8 +507,8 @@
                     div.className = "chat-mod-item";
                     div.innerHTML = `
                         <div>
-                            <span style="color:#ff9f43; font-weight:bold;">${m.pseudo}</span>
-                            <span style="color:#a4b0be; font-size:11px;">(${m.heure})</span> :
+                            <span style="color:#f59e0b; font-weight:bold;">${m.pseudo}</span>
+                            <span style="color:#94a3b8; font-size:11px;">(${m.heure})</span> :
                             <span>${m.texte}</span>
                         </div>
                         <button class="btn btn-danger" style="padding:2px 8px; font-size:11px;" onclick="supprimerMessage('${idMsg}')">Supprimer</button>
@@ -532,7 +529,6 @@
             chargerChatMod();
         }
 
-        // Cours
         async function chargerFichesCours() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/lecons.json`);
@@ -541,7 +537,7 @@
                 const statCours = document.getElementById("stat-cours");
 
                 if (!data) {
-                    ul.innerHTML = `<li style="color:#a4b0be; font-size:12px;">Aucune fiche créée.</li>`;
+                    ul.innerHTML = `<li style="color:#94a3b8; font-size:12px;">Aucune fiche créée.</li>`;
                     statCours.textContent = 0;
                     return;
                 }
@@ -556,7 +552,7 @@
                     li.style.display = "flex";
                     li.style.justifyContent = "space-between";
                     li.style.padding = "8px";
-                    li.style.backgroundColor = "#1e1e2e";
+                    li.style.backgroundColor = "#0b1120";
                     li.style.borderRadius = "6px";
                     li.style.fontSize = "13px";
 
@@ -594,6 +590,7 @@
 
         function quitterAdmin() {
             sessionStorage.removeItem("admin_session");
+            sessionStorage.removeItem("admin_user");
             window.location.href = "accueil.html";
         }
 

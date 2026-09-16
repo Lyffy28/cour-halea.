@@ -9,18 +9,19 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Thème ardoise & texture cahier quadrillé */
         body {
-            background-color: #0b1120;
+            background-color: #1e293b;
             background-image: 
-                linear-gradient(to right, rgba(51, 65, 85, 0.25) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(51, 65, 85, 0.25) 1px, transparent 1px);
-            background-size: 26px 26px;
-            color: #f1f5f9;
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+            color: #f8fafc;
             display: flex;
             height: 100vh;
             overflow: hidden;
@@ -28,25 +29,26 @@
 
         .admin-banner {
             display: none;
-            background: linear-gradient(90deg, #f59e0b, #d97706);
-            color: #0b1120;
+            background: linear-gradient(90deg, #f59e0b, #ea580c);
+            color: #ffffff;
             font-weight: bold;
             text-align: center;
-            padding: 9px 15px;
+            padding: 10px 15px;
             font-size: 13px;
             width: 100%;
             position: absolute;
             top: 0;
             left: 0;
             z-index: 1000;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
         }
 
-        /* 1. Colonne gauche (Style classeur relié) */
+        /* 1. Barre Gauche */
         .sidebar-left {
-            width: 90px;
-            background-color: #0f172a;
-            border-right: 2px solid #1e293b;
+            width: 95px;
+            background: rgba(15, 23, 42, 0.9);
+            border-right: 2px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -57,12 +59,11 @@
         .left-btn {
             background: none;
             border: none;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             color: #94a3b8;
             padding: 22px 5px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
-            letter-spacing: 0.5px;
             cursor: pointer;
             text-align: center;
             writing-mode: vertical-rl;
@@ -72,9 +73,8 @@
         }
 
         .left-btn:hover {
-            background-color: #1e293b;
+            background: rgba(56, 189, 248, 0.12);
             color: #38bdf8;
-            box-shadow: inset 3px 0 0 #38bdf8;
         }
 
         .bottom-left-group {
@@ -85,7 +85,7 @@
         .add-friend-btn {
             background: none;
             border: none;
-            border-top: 1px solid #1e293b;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             color: #10b981;
             padding: 16px 0;
             font-size: 24px;
@@ -97,8 +97,7 @@
         }
 
         .add-friend-btn:hover {
-            background-color: #1e293b;
-            color: #34d399;
+            background: rgba(16, 185, 129, 0.15);
         }
 
         .notif-badge {
@@ -112,13 +111,12 @@
             padding: 2px 7px;
             border-radius: 9999px;
             font-weight: bold;
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
         }
 
         .settings-btn {
             background: none;
             border: none;
-            border-top: 1px solid #1e293b;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             color: #94a3b8;
             padding: 16px 0;
             font-size: 20px;
@@ -129,8 +127,8 @@
         }
 
         .settings-btn:hover {
-            color: #f1f5f9;
-            background-color: #1e293b;
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.05);
         }
 
         /* 2. Centre */
@@ -139,7 +137,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 24px 20px;
+            padding: 28px 20px;
             position: relative;
             height: 100%;
             overflow-y: auto;
@@ -148,88 +146,130 @@
 
         .search-bar {
             width: 100%;
-            max-width: 580px;
-            padding: 14px 22px;
+            max-width: 600px;
+            padding: 15px 24px;
             font-size: 15px;
             border-radius: 9999px;
-            border: 1px solid #334155;
-            background-color: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
-            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(12px);
+            color: #ffffff;
             outline: none;
             flex-shrink: 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
         }
 
         .search-bar:focus {
-            border-color: #06b6d4;
-            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+        }
+
+        .dashboard-home {
+            width: 100%;
+            max-width: 640px;
+            margin-top: 35px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .dashboard-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-3px);
+            border-color: #38bdf8;
+            background: rgba(30, 41, 59, 0.95);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .dashboard-icon {
+            font-size: 30px;
+        }
+
+        .dashboard-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .dashboard-desc {
+            font-size: 12px;
+            color: #94a3b8;
+            line-height: 1.4;
         }
 
         #search-results-box {
             display: none;
             width: 100%;
-            max-width: 580px;
-            background-color: #0f172a;
-            border: 1px solid #06b6d4;
-            border-radius: 12px;
+            max-width: 600px;
+            background: #0f172a;
+            border: 1px solid #38bdf8;
+            border-radius: 14px;
             margin-top: 10px;
             padding: 12px;
             max-height: 250px;
             overflow-y: auto;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             flex-shrink: 0;
+            z-index: 20;
         }
 
         .search-result-item {
-            padding: 10px 12px;
-            border-bottom: 1px solid #1e293b;
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             cursor: pointer;
             font-size: 13px;
-            border-radius: 6px;
+            border-radius: 8px;
             transition: 0.15s;
         }
 
         .search-result-item:hover {
-            background-color: #1e293b;
+            background: rgba(56, 189, 248, 0.15);
             color: #38bdf8;
-            padding-left: 16px;
         }
 
-        /* Matières sur mobile */
         .mobile-subjects {
             display: none;
             width: 100%;
-            max-width: 580px;
+            max-width: 600px;
             margin-top: 20px;
             flex-direction: column;
-            gap: 15px;
+            gap: 14px;
         }
 
         .subject-card {
-            background-color: #0f172a;
-            border: 1px solid #1e293b;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .subject-card-header {
-            padding: 16px 20px;
+            padding: 15px 20px;
             font-size: 15px;
             font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            user-select: none;
         }
 
         .subject-card-content {
             display: none;
-            background-color: #0b1120;
-            border-top: 1px solid #1e293b;
+            background: rgba(11, 17, 32, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             padding: 6px 0;
         }
 
@@ -238,7 +278,7 @@
             padding: 12px 20px;
             background: none;
             border: none;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             color: #cbd5e1;
             font-size: 14px;
             text-align: left;
@@ -252,38 +292,37 @@
             border-bottom: none;
         }
 
-        /* Fenêtres Modales */
         .modal-box {
             display: none;
             flex-direction: column;
             width: 100%;
             max-width: 720px;
             height: 540px;
-            background-color: #0f172a;
-            border-radius: 16px;
+            background: #0f172a;
+            border-radius: 18px;
             margin-top: 20px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
             overflow: hidden;
             flex-shrink: 0;
         }
 
-        #chat-ia { border: 1px solid #06b6d4; }
+        #chat-ia { border: 1px solid #38bdf8; }
         #chat-entraide { border: 1px solid #f59e0b; }
         #friends-panel { border: 1px solid #10b981; height: auto; max-height: 520px; padding-bottom: 15px; }
         #devoirs-panel { border: 1px solid #eab308; }
 
         #admin-panel {
             display: none;
-            background-color: #0f172a;
+            background: #0f172a;
             margin-top: 25px;
             padding: 24px;
-            border-radius: 14px;
+            border-radius: 16px;
             border: 1px solid #f59e0b;
             text-align: center;
             width: 100%;
             max-width: 320px;
             flex-shrink: 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
         }
 
         #admin-panel input {
@@ -292,8 +331,8 @@
             width: 130px;
             text-align: center;
             border-radius: 8px;
-            border: 1px solid #334155;
-            background-color: #0b1120;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: #0b1120;
             color: #ffffff;
             letter-spacing: 4px;
             margin: 15px 0;
@@ -312,18 +351,17 @@
             cursor: pointer;
             margin-top: 15px;
             width: 100%;
-            transition: 0.2s;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
         }
 
         .chat-header {
-            background-color: #0b1120;
+            background: #0b1120;
             padding: 14px 18px;
             font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             flex-shrink: 0;
         }
 
@@ -334,16 +372,14 @@
             font-size: 22px;
             cursor: pointer;
             padding: 0 6px;
-            transition: 0.2s;
         }
 
         .close-btn:hover { color: #ef4444; }
 
-        /* Agenda / Onglets */
         .agenda-tabs {
             display: flex;
-            background-color: #0b1120;
-            border-bottom: 1px solid #1e293b;
+            background: #0b1120;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .agenda-tab-btn {
@@ -361,7 +397,7 @@
         .agenda-tab-btn.active {
             color: #eab308;
             border-bottom: 2px solid #eab308;
-            background-color: #0f172a;
+            background: #0f172a;
         }
 
         .devoirs-body {
@@ -378,15 +414,15 @@
             gap: 8px;
             flex-wrap: wrap;
             padding: 12px;
-            background-color: #0b1120;
-            border: 1px solid #1e293b;
+            background: #0b1120;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 10px;
             margin-bottom: 8px;
         }
 
         .ajout-perso-box input {
-            background-color: #0f172a;
-            border: 1px solid #334155;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: white;
             padding: 9px 14px;
             border-radius: 8px;
@@ -395,8 +431,8 @@
         }
 
         .devoir-item {
-            background-color: #0b1120;
-            border: 1px solid #1e293b;
+            background: #0b1120;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-left: 4px solid #eab308;
             padding: 12px 14px;
             border-radius: 10px;
@@ -414,7 +450,6 @@
             text-transform: uppercase;
             color: #eab308;
             font-weight: 700;
-            letter-spacing: 0.5px;
         }
 
         .devoir-matiere.perso {
@@ -425,7 +460,6 @@
             font-size: 14px;
             font-weight: 600;
             margin-top: 2px;
-            color: #f8fafc;
         }
 
         .devoir-date {
@@ -445,8 +479,8 @@
 
         .contacts-panel {
             width: 190px;
-            background-color: #0b1120;
-            border-right: 1px solid #1e293b;
+            background: #0b1120;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -460,8 +494,7 @@
             color: #f59e0b;
             font-weight: 700;
             padding: 12px 10px;
-            border-bottom: 1px solid #1e293b;
-            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .contacts-list { list-style: none; }
@@ -469,7 +502,7 @@
         .contact-item {
             padding: 12px 12px;
             font-size: 13px;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -478,7 +511,7 @@
         }
 
         .contact-item:hover, .contact-item.active {
-            background-color: #1e293b;
+            background: rgba(56, 189, 248, 0.15);
             color: #38bdf8;
             border-left: 3px solid #38bdf8;
         }
@@ -487,9 +520,8 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background-color: #10b981;
+            background: #10b981;
             flex-shrink: 0;
-            box-shadow: 0 0 6px #10b981;
         }
 
         .discussion-zone {
@@ -498,7 +530,7 @@
             flex-direction: column;
             min-height: 0;
             overflow: hidden;
-            background-color: #0f172a;
+            background: #0f172a;
         }
 
         .chat-messages {
@@ -525,27 +557,24 @@
         }
 
         .msg-ia {
-            background-color: #1e293b;
-            border: 1px solid #334155;
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             align-self: flex-start;
             border-bottom-left-radius: 3px;
-            color: #f1f5f9;
         }
 
         .msg-user {
             background: linear-gradient(135deg, #06b6d4, #0284c7);
             color: #ffffff;
-            font-weight: 500;
             align-self: flex-end;
             border-bottom-right-radius: 3px;
         }
 
         .msg-group-other {
-            background-color: #1e293b;
-            border: 1px solid #334155;
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             align-self: flex-start;
             border-bottom-left-radius: 3px;
-            color: #f1f5f9;
         }
 
         .msg-group-me {
@@ -571,8 +600,8 @@
 
         .chat-input-zone {
             display: flex;
-            border-top: 1px solid #1e293b;
-            background-color: #0b1120;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: #0b1120;
             padding: 12px;
             gap: 10px;
             flex-shrink: 0;
@@ -580,8 +609,8 @@
 
         .chat-input-zone input {
             flex: 1;
-            background-color: #0f172a;
-            border: 1px solid #334155;
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             padding: 12px 18px;
             color: #ffffff;
             border-radius: 9999px;
@@ -590,12 +619,8 @@
             min-width: 0;
         }
 
-        .chat-input-zone input:focus {
-            border-color: #38bdf8;
-        }
-
         .chat-input-zone input:disabled {
-            background-color: #0b1120;
+            background: #0b1120;
             cursor: not-allowed;
             color: #475569;
         }
@@ -608,11 +633,6 @@
             cursor: pointer;
             flex-shrink: 0;
             font-size: 13px;
-            transition: 0.15s;
-        }
-
-        .btn-send:hover:not(:disabled) {
-            transform: scale(1.03);
         }
 
         /* Panneau Amis */
@@ -626,8 +646,8 @@
         .friends-input-zone { display: flex; gap: 10px; margin-bottom: 15px; }
         .friends-input-zone input {
             flex: 1;
-            background-color: #0b1120;
-            border: 1px solid #334155;
+            background: #0b1120;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             padding: 10px 14px;
             border-radius: 8px;
             color: #ffffff;
@@ -651,10 +671,9 @@
             color: #f59e0b;
             margin: 15px 0 8px 0;
             font-weight: 700;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding-bottom: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .friends-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
@@ -663,16 +682,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #0b1120;
+            background: #0b1120;
             padding: 10px 14px;
             border-radius: 10px;
-            border: 1px solid #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             font-size: 13px;
         }
 
         .action-btns { display: flex; gap: 6px; }
         .btn-accept {
-            background-color: #10b981;
+            background: #10b981;
             color: white;
             border: none;
             padding: 5px 10px;
@@ -683,7 +702,7 @@
         }
 
         .btn-refuse, .btn-del-friend {
-            background-color: #ef4444;
+            background: #ef4444;
             color: white;
             border: none;
             padding: 5px 10px;
@@ -692,11 +711,12 @@
             font-size: 12px;
         }
 
-        /* 3. Colonne droite (Style classeur relié) */
+        /* 3. Barre Droite */
         .sidebar-right {
             width: 175px;
-            background-color: #0f172a;
-            border-left: 2px solid #1e293b;
+            background: rgba(15, 23, 42, 0.9);
+            border-left: 2px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -711,7 +731,7 @@
             justify-content: space-around;
             align-items: center;
             padding: 14px 6px;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
         }
 
@@ -729,11 +749,6 @@
             cursor: pointer;
             transition: transform 0.2s;
             user-select: none;
-            box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
-        }
-
-        .profile-badge:hover {
-            transform: scale(1.05);
         }
 
         .profile-menu {
@@ -742,7 +757,7 @@
             top: 65px;
             left: 10px;
             right: 10px;
-            background-color: #0b1120;
+            background: #0b1120;
             border: 1px solid #06b6d4;
             border-radius: 12px;
             padding: 14px;
@@ -754,7 +769,7 @@
         .profile-menu .info-name { font-size: 14px; font-weight: bold; color: #38bdf8; word-break: break-word; }
         .profile-menu .info-email { font-size: 11px; color: #64748b; margin-top: 4px; margin-bottom: 12px; word-break: break-word; }
         .btn-logout {
-            background-color: #ef4444;
+            background: #ef4444;
             color: white;
             border: none;
             border-radius: 8px;
@@ -769,8 +784,8 @@
 
         .admin-dropdown {
             display: none;
-            background-color: #0b1120;
-            border-bottom: 1px solid #1e293b;
+            background: #0b1120;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding: 10px;
             text-align: center;
         }
@@ -792,7 +807,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             font-size: 14px;
             cursor: pointer;
             color: #94a3b8;
@@ -805,11 +820,11 @@
         }
 
         .right-item:hover {
-            background-color: #1e293b;
+            background: rgba(255, 255, 255, 0.05);
             color: #ffffff;
         }
 
-        .sub-menu { display: none; background-color: #0b1120; border-bottom: 1px solid #1e293b; }
+        .sub-menu { display: none; background: #0b1120; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
 
         .sub-item {
             display: block;
@@ -817,7 +832,7 @@
             padding: 12px 16px;
             background: none;
             border: none;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             color: #38bdf8;
             font-size: 13px;
             text-align: left;
@@ -826,28 +841,28 @@
         }
 
         .sub-item:hover {
-            background-color: #1e293b;
-            padding-left: 22px;
+            background: rgba(56, 189, 248, 0.1);
+            padding-left: 20px;
         }
 
-        /* Mobile */
         @media (max-width: 768px) {
             body { flex-direction: column; height: 100vh; height: 100dvh; }
-            .sidebar-left { width: 100%; height: 54px; flex-direction: row; border-right: none; border-bottom: 2px solid #1e293b; order: 1; flex-shrink: 0; }
+            .sidebar-left { width: 100%; height: 54px; flex-direction: row; border-right: none; border-bottom: 2px solid rgba(255, 255, 255, 0.08); order: 1; flex-shrink: 0; }
             .sidebar-left > div:first-child { display: flex; flex: 1; }
-            .left-btn { writing-mode: horizontal-tb; transform: none; padding: 10px 5px; border-bottom: none; border-right: 1px solid #1e293b; font-size: 12px; flex: 1; }
+            .left-btn { writing-mode: horizontal-tb; transform: none; padding: 10px 5px; border-bottom: none; border-right: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; flex: 1; }
             .bottom-left-group { flex-direction: row; }
-            .add-friend-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid #1e293b; font-size: 20px; }
-            .settings-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid #1e293b; }
+            .add-friend-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid rgba(255, 255, 255, 0.08); font-size: 20px; }
+            .settings-btn { width: 50px; padding: 8px 0; border-top: none; border-left: 1px solid rgba(255, 255, 255, 0.08); }
             .main-content { order: 2; padding: 14px; flex: 1; width: 100%; overflow-y: auto; }
+            .dashboard-home { grid-template-columns: 1fr; margin-top: 20px; }
             .mobile-subjects { display: flex; }
             .sidebar-right { display: none; }
             .modal-box { position: fixed; top: 54px; left: 0; right: 0; bottom: 0; width: 100%; max-width: 100%; height: calc(100dvh - 54px); max-height: calc(100dvh - 54px); margin: 0; border-radius: 0; z-index: 100; }
             .messagerie-body { flex-direction: column; }
-            .contacts-panel { width: 100%; height: 46px; max-height: 46px; border-right: none; border-bottom: 1px solid #1e293b; flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+            .contacts-panel { width: 100%; height: 46px; max-height: 46px; border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.08); flex-direction: row; overflow-x: auto; overflow-y: hidden; }
             .contacts-panel-title { display: none; }
             .contacts-list { display: flex; flex-direction: row; }
-            .contact-item { white-space: nowrap; padding: 6px 14px; border-bottom: none; border-right: 1px solid #1e293b; font-size: 12px; }
+            .contact-item { white-space: nowrap; padding: 6px 14px; border-bottom: none; border-right: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; }
             .discussion-zone { flex: 1; min-height: 0; height: 100%; }
             .chat-messages { flex: 1; min-height: 0; padding: 12px; }
             .chat-input-zone { padding: 8px 12px; }
@@ -880,6 +895,30 @@
     <div class="main-content">
         <input type="text" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher une formule, un cours, un devoir..." oninput="filtrerContenuRecherche()">
         <div id="search-results-box"></div>
+
+        <!-- Dashboard visuel pour habiller le centre de l'écran -->
+        <div class="dashboard-home" id="dashboard-central">
+            <div class="dashboard-card" onclick="ouvrirMatiere('Maths')">
+                <span class="dashboard-icon">📐</span>
+                <span class="dashboard-title">Cahier de cours</span>
+                <span class="dashboard-desc">Consulte tes fiches de cours, scanne tes cahiers et génère des exercices.</span>
+            </div>
+            <div class="dashboard-card" onclick="ouvrirDevoirs()">
+                <span class="dashboard-icon">📅</span>
+                <span class="dashboard-title">Agenda & Devoirs</span>
+                <span class="dashboard-desc">Retrouve les devoirs de la classe et organise tes tâches personnelles.</span>
+            </div>
+            <div class="dashboard-card" onclick="ouvrirMessagerie()">
+                <span class="dashboard-icon">💬</span>
+                <span class="dashboard-title">Discussions privées</span>
+                <span class="dashboard-desc">Échange en direct avec tes camarades pour réviser en équipe.</span>
+            </div>
+            <div class="dashboard-card" onclick="ouvrirChatIA()">
+                <span class="dashboard-icon">🤖</span>
+                <span class="dashboard-title">Tuteur IA</span>
+                <span class="dashboard-desc">Pose toutes tes questions scolaires pour obtenir une explication immédiate.</span>
+            </div>
+        </div>
 
         <!-- Matières Mobile -->
         <div class="mobile-subjects">
@@ -918,7 +957,7 @@
                     <button class="mobile-sub-btn" onclick="ouvrirMatiere('Histoire')">📜 Histoire</button>
                     <button class="mobile-sub-btn" onclick="ouvrirMatiere('Géographie')">🌍 Géographie</button>
                     <button class="mobile-sub-btn" onclick="ouvrirMatiere('EMC')">⚖️ EMC</button>
-                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques / Musique</button>
+                    <button class="mobile-sub-btn" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques</button>
                 </div>
             </div>
         </div>
@@ -931,7 +970,7 @@
             </div>
             
             <div class="agenda-tabs">
-                <button class="agenda-tab-btn active" id="tab-btn-public" onclick="changerOngletAgenda('public')">📢 Devoirs communs (Classe)</button>
+                <button class="agenda-tab-btn active" id="tab-btn-public" onclick="changerOngletAgenda('public')">📢 Devoirs communs</button>
                 <button class="agenda-tab-btn" id="tab-btn-perso" onclick="changerOngletAgenda('perso')">🔒 Mes tâches perso</button>
             </div>
 
@@ -1143,6 +1182,11 @@
             document.getElementById("devoirs-panel").style.display = "none";
             document.getElementById("menu-profil").style.display = "none";
             document.getElementById("search-results-box").style.display = "none";
+            document.getElementById("dashboard-central").style.display = "grid";
+        }
+
+        function masquerDashboard() {
+            document.getElementById("dashboard-central").style.display = "none";
         }
 
         // RECHERCHE
@@ -1228,6 +1272,7 @@
         // AGENDA
         function ouvrirDevoirs() {
             fermerFenetres();
+            masquerDashboard();
             document.getElementById("devoirs-panel").style.display = "flex";
             changerOngletAgenda("public");
         }
@@ -1348,6 +1393,7 @@
 
         function ouvrirMessagerie() {
             fermerFenetres();
+            masquerDashboard();
             document.getElementById("chat-entraide").style.display = "flex";
             synchroniserDemandesEtAmis();
         }
@@ -1555,6 +1601,7 @@
 
         function ouvrirGestionAmis() {
             fermerFenetres();
+            masquerDashboard();
             document.getElementById("friends-panel").style.display = "flex";
             synchroniserDemandesEtAmis();
         }
@@ -1562,6 +1609,7 @@
         // TUTEUR IA
         function ouvrirChatIA() {
             fermerFenetres();
+            masquerDashboard();
             document.getElementById("chat-ia").style.display = "flex";
             document.getElementById("user-input").focus();
         }
@@ -1615,7 +1663,7 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // NAVIGATION & CODE PIN
+        // NAVIGATION & CODE PIN (2107 EXCLUSIF POUR ZETA|Luffy)
         function toggleMenu(idMenu) {
             const menu = document.getElementById(idMenu);
             const estOuvert = (menu.style.display === "block");
@@ -1635,6 +1683,7 @@
 
         function ouvrirAdmin() {
             fermerFenetres();
+            masquerDashboard();
             document.getElementById("dropdown-menu").style.display = "none";
             document.getElementById("admin-panel").style.display = "block";
             document.getElementById("btn-admin-secret").style.display = "none";
@@ -1646,12 +1695,18 @@
             const code = document.getElementById("code-pin").value;
             const reponse = document.getElementById("message-pin");
             const boutonSecret = document.getElementById("btn-admin-secret");
+            const pseudoAdminAutorise = "ZETA|Luffy";
             
-            if (code === "6767") {
+            if (code === "2107" && monPseudo.toLowerCase() === pseudoAdminAutorise.toLowerCase()) {
                 reponse.style.color = "#10b981";
                 reponse.innerHTML = "✅ Identité confirmée. Accès débloqué :";
                 sessionStorage.setItem("admin_session", "active");
+                sessionStorage.setItem("admin_user", monPseudo);
                 boutonSecret.style.display = "block";
+            } else if (code === "2107") {
+                reponse.style.color = "#ef4444";
+                reponse.innerHTML = "⛔ Ce compte n'a pas les droits administrateur.";
+                boutonSecret.style.display = "none";
             } else {
                 reponse.style.color = "#ef4444";
                 reponse.innerHTML = "❌ Code invalide.";
