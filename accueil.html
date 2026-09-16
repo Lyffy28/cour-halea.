@@ -10,14 +10,19 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #1e1e2e;
+            color: #ffffff;
+            overflow: hidden;
         }
 
         body {
-            background-color: #1e1e2e;
-            color: #ffffff;
             display: flex;
-            height: 100vh;
-            overflow: hidden;
         }
 
         /* 1. Colonne gauche */
@@ -29,6 +34,7 @@
             flex-direction: column;
             justify-content: space-between;
             flex-shrink: 0;
+            z-index: 10;
         }
 
         .left-btn {
@@ -109,6 +115,7 @@
             align-items: center;
             padding: 20px;
             position: relative;
+            height: 100%;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
@@ -123,6 +130,7 @@
             background-color: #2b2c40;
             color: #ffffff;
             outline: none;
+            flex-shrink: 0;
         }
 
         .search-bar:focus {
@@ -135,7 +143,7 @@
             flex-direction: column;
             width: 100%;
             max-width: 700px;
-            height: 500px;
+            height: 520px;
             background-color: #26273b;
             border-radius: 12px;
             margin-top: 20px;
@@ -199,24 +207,25 @@
             background: none;
             border: none;
             color: #a4b0be;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
+            padding: 0 5px;
         }
 
         .close-btn:hover {
             color: #ee5253;
         }
 
-        /* Double volet Messagerie */
+        /* Organisation Messagerie */
         .messagerie-body {
             display: flex;
             flex: 1;
-            min-height: 0; /* Permet le scroll interne correct */
+            min-height: 0; /* OBLIGATOIRE pour activer le défilement vertical enfant */
             overflow: hidden;
         }
 
         .contacts-panel {
-            width: 200px;
+            width: 180px;
             background-color: #1e1e2e;
             border-right: 1px solid #3d3f58;
             display: flex;
@@ -266,19 +275,21 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            min-height: 0; /* Essentiel pour que les messages défilent */
+            min-height: 0; /* OBLIGATOIRE pour activer le défilement */
             overflow: hidden;
+            background-color: #26273b;
         }
 
         .chat-messages {
             flex: 1;
             padding: 15px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch; /* Défilement fluide iOS & Android */
+            overflow-y: scroll !important; /* Force la barre tactile */
+            -webkit-overflow-scrolling: touch !important; /* Glissement fluide au doigt sur iPhone/Android */
             display: flex;
             flex-direction: column;
             gap: 12px;
             min-height: 0;
+            touch-action: pan-y; /* Autorise explicitement le doigt à scroller de haut en bas */
         }
 
         .msg {
@@ -289,6 +300,7 @@
             line-height: 1.4;
             white-space: pre-wrap;
             word-break: break-word;
+            flex-shrink: 0;
         }
 
         .msg-ia {
@@ -338,7 +350,7 @@
             border-top: 1px solid #3d3f58;
             background-color: #1e1e2e;
             padding: 10px;
-            gap: 10px;
+            gap: 8px;
             flex-shrink: 0;
         }
 
@@ -346,20 +358,21 @@
             flex: 1;
             background-color: #26273b;
             border: 1px solid #3d3f58;
-            padding: 10px 14px;
+            padding: 12px 16px;
             color: #ffffff;
             border-radius: 20px;
             outline: none;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .btn-send {
             border: none;
             font-weight: bold;
-            padding: 8px 16px;
+            padding: 10px 18px;
             border-radius: 20px;
             cursor: pointer;
             flex-shrink: 0;
+            font-size: 14px;
         }
 
         /* Panneau Amis & Demandes */
@@ -608,22 +621,21 @@
             padding-left: 20px;
         }
 
-        /* 📱 Adaptation Mobile Optimisée */
+        /* 📱 CORRECTION COMPLÈTE SUR TÉLÉPHONE */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
-                height: 100vh;
-                height: 100dvh; /* Hauteur dynamique plein écran smartphone */
-                overflow: hidden;
+                height: 100dvh; /* Vraie hauteur d'écran mobile */
             }
 
             .sidebar-left {
                 width: 100%;
-                height: auto;
+                height: 52px;
                 flex-direction: row;
                 border-right: none;
                 border-bottom: 1px solid #3d3f58;
                 order: 1;
+                flex-shrink: 0;
             }
 
             .sidebar-left > div:first-child {
@@ -634,10 +646,10 @@
             .left-btn {
                 writing-mode: horizontal-tb;
                 transform: none;
-                padding: 12px 10px;
+                padding: 10px;
                 border-bottom: none;
                 border-right: 1px solid #3d3f58;
-                font-size: 13px;
+                font-size: 14px;
                 flex: 1;
             }
 
@@ -647,7 +659,7 @@
 
             .add-friend-btn {
                 width: 50px;
-                padding: 10px 0;
+                padding: 8px 0;
                 border-top: none;
                 border-left: 1px solid #3d3f58;
                 font-size: 20px;
@@ -655,42 +667,50 @@
 
             .settings-btn {
                 width: 50px;
-                padding: 10px 0;
+                padding: 8px 0;
                 border-top: none;
                 border-left: 1px solid #3d3f58;
             }
 
             .main-content {
                 order: 2;
-                padding: 10px 8px;
+                padding: 10px;
                 flex: 1;
-                display: flex;
-                flex-direction: column;
-                overflow: hidden; /* Évite les doubles barres de scroll */
+                height: calc(100dvh - 52px);
+                overflow: hidden;
             }
 
             .search-bar {
                 width: 100%;
                 margin-bottom: 8px;
-                flex-shrink: 0;
             }
 
+            /* La boîte de chat occupe tout l'espace restant sans déborder */
             .modal-box {
-                margin-top: 0;
-                height: 100%;
-                max-height: calc(100vh - 125px);
-                max-height: calc(100dvh - 125px);
-                flex: 1;
-                border-radius: 8px;
+                position: fixed;
+                top: 52px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                width: 100%;
+                max-width: 100%;
+                height: calc(100dvh - 52px);
+                max-height: calc(100dvh - 52px);
+                margin: 0;
+                border-radius: 0;
+                z-index: 50;
             }
 
             .messagerie-body {
                 flex-direction: column;
+                flex: 1;
+                min-height: 0;
             }
 
             .contacts-panel {
                 width: 100%;
-                max-height: 75px;
+                height: 48px;
+                max-height: 48px;
                 border-right: none;
                 border-bottom: 1px solid #3d3f58;
                 flex-direction: row;
@@ -712,10 +732,35 @@
                 padding: 8px 12px;
                 border-bottom: none;
                 border-right: 1px solid #2b2c40;
+                font-size: 13px;
+            }
+
+            .discussion-zone {
+                flex: 1;
+                min-height: 0;
+                height: 100%;
+            }
+
+            .chat-messages {
+                flex: 1;
+                min-height: 0;
+                padding: 10px;
+                overflow-y: scroll !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+
+            .chat-input-zone {
+                padding: 8px;
+                background-color: #1e1e2e;
+            }
+
+            .chat-input-zone input {
+                padding: 10px 14px;
+                font-size: 15px;
             }
 
             .sidebar-right {
-                display: none; /* Accessible via un toggle si besoin pour garder l'espace de chat */
+                display: none;
             }
         }
     </style>
@@ -892,9 +937,8 @@
         }
 
         // =======================================================
-        // 🌐 DEMANDES & AMIS EN LIGNE
+        // 🌐 GESTION AMIS
         // =======================================================
-
         async function envoyerDemandeAmi() {
             const input = document.getElementById("friend-pseudo-input");
             const cible = input.value.trim();
@@ -989,7 +1033,6 @@
                         boxContacts.appendChild(liContact);
                     });
                 }
-
             } catch (e) {}
         }
 
@@ -1031,16 +1074,22 @@
         }
 
         // =======================================================
-        // 💬 MESSAGERIE SYNCHRONISÉE AVEC DÉFILEMENT AUTOMATIQUE
+        // 💬 MESSAGERIE : DÉFILEMENT FLUIDE & SCROLL AUTOMATIQUE
         // =======================================================
         let dernierNombreMessages = 0;
 
         function ouvrirMessagerie() {
             fermerFenetres();
-            document.getElementById("chat-entraide").style.display = "flex";
+            const modal = document.getElementById("chat-entraide");
+            modal.style.display = "flex";
             synchroniserDemandesEtAmis();
-            chargerMessagesEnLigne(true); // Défilement forcé à l'ouverture
-            document.getElementById("group-input").focus();
+            chargerMessagesEnLigne(true);
+            
+            // Focus sans faire sauter l'écran sur mobile
+            setTimeout(() => {
+                const zone = document.getElementById("group-messages");
+                zone.scrollTop = zone.scrollHeight;
+            }, 100);
         }
 
         async function chargerMessagesEnLigne(forcerScroll = false) {
@@ -1051,7 +1100,7 @@
 
                 if (!data) {
                     conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
-                        Aucun message. Discutez ici de vos révisions !
+                        Aucun message. Discutez ici de vos cours !
                     </div>`;
                     return;
                 }
@@ -1059,8 +1108,8 @@
                 const cles = Object.keys(data);
                 const nouveauMessageArrive = (cles.length !== dernierNombreMessages);
 
-                // Vérifier si l'utilisateur est déjà tout en bas avant d'actualiser
-                const estProcheDuBas = (conteneur.scrollHeight - conteneur.scrollTop - conteneur.clientHeight) < 120;
+                // Détecter si l'utilisateur est déjà en train de lire les derniers messages
+                const estProcheDuBas = (conteneur.scrollHeight - conteneur.scrollTop - conteneur.clientHeight) < 150;
 
                 conteneur.innerHTML = "";
                 Object.values(data).forEach(m => {
@@ -1076,11 +1125,11 @@
 
                 dernierNombreMessages = cles.length;
 
-                // Fait défiler tout en bas si demandé ou si un nouveau message arrive et qu'on était déjà en bas
+                // Si un message arrive ou qu'on force l'affichage, descendre tout en bas
                 if (forcerScroll || (nouveauMessageArrive && estProcheDuBas)) {
-                    setTimeout(() => {
+                    requestAnimationFrame(() => {
                         conteneur.scrollTop = conteneur.scrollHeight;
-                    }, 50);
+                    });
                 }
             } catch (e) {}
         }
@@ -1104,11 +1153,11 @@
             });
 
             input.value = "";
-            chargerMessagesEnLigne(true); // Descend immédiatement tout en bas
+            chargerMessagesEnLigne(true);
         }
 
         // =======================================================
-        // 🤖 ASSISTANT META IA
+        // 🤖 META IA
         // =======================================================
         function ouvrirChatIA() {
             fermerFenetres();
@@ -1203,7 +1252,7 @@
             }
         }
 
-        // Rafraîchissement automatique toutes les 2.5 secondes
+        // Synchronisation en temps réel
         synchroniserDemandesEtAmis();
         setInterval(synchroniserDemandesEtAmis, 2500);
         setInterval(() => {
