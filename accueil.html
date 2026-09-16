@@ -205,7 +205,7 @@
             color: #ee5253;
         }
 
-        /* Organisation double volet Messagerie : Contacts + Discussion */
+        /* Double volet Messagerie */
         .messagerie-body {
             display: flex;
             flex: 1;
@@ -595,7 +595,6 @@
             padding-left: 20px;
         }
 
-        /* 📱 Adaptation Mobile */
         @media (max-width: 768px) {
             body {
                 flex-direction: column;
@@ -694,7 +693,6 @@
 </head>
 <body>
 
-    <!-- Barre latérale Gauche -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
@@ -710,11 +708,9 @@
         </div>
     </div>
 
-    <!-- Centre de l'écran -->
     <div class="main-content">
         <input type="text" class="search-bar" placeholder="Rechercher...">
 
-        <!-- 1. Fenêtre Amis & Demandes -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
                 <span style="color: #1dd1a1;">👥 Demandes d'amis & Contacts</span>
@@ -734,7 +730,6 @@
             </div>
         </div>
 
-        <!-- 2. Salon de Messagerie avec Liste des Contacts -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
                 <span style="color: #ff9f43;">💬 Salon de révision (Entre amis)</span>
@@ -742,13 +737,11 @@
             </div>
             
             <div class="messagerie-body">
-                <!-- Volet Contacts / Amis -->
                 <div class="contacts-panel">
                     <div class="contacts-panel-title">👥 Mes contacts</div>
                     <ul class="contacts-list" id="contacts-list"></ul>
                 </div>
 
-                <!-- Zone de discussion active -->
                 <div class="discussion-zone">
                     <div class="chat-messages" id="group-messages"></div>
                     <div class="chat-input-zone">
@@ -759,7 +752,6 @@
             </div>
         </div>
 
-        <!-- 3. Assistant Meta IA -->
         <div id="chat-ia" class="modal-box">
             <div class="chat-header">
                 <span style="color: #00d2d3;">🤖 Meta IA - Assistant</span>
@@ -774,7 +766,6 @@
             </div>
         </div>
 
-        <!-- 4. Panneau Admin -->
         <div id="admin-panel">
             <h3>Panel Admin</h3>
             <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code à 4 chiffres :</p>
@@ -785,7 +776,6 @@
         </div>
     </div>
 
-    <!-- Barre latérale Droite -->
     <div class="sidebar-right">
         <div class="top-icons">
             <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon compte">Moi</div>
@@ -802,7 +792,6 @@
             <button onclick="ouvrirAdmin()">Panel Admin</button>
         </div>
 
-        <!-- Langue -->
         <button class="right-item" onclick="toggleMenu('menu-langues')" style="color: #00d2d3; font-weight: bold;">
             Langue ▾
         </button>
@@ -813,7 +802,6 @@
             <button class="sub-item" onclick="ouvrirMatiere('Latin-Grec')">🏛️ Latin / Grec</button>
         </div>
 
-        <!-- Science -->
         <button class="right-item" onclick="toggleMenu('menu-sciences')" style="color: #ff9f43; font-weight: bold;">
             Science ▾
         </button>
@@ -824,7 +812,6 @@
             <button class="sub-item" onclick="ouvrirMatiere('Technologie')">💻 Technologie</button>
         </div>
 
-        <!-- Culture -->
         <button class="right-item" onclick="toggleMenu('menu-culture')" style="color: #1dd1a1; font-weight: bold;">
             Culture ▾
         </button>
@@ -837,9 +824,10 @@
     </div>
 
     <script>
+        // Configuration de ta base Firebase en direct
+        const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
-        // Vérification de connexion
         const monPseudo = localStorage.getItem("utilisateur_pseudo");
         const monEmail = localStorage.getItem("utilisateur_email") || "";
 
@@ -871,247 +859,192 @@
             document.getElementById("menu-profil").style.display = "none";
         }
 
-        /* --- GESTION DES AMIS ET DES DEMANDES --- */
-        function getCleAmis(pseudo = monPseudo) {
-            return "amis_" + pseudo.toLowerCase();
-        }
+        // =======================================================
+        // 🌐 SYSTEME EN DIRECT : DEMANDES & AMIS SYNCHRONISES
+        // =======================================================
 
-        function recupererMesAmis() {
-            return JSON.parse(localStorage.getItem(getCleAmis()) || "[]");
-        }
-
-        function recupererToutesDemandes() {
-            return JSON.parse(localStorage.getItem("demandes_amis_system") || "[]");
-        }
-
-        function sauvegarderToutesDemandes(liste) {
-            localStorage.setItem("demandes_amis_system", JSON.stringify(liste));
-            verifierNotifications();
-        }
-
-        function ouvrirGestionAmis() {
-            fermerFenetres();
-            document.getElementById("friends-panel").style.display = "flex";
-            actualiserPanneauAmis();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function verifierNotifications() {
-            const toutes = recupererToutesDemandes();
-            const pourMoi = toutes.filter(d => d.destinataire.toLowerCase() === monPseudo.toLowerCase() && d.statut === "en_attente");
-            const badge = document.getElementById("badge-demandes");
-            if (pourMoi.length > 0) {
-                badge.textContent = pourMoi.length;
-                badge.style.display = "inline-block";
-            } else {
-                badge.style.display = "none";
-            }
-        }
-
-        function envoyerDemandeAmi() {
+        async function envoyerDemandeAmi() {
             const input = document.getElementById("friend-pseudo-input");
             const cible = input.value.trim();
 
             if (!cible) return;
             if (cible.toLowerCase() === monPseudo.toLowerCase()) {
-                alert("Tu ne peux pas t'envoyer une demande d'ami à toi-même !");
+                alert("Tu ne peux pas t'envoyer une demande à toi-même !");
                 return;
             }
 
-            const mesAmis = recupererMesAmis();
-            if (mesAmis.some(a => a.toLowerCase() === cible.toLowerCase())) {
-                alert(cible + " est déjà dans tes amis !");
-                return;
+            try {
+                // Envoi en ligne directement vers le compte cible
+                const res = await fetch(`${FIREBASE_URL}/demandes/${cible.toLowerCase()}/${monPseudo.toLowerCase()}.json`, {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        demandeur: monPseudo,
+                        destinataire: cible,
+                        date: new Date().toISOString()
+                    })
+                });
+
+                if (res.ok) {
+                    alert(`Demande envoyée sur le compte de ${cible} !`);
+                    input.value = "";
+                } else {
+                    alert("Erreur lors de l'envoi.");
+                }
+            } catch (e) {
+                alert("Erreur de connexion internet.");
             }
+        }
 
-            let toutes = recupererToutesDemandes();
-            const dejaEnvoye = toutes.some(d => 
-                d.statut === "en_attente" && 
-                d.demandeur.toLowerCase() === monPseudo.toLowerCase() && 
-                d.destinataire.toLowerCase() === cible.toLowerCase()
-            );
+        async function synchroniserDemandesEtAmis() {
+            try {
+                // Récupération des demandes reçues pour MON compte
+                const resDemandes = await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}.json`);
+                const dataDemandes = await resDemandes.json();
+                
+                const boxDemandes = document.getElementById("demandes-list");
+                const badge = document.getElementById("badge-demandes");
 
-            if (dejaEnvoye) {
-                alert("Une demande est déjà en attente pour " + cible + ".");
-                return;
-            }
+                if (!dataDemandes || Object.keys(dataDemandes).length === 0) {
+                    boxDemandes.innerHTML = `<li style="color:#a4b0be; font-size:12px; padding:6px;">Aucune demande reçue.</li>`;
+                    badge.style.display = "none";
+                } else {
+                    const liste = Object.values(dataDemandes);
+                    badge.textContent = liste.length;
+                    badge.style.display = "inline-block";
 
-            toutes.push({
-                demandeur: monPseudo,
-                destinataire: cible,
-                statut: "en_attente"
+                    boxDemandes.innerHTML = "";
+                    liste.forEach(d => {
+                        const li = document.createElement("li");
+                        li.className = "friend-item";
+                        li.innerHTML = `
+                            <span>👤 <strong>${d.demandeur}</strong></span>
+                            <div class="action-btns">
+                                <button class="btn-accept" onclick="accepterDemande('${d.demandeur}')">Accepter</button>
+                                <button class="btn-refuse" onclick="refuserDemande('${d.demandeur}')">Refuser</button>
+                            </div>
+                        `;
+                        boxDemandes.appendChild(li);
+                    });
+                }
+
+                // Récupération des amis confirmés
+                const resAmis = await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}.json`);
+                const dataAmis = await resAmis.json();
+                const boxAmis = document.getElementById("friends-list");
+                const boxContacts = document.getElementById("contacts-list");
+
+                if (!dataAmis || Object.keys(dataAmis).length === 0) {
+                    boxAmis.innerHTML = `<li style="color:#a4b0be; font-size:12px; padding:6px;">Aucun ami confirmé.</li>`;
+                    boxContacts.innerHTML = `<li style="color:#a4b0be; font-size:11px; padding:10px;">Aucun ami.</li>`;
+                } else {
+                    const amis = Object.keys(dataAmis);
+                    boxAmis.innerHTML = "";
+                    boxContacts.innerHTML = "";
+
+                    amis.forEach(ami => {
+                        const liAmi = document.createElement("li");
+                        liAmi.className = "friend-item";
+                        liAmi.innerHTML = `
+                            <span>🤝 <strong>${ami}</strong></span>
+                            <button class="btn-del-friend" onclick="supprimerAmi('${ami}')">Supprimer</button>
+                        `;
+                        boxAmis.appendChild(liAmi);
+
+                        const liContact = document.createElement("li");
+                        liContact.className = "contact-item";
+                        liContact.innerHTML = `<span class="contact-dot"></span><span>${ami}</span>`;
+                        liContact.onclick = () => {
+                            document.getElementById("group-input").value = `@${ami} `;
+                            document.getElementById("group-input").focus();
+                        };
+                        boxContacts.appendChild(liContact);
+                    });
+                }
+
+            } catch (e) {}
+        }
+
+        async function accepterDemande(demandeur) {
+            // S'ajoute mutuellement
+            await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, {
+                method: "PUT",
+                body: JSON.stringify(true)
             });
 
-            sauvegarderToutesDemandes(toutes);
-            input.value = "";
-            alert("Demande envoyée avec succès à " + cible + " !");
-            actualiserPanneauAmis();
+            await fetch(`${FIREBASE_URL}/amis/${demandeur.toLowerCase()}/${monPseudo.toLowerCase()}.json`, {
+                method: "PUT",
+                body: JSON.stringify(true)
+            });
+
+            // Supprime la demande acceptée
+            await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, {
+                method: "DELETE"
+            });
+
+            synchroniserDemandesEtAmis();
         }
 
-        function accepterDemande(demandeur) {
-            // 1. Ajouter mutuellement dans les listes des deux comptes
-            let mesAmis = recupererMesAmis();
-            if (!mesAmis.some(a => a.toLowerCase() === demandeur.toLowerCase())) {
-                mesAmis.push(demandeur);
-                localStorage.setItem(getCleAmis(monPseudo), JSON.stringify(mesAmis));
-            }
-
-            let sesAmis = JSON.parse(localStorage.getItem(getCleAmis(demandeur)) || "[]");
-            if (!sesAmis.some(a => a.toLowerCase() === monPseudo.toLowerCase())) {
-                sesAmis.push(monPseudo);
-                localStorage.setItem(getCleAmis(demandeur), JSON.stringify(sesAmis));
-            }
-
-            // 2. Retirer la demande en attente
-            let toutes = recupererToutesDemandes();
-            toutes = toutes.filter(d => !(d.demandeur.toLowerCase() === demandeur.toLowerCase() && d.destinataire.toLowerCase() === monPseudo.toLowerCase()));
-            sauvegarderToutesDemandes(toutes);
-
-            actualiserPanneauAmis();
+        async function refuserDemande(demandeur) {
+            await fetch(`${FIREBASE_URL}/demandes/${monPseudo.toLowerCase()}/${demandeur.toLowerCase()}.json`, {
+                method: "DELETE"
+            });
+            synchroniserDemandesEtAmis();
         }
 
-        function refuserDemande(demandeur) {
-            let toutes = recupererToutesDemandes();
-            toutes = toutes.filter(d => !(d.demandeur.toLowerCase() === demandeur.toLowerCase() && d.destinataire.toLowerCase() === monPseudo.toLowerCase()));
-            sauvegarderToutesDemandes(toutes);
-            actualiserPanneauAmis();
+        async function supprimerAmi(ami) {
+            await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}/${ami.toLowerCase()}.json`, { method: "DELETE" });
+            await fetch(`${FIREBASE_URL}/amis/${ami.toLowerCase()}/${monPseudo.toLowerCase()}.json`, { method: "DELETE" });
+            synchroniserDemandesEtAmis();
         }
 
-        function supprimerAmi(ami) {
-            let mesAmis = recupererMesAmis().filter(a => a.toLowerCase() !== ami.toLowerCase());
-            localStorage.setItem(getCleAmis(monPseudo), JSON.stringify(mesAmis));
-
-            let sesAmis = JSON.parse(localStorage.getItem(getCleAmis(ami)) || "[]").filter(a => a.toLowerCase() !== monPseudo.toLowerCase());
-            localStorage.setItem(getCleAmis(ami), JSON.stringify(sesAmis));
-
-            actualiserPanneauAmis();
+        function ouvrirGestionAmis() {
+            fermerFenetres();
+            document.getElementById("friends-panel").style.display = "flex";
+            synchroniserDemandesEtAmis();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function actualiserPanneauAmis() {
-            verifierNotifications();
-
-            // Demandes reçues pour mon pseudo
-            const toutes = recupererToutesDemandes();
-            const mesDemandes = toutes.filter(d => d.destinataire.toLowerCase() === monPseudo.toLowerCase() && d.statut === "en_attente");
-            const boxDemandes = document.getElementById("demandes-list");
-
-            if (mesDemandes.length === 0) {
-                boxDemandes.innerHTML = `<li style="color:#a4b0be; font-size:12px; padding:6px;">Aucune demande reçue pour l'instant.</li>`;
-            } else {
-                boxDemandes.innerHTML = "";
-                mesDemandes.forEach(d => {
-                    const li = document.createElement("li");
-                    li.className = "friend-item";
-                    li.innerHTML = `
-                        <span>👤 <strong>${d.demandeur}</strong></span>
-                        <div class="action-btns">
-                            <button class="btn-accept" onclick="accepterDemande('${d.demandeur}')">Accepter</button>
-                            <button class="btn-refuse" onclick="refuserDemande('${d.demandeur}')">Refuser</button>
-                        </div>
-                    `;
-                    boxDemandes.appendChild(li);
-                });
-            }
-
-            // Amis confirmés
-            const mesAmis = recupererMesAmis();
-            const boxAmis = document.getElementById("friends-list");
-
-            if (mesAmis.length === 0) {
-                boxAmis.innerHTML = `<li style="color:#a4b0be; font-size:12px; padding:6px;">Aucun ami confirmé.</li>`;
-            } else {
-                boxAmis.innerHTML = "";
-                mesAmis.forEach(a => {
-                    const li = document.createElement("li");
-                    li.className = "friend-item";
-                    li.innerHTML = `
-                        <span>🤝 <strong>${a}</strong></span>
-                        <button class="btn-del-friend" onclick="supprimerAmi('${a}')">Supprimer</button>
-                    `;
-                    boxAmis.appendChild(li);
-                });
-            }
-        }
-
-        /* --- MESSAGERIE & CONTACTS --- */
+        // =======================================================
+        // 💬 MESSAGERIE EN LIGNE
+        // =======================================================
         function ouvrirMessagerie() {
             fermerFenetres();
             document.getElementById("chat-entraide").style.display = "flex";
-            actualiserVoletContacts();
-            chargerMessagesGroupe();
+            synchroniserDemandesEtAmis();
+            chargerMessagesEnLigne();
             document.getElementById("group-input").focus();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function actualiserVoletContacts() {
-            const liste = document.getElementById("contacts-list");
-            const mesAmis = recupererMesAmis();
+        async function chargerMessagesEnLigne() {
+            try {
+                const res = await fetch(`${FIREBASE_URL}/messages.json?orderBy="$key"&limitToLast=40`);
+                const data = await res.json();
+                const conteneur = document.getElementById("group-messages");
 
-            if (mesAmis.length === 0) {
-                liste.innerHTML = `<li style="color:#a4b0be; font-size:11px; padding:10px;">Aucun ami.<br>Utilise le bouton ✚</li>`;
-                return;
-            }
+                if (!data) {
+                    conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
+                        Aucun message. Discutez ici de vos révisions !
+                    </div>`;
+                    return;
+                }
 
-            liste.innerHTML = "";
-            mesAmis.forEach(ami => {
-                const li = document.createElement("li");
-                li.className = "contact-item";
-                li.innerHTML = `<span class="contact-dot"></span><span>${ami}</span>`;
-                li.onclick = () => {
-                    document.getElementById("group-input").value = `@${ami} `;
-                    document.getElementById("group-input").focus();
-                };
-                liste.appendChild(li);
-            });
+                conteneur.innerHTML = "";
+                Object.values(data).forEach(m => {
+                    const estMoi = (m.pseudo.toLowerCase() === monPseudo.toLowerCase());
+                    const bulle = document.createElement("div");
+                    bulle.className = "msg " + (estMoi ? "msg-group-me" : "msg-group-other");
+                    bulle.innerHTML = `
+                        <div class="msg-author">${m.pseudo} <span class="msg-time">${m.heure}</span></div>
+                        <div>${m.texte}</div>
+                    `;
+                    conteneur.appendChild(bulle);
+                });
+                conteneur.scrollTop = conteneur.scrollHeight;
+            } catch (e) {}
         }
 
-        function chargerMessagesGroupe() {
-            const conteneur = document.getElementById("group-messages");
-            const historique = JSON.parse(localStorage.getItem("messages_entraide") || "[]");
-            const mesAmis = recupererMesAmis();
-
-            // Filtrage : uniquement mes messages OU les messages de personnes que j'ai en ami
-            const messagesAutorises = historique.filter(m => {
-                if (m.pseudo.toLowerCase() === monPseudo.toLowerCase()) return true;
-                return mesAmis.some(a => a.toLowerCase() === m.pseudo.toLowerCase());
-            });
-
-            if (mesAmis.length === 0) {
-                conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #ff9f43;">
-                    ⚠️ Tu n'as aucun ami dans tes contacts. Clique sur ✚ en bas à gauche pour envoyer une demande d'ami.
-                </div>`;
-                return;
-            }
-
-            if (messagesAutorises.length === 0) {
-                conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
-                    Discussion avec tes contacts. Envoie un premier message !
-                </div>`;
-                return;
-            }
-
-            conteneur.innerHTML = "";
-            messagesAutorises.forEach(m => {
-                const estMoi = (m.pseudo.toLowerCase() === monPseudo.toLowerCase());
-                const bulle = document.createElement("div");
-                bulle.className = "msg " + (estMoi ? "msg-group-me" : "msg-group-other");
-                bulle.innerHTML = `
-                    <div class="msg-author">${m.pseudo} <span class="msg-time">${m.heure}</span></div>
-                    <div>${m.texte}</div>
-                `;
-                conteneur.appendChild(bulle);
-            });
-
-            conteneur.scrollTop = conteneur.scrollHeight;
-        }
-
-        function envoyerMessageGroupe() {
-            const mesAmis = recupererMesAmis();
-            if (mesAmis.length === 0) {
-                alert("Tu dois avoir au moins un ami dans tes contacts pour envoyer un message !");
-                return;
-            }
-
+        async function envoyerMessageGroupe() {
             const input = document.getElementById("group-input");
             const texte = input.value.trim();
             if (texte === "") return;
@@ -1119,19 +1052,23 @@
             const maintenant = new Date();
             const heure = maintenant.getHours().toString().padStart(2, '0') + ":" + maintenant.getMinutes().toString().padStart(2, '0');
 
-            const historique = JSON.parse(localStorage.getItem("messages_entraide") || "[]");
-            historique.push({
-                pseudo: monPseudo,
-                texte: texte,
-                heure: heure
+            await fetch(`${FIREBASE_URL}/messages.json`, {
+                method: "POST",
+                body: JSON.stringify({
+                    pseudo: monPseudo,
+                    texte: texte,
+                    heure: heure,
+                    timestamp: Date.now()
+                })
             });
 
-            localStorage.setItem("messages_entraide", JSON.stringify(historique));
             input.value = "";
-            chargerMessagesGroupe();
+            chargerMessagesEnLigne();
         }
 
-        /* --- META IA --- */
+        // =======================================================
+        // 🤖 ASSISTANT META IA
+        // =======================================================
         function ouvrirChatIA() {
             fermerFenetres();
             document.getElementById("chat-ia").style.display = "flex";
@@ -1190,7 +1127,7 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        /* --- MENUS --- */
+        // MENUS & ADMIN
         function toggleMenu(idMenu) {
             const menu = document.getElementById(idMenu);
             const estOuvert = (menu.style.display === "block");
@@ -1227,7 +1164,14 @@
             }
         }
 
-        verifierNotifications();
+        // Rafraîchissement automatique toutes les 3 secondes
+        synchroniserDemandesEtAmis();
+        setInterval(synchroniserDemandesEtAmis, 3000);
+        setInterval(() => {
+            if (document.getElementById("chat-entraide").style.display === "flex") {
+                chargerMessagesEnLigne();
+            }
+        }, 3000);
     </script>
 
 </body>
