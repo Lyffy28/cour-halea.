@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Cour-halea - Studio d'Étude</title>
+    <title>Cour-halea - Accueil</title>
     <style>
         :root {
             --bg-main: #1e293b;
             --bg-grid: rgba(255, 255, 255, 0.05);
-            --sidebar-bg: rgba(15, 23, 42, 0.95);
+            --sidebar-bg: rgba(15, 23, 42, 0.98);
             --card-bg: #0f172a;
             --card-border: rgba(255, 255, 255, 0.1);
             --text-main: #f8fafc;
@@ -60,23 +60,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        .admin-banner {
-            display: none;
-            background: linear-gradient(90deg, #f59e0b, #ea580c);
-            color: #ffffff;
-            font-weight: bold;
-            text-align: center;
-            padding: 10px 15px;
-            font-size: 13px;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
-        }
-
-        /* Barre supérieure universelle */
+        /* Topbar commune */
         .top-navbar {
             position: absolute;
             top: 0;
@@ -86,57 +70,53 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 16px;
             z-index: 50;
-            gap: 12px;
+            gap: 10px;
         }
 
         .profile-badge {
             background: linear-gradient(135deg, #06b6d4, #0284c7);
             color: #ffffff;
             border-radius: 50%;
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             cursor: pointer;
             user-select: none;
+            flex-shrink: 0;
         }
 
         .hamburger-btn {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: 0.2s;
+            flex-shrink: 0;
         }
 
-        .hamburger-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        /* Menu déroulant des 3 tirets (☰) */
+        /* Menu Hub ☰ */
         .hub-menu {
             display: none;
             position: absolute;
-            top: 62px;
-            right: 20px;
-            width: 300px;
+            top: 60px;
+            right: 16px;
+            width: 290px;
             max-height: calc(100vh - 80px);
             background: var(--input-bg);
             border: 1px solid var(--primary);
-            border-radius: 14px;
-            padding: 14px;
+            border-radius: 12px;
+            padding: 12px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
             overflow-y: auto;
             z-index: 100;
@@ -144,9 +124,9 @@
 
         .hub-menu-header {
             text-align: center;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .hub-menu-section {
@@ -155,113 +135,93 @@
             text-transform: uppercase;
             color: var(--accent);
             margin: 10px 0 6px 0;
-            letter-spacing: 0.5px;
         }
 
         .hub-menu-item {
             width: 100%;
-            padding: 10px 12px;
+            padding: 9px 10px;
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 6px;
             color: var(--text-main);
             font-size: 13px;
             text-align: left;
             cursor: pointer;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            transition: 0.15s;
-        }
-
-        .hub-menu-item:hover {
-            background: rgba(56, 189, 248, 0.15);
-            border-color: var(--primary);
-            color: var(--primary);
         }
 
         .hub-sub-list {
             display: none;
             flex-direction: column;
             gap: 4px;
-            padding-left: 8px;
-            margin-bottom: 8px;
+            padding-left: 6px;
+            margin-bottom: 6px;
         }
 
         .hub-sub-btn {
             background: none;
             border: none;
             color: var(--text-muted);
-            padding: 7px 10px;
-            font-size: 13px;
+            padding: 6px 8px;
+            font-size: 12px;
             text-align: left;
             cursor: pointer;
-            border-radius: 6px;
-        }
-
-        .hub-sub-btn:hover {
-            color: var(--primary);
-            background: rgba(56, 189, 248, 0.08);
         }
 
         .theme-switch-btn {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 9px 12px;
-            border-radius: 8px;
-            font-size: 12px;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 11px;
             cursor: pointer;
             font-weight: bold;
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .avatar-grid {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin: 6px 0 12px 0;
+            gap: 6px;
+            margin: 4px 0 8px 0;
         }
 
         .avatar-opt {
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            padding: 4px;
-            border-radius: 6px;
-        }
-
-        .avatar-opt:hover {
-            background: rgba(56, 189, 248, 0.2);
+            padding: 3px;
         }
 
         .btn-admin-hub {
             background: linear-gradient(135deg, #f59e0b, #d97706);
             color: #0f172a;
             border: none;
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 13px;
+            border-radius: 6px;
+            padding: 9px;
+            font-size: 12px;
             cursor: pointer;
             font-weight: 700;
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .btn-logout {
             background: var(--danger);
             color: white;
             border: none;
-            border-radius: 8px;
-            padding: 8px;
+            border-radius: 6px;
+            padding: 7px;
             font-size: 12px;
             cursor: pointer;
             font-weight: 600;
             width: 100%;
         }
 
-        /* Barre Latérale Gauche */
+        /* Barre PC latérale */
         .sidebar-left {
             width: 90px;
             background: var(--sidebar-bg);
@@ -278,7 +238,7 @@
             border: none;
             border-bottom: 1px solid var(--border-color);
             color: var(--text-muted);
-            padding: 18px 4px;
+            padding: 16px 4px;
             font-size: 12px;
             font-weight: 700;
             cursor: pointer;
@@ -286,12 +246,6 @@
             writing-mode: vertical-rl;
             transform: rotate(180deg);
             width: 100%;
-            transition: all 0.2s ease;
-        }
-
-        .left-btn:hover {
-            background: rgba(56, 189, 248, 0.12);
-            color: var(--primary);
         }
 
         .bottom-left-group {
@@ -304,18 +258,12 @@
             border: none;
             border-top: 1px solid var(--border-color);
             color: var(--text-muted);
-            padding: 14px 0;
-            font-size: 19px;
+            padding: 12px 0;
+            font-size: 18px;
             cursor: pointer;
             text-align: center;
             width: 100%;
-            transition: 0.2s;
             position: relative;
-        }
-
-        .tool-btn:hover {
-            color: var(--primary);
-            background: rgba(56, 189, 248, 0.08);
         }
 
         .notif-badge {
@@ -326,18 +274,18 @@
             background-color: var(--danger);
             color: white;
             font-size: 10px;
-            padding: 2px 6px;
+            padding: 1px 5px;
             border-radius: 9999px;
             font-weight: bold;
         }
 
-        /* Zone centrale */
+        /* Contenu Central */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 70px 20px 20px 20px;
+            padding: 68px 16px 20px 16px;
             position: relative;
             height: 100%;
             overflow-y: auto;
@@ -346,49 +294,42 @@
 
         .search-bar {
             width: 100%;
-            max-width: 600px;
-            padding: 14px 22px;
-            font-size: 15px;
+            max-width: 580px;
+            padding: 12px 18px;
+            font-size: 14px;
             border-radius: 9999px;
             border: 1px solid var(--card-border);
             background: var(--card-bg);
             color: var(--text-main);
             outline: none;
             flex-shrink: 0;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.2s ease;
         }
 
         .search-bar:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
         }
 
         #search-results-box {
             display: none;
             width: 100%;
-            max-width: 600px;
+            max-width: 580px;
             background: var(--card-bg);
             border: 1px solid var(--primary);
-            border-radius: 12px;
-            margin-top: 8px;
-            padding: 8px;
-            max-height: 220px;
+            border-radius: 10px;
+            margin-top: 6px;
+            padding: 6px;
+            max-height: 200px;
             overflow-y: auto;
             z-index: 25;
         }
 
         .search-result-item {
-            padding: 10px 12px;
+            padding: 8px 10px;
             border-bottom: 1px solid var(--border-color);
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             border-radius: 6px;
-        }
-
-        .search-result-item:hover {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--primary);
         }
 
         /* Modales */
@@ -397,505 +338,186 @@
             flex-direction: column;
             width: 100%;
             max-width: 720px;
-            height: 540px;
+            height: 520px;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
+            border-radius: 14px;
             margin-top: 14px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             flex-shrink: 0;
         }
 
         .chat-header {
             background: var(--input-bg);
-            padding: 12px 16px;
+            padding: 10px 14px;
             font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
             flex-shrink: 0;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .close-btn {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 20px;
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        .close-btn:hover { color: var(--danger); }
-
-        /* Agenda */
-        .agenda-tabs {
-            display: flex;
-            background: var(--input-bg);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .agenda-tab-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: none;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .agenda-tab-btn.active {
-            color: var(--accent);
-            border-bottom: 2px solid var(--accent);
-            background: var(--card-bg);
-        }
-
-        .devoirs-body {
-            padding: 14px;
-            overflow-y: auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .ajout-perso-box {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            padding: 10px;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-        }
-
-        .ajout-perso-box input {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .devoir-item {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--accent);
-            padding: 10px 12px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .devoir-item.perso { border-left-color: var(--success); }
-        .devoir-matiere { font-size: 11px; text-transform: uppercase; color: var(--accent); font-weight: 700; }
-        .devoir-matiere.perso { color: var(--success); }
-        .devoir-titre { font-size: 13px; font-weight: 600; margin-top: 2px; }
-        .devoir-date { font-size: 11px; color: #f87171; font-weight: 600; }
-
-        /* Messagerie */
-        .messagerie-body {
-            display: flex;
-            flex: 1;
-            min-height: 0;
-            overflow: hidden;
-        }
-
-        .contacts-panel {
-            width: 180px;
-            background: var(--input-bg);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-
-        .contacts-list { list-style: none; }
-
-        .contact-item {
-            padding: 10px;
-            font-size: 13px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .contact-item:hover, .contact-item.active {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--primary);
-            border-left: 3px solid var(--primary);
-        }
-
-        .contact-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #94a3b8;
-            flex-shrink: 0;
-        }
-
-        .contact-dot.online {
-            background: #10b981;
-            box-shadow: 0 0 6px #10b981;
-        }
-
-        .discussion-zone {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-            background: var(--card-bg);
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 14px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            min-height: 0;
-        }
-
-        .msg {
-            max-width: 85%;
-            padding: 10px 13px;
-            border-radius: 12px;
-            font-size: 13px;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .msg-ia {
-            background: var(--input-bg);
-            border: 1px solid var(--card-border);
-            align-self: flex-start;
-        }
-
-        .msg-user {
-            background: linear-gradient(135deg, #06b6d4, #0284c7);
-            color: #ffffff;
-            align-self: flex-end;
-        }
-
-        .msg-group-other {
-            background: var(--input-bg);
-            border: 1px solid var(--card-border);
-            align-self: flex-start;
-        }
-
-        .msg-group-me {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #0f172a;
-            font-weight: 600;
-            align-self: flex-end;
-        }
-
-        .chat-input-zone {
-            display: flex;
-            border-top: 1px solid var(--border-color);
-            background: var(--input-bg);
-            padding: 8px 10px;
-            gap: 6px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .chat-input-zone input {
-            flex: 1;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            color: var(--text-main);
-            border-radius: 9999px;
-            outline: none;
-            font-size: 14px;
-            min-width: 0;
-        }
-
-        .btn-chat-action {
-            background: none;
-            border: none;
             font-size: 18px;
             cursor: pointer;
-            color: var(--text-muted);
             padding: 4px;
         }
 
-        .btn-send {
-            border: none;
-            font-weight: bold;
-            padding: 8px 16px;
-            border-radius: 9999px;
-            cursor: pointer;
-            font-size: 13px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: #0f172a;
-            flex-shrink: 0;
-        }
+        /* Agenda */
+        .agenda-tabs { display: flex; background: var(--input-bg); border-bottom: 1px solid var(--border-color); }
+        .agenda-tab-btn { flex: 1; padding: 10px; border: none; background: none; color: var(--text-muted); font-size: 12px; font-weight: 700; cursor: pointer; }
+        .agenda-tab-btn.active { color: var(--accent); border-bottom: 2px solid var(--accent); background: var(--card-bg); }
+        .devoirs-body { padding: 12px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+        .ajout-perso-box { display: flex; gap: 6px; flex-wrap: wrap; padding: 8px; background: var(--input-bg); border-radius: 6px; }
+        .ajout-perso-box input { background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 6px 10px; border-radius: 6px; font-size: 13px; outline: none; }
+        .devoir-item { background: var(--input-bg); border: 1px solid var(--border-color); border-left: 3px solid var(--accent); padding: 8px 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
+        .devoir-matiere { font-size: 10px; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+        .devoir-titre { font-size: 12px; font-weight: 600; }
+        .devoir-date { font-size: 11px; color: #f87171; }
 
-        /* Flashcards */
-        .flashcards-body {
-            padding: 14px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .flashcards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-        }
-
-        .flashcard {
-            background: var(--input-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            height: 160px;
-            perspective: 1000px;
-            cursor: pointer;
-        }
-
-        .flashcard-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.5s;
-            transform-style: preserve-3d;
-            border-radius: 10px;
-        }
-
-        .flashcard.is-flipped .flashcard-inner { transform: rotateY(180deg); }
-
-        .flashcard-front, .flashcard-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            border-radius: 10px;
-        }
-
-        .flashcard-front {
-            background: var(--input-bg);
-            color: var(--primary);
-            border: 2px dashed rgba(56, 189, 248, 0.3);
-        }
-
-        .flashcard-back {
-            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
-            color: #ffffff;
-            transform: rotateY(180deg);
-        }
-
-        /* Calculatrice */
-        .calc-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            padding: 12px;
-            max-width: 320px;
-            margin: auto;
-        }
-
-        .calc-screen {
-            grid-column: span 4;
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            padding: 12px;
-            font-size: 20px;
-            text-align: right;
-            border-radius: 8px;
-            color: var(--primary);
-            margin-bottom: 6px;
-            font-family: monospace;
-            overflow-x: auto;
-        }
-
-        .calc-btn {
-            padding: 12px;
-            font-size: 15px;
-            font-weight: bold;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            background: var(--input-bg);
-            color: var(--text-main);
-            cursor: pointer;
-        }
-
-        .calc-btn.op { color: var(--accent); }
-        .calc-btn.equal { background: var(--primary); color: white; }
-
-        /* Pomodoro */
-        .pomodoro-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            gap: 16px;
-            height: 100%;
-        }
-
-        .timer-display {
-            font-size: 52px;
-            font-weight: 800;
-            color: var(--primary);
-            font-family: monospace;
-        }
+        /* Messagerie */
+        .messagerie-body { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+        .contacts-panel { width: 170px; background: var(--input-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
+        .contacts-list { list-style: none; }
+        .contact-item { padding: 8px; font-size: 12px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .contact-item.active { background: rgba(56, 189, 248, 0.15); color: var(--primary); }
+        .contact-dot { width: 7px; height: 7px; border-radius: 50%; background: #94a3b8; flex-shrink: 0; }
+        .contact-dot.online { background: #10b981; }
+        .discussion-zone { flex: 1; display: flex; flex-direction: column; min-height: 0; background: var(--card-bg); }
+        .chat-messages { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+        .msg { max-width: 85%; padding: 8px 12px; border-radius: 10px; font-size: 13px; line-height: 1.35; word-break: break-word; }
+        .msg-ia { background: var(--input-bg); border: 1px solid var(--card-border); align-self: flex-start; }
+        .msg-user { background: linear-gradient(135deg, #06b6d4, #0284c7); color: #fff; align-self: flex-end; }
+        .msg-group-other { background: var(--input-bg); border: 1px solid var(--card-border); align-self: flex-start; }
+        .msg-group-me { background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a; font-weight: 600; align-self: flex-end; }
+        .chat-input-zone { display: flex; border-top: 1px solid var(--border-color); background: var(--input-bg); padding: 6px 8px; gap: 6px; align-items: center; }
+        .chat-input-zone input { flex: 1; background: var(--card-bg); border: 1px solid var(--border-color); padding: 8px 12px; color: var(--text-main); border-radius: 9999px; outline: none; font-size: 13px; }
+        .btn-chat-action { background: none; border: none; font-size: 16px; cursor: pointer; color: var(--text-muted); }
+        .btn-send { border: none; font-weight: bold; padding: 7px 14px; border-radius: 9999px; cursor: pointer; font-size: 12px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #0f172a; }
 
         /* Snake */
-        .snake-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            gap: 10px;
-            flex: 1;
-        }
+        .snake-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; gap: 8px; flex: 1; }
+        .snake-scoreboard { display: flex; justify-content: space-between; width: 260px; font-size: 12px; font-weight: 700; color: var(--accent); }
+        #snake-canvas { background-color: #050811; border: 2px solid var(--primary); border-radius: 8px; max-width: 100%; }
+        .snake-touch-controls { display: none; grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(2, 38px); gap: 4px; }
+        .snake-btn { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--primary); font-size: 16px; font-weight: bold; border-radius: 6px; }
 
-        .snake-scoreboard {
-            display: flex;
-            justify-content: space-between;
-            width: 280px;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        #snake-canvas {
-            background-color: #050811;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            max-width: 100%;
-            height: auto;
-        }
-
-        .snake-touch-controls {
-            display: none;
-            grid-template-columns: repeat(3, 46px);
-            grid-template-rows: repeat(2, 40px);
-            gap: 6px;
-        }
-
-        .snake-btn {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
-            color: var(--primary);
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        /* Calculatrice & Pomodoro */
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; padding: 10px; max-width: 300px; margin: auto; }
+        .calc-screen { grid-column: span 4; background: var(--input-bg); border: 1px solid var(--border-color); padding: 10px; font-size: 18px; text-align: right; border-radius: 6px; color: var(--primary); font-family: monospace; }
+        .calc-btn { padding: 10px; font-size: 14px; font-weight: bold; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); }
+        .calc-btn.op { color: var(--accent); }
+        .calc-btn.equal { background: var(--primary); color: white; }
+        .pomodoro-container { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; gap: 14px; height: 100%; }
+        .timer-display { font-size: 46px; font-weight: 800; color: var(--primary); font-family: monospace; }
 
         .site-footer {
             margin-top: auto;
-            padding: 20px 0 10px 0;
+            padding: 16px 0 10px 0;
             font-size: 11px;
             color: var(--text-muted);
             text-align: center;
             opacity: 0.75;
         }
 
-        .site-footer strong { color: var(--primary); }
-
-        /* Responsive Mobile (< 768px) */
+        /* ========================================================= */
+        /* CORRECTIONS RESPONSIVE MOBILE (< 768px)                   */
+        /* ========================================================= */
         @media (max-width: 768px) {
-            body { flex-direction: column; }
-
-            .top-navbar {
-                left: 0;
-                padding: 0 14px;
+            body {
+                flex-direction: column;
             }
 
+            /* Header mobile compact */
+            .top-navbar {
+                left: 0;
+                height: 50px;
+                padding: 0 12px;
+                background: var(--sidebar-bg);
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .main-content {
+                padding: 60px 10px 75px 10px;
+            }
+
+            .search-bar {
+                font-size: 13px;
+                padding: 10px 16px;
+            }
+
+            /* Barre du bas : scrolling horizontal fluide avec éléments compacts */
             .sidebar-left {
                 position: fixed;
                 bottom: 0;
                 left: 0;
                 width: 100%;
-                height: 58px;
+                height: 60px;
                 flex-direction: row;
                 border-right: none;
                 border-top: 1px solid var(--border-color);
                 background: var(--sidebar-bg);
                 z-index: 50;
-                padding: 0 4px;
+                padding: 0 6px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
             }
 
-            .sidebar-left > div:first-child {
+            .sidebar-left::-webkit-scrollbar {
+                display: none;
+            }
+
+            .sidebar-left > div:first-child,
+            .bottom-left-group {
                 display: flex;
-                flex: 1;
-                justify-content: space-around;
+                flex-direction: row;
+                flex-shrink: 0;
+                align-items: center;
             }
 
             .left-btn {
                 writing-mode: horizontal-tb;
                 transform: none;
-                padding: 8px 4px;
+                padding: 6px 12px;
                 border-bottom: none;
-                font-size: 10px;
+                font-size: 11px;
+                min-width: 60px;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
                 gap: 2px;
-            }
-
-            .bottom-left-group {
-                flex-direction: row;
-                flex: 1;
-                justify-content: space-around;
             }
 
             .tool-btn {
                 border-top: none;
-                padding: 6px 0;
-                font-size: 16px;
+                padding: 6px 14px;
+                font-size: 18px;
+                min-width: 50px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: auto;
-                flex: 1;
-            }
-
-            .main-content {
-                padding: 64px 12px 75px 12px;
-                width: 100%;
             }
 
             .hub-menu {
-                right: 12px;
-                left: 12px;
+                right: 8px;
+                left: 8px;
                 width: auto;
+                top: 54px;
             }
 
             .modal-box {
                 position: fixed;
-                top: 56px;
+                top: 50px;
                 left: 0;
                 right: 0;
-                bottom: 58px;
+                bottom: 60px;
                 width: 100%;
                 max-width: 100%;
                 height: auto;
@@ -906,11 +528,14 @@
                 z-index: 40;
             }
 
-            .messagerie-body { flex-direction: column; }
+            .messagerie-body {
+                flex-direction: column;
+            }
+
             .contacts-panel {
                 width: 100%;
-                height: 44px;
-                min-height: 44px;
+                height: 40px;
+                min-height: 40px;
                 flex-direction: row;
                 border-right: none;
                 border-bottom: 1px solid var(--border-color);
@@ -918,27 +543,37 @@
                 overflow-y: hidden;
             }
 
-            .contacts-list { display: flex; flex-direction: row; }
-            .contact-item { white-space: nowrap; padding: 6px 10px; border-bottom: none; border-right: 1px solid var(--border-color); }
-            .snake-touch-controls { display: grid; }
+            .contacts-list {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .contact-item {
+                white-space: nowrap;
+                padding: 4px 10px;
+                border-bottom: none;
+                border-right: 1px solid var(--border-color);
+            }
+
+            .snake-touch-controls {
+                display: grid;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div id="bandeau-annonce" class="admin-banner"></div>
-
-    <!-- Barre supérieure : Avatar et bouton ☰ -->
     <div class="top-navbar">
+        <div style="margin-right: auto; font-weight: 800; color: var(--primary); font-size: 15px;">Cour-halea</div>
         <div class="profile-badge" id="icone-profil" onclick="toggleHubMenu()" title="Mon profil">👤</div>
-        <button class="hamburger-btn" onclick="toggleHubMenu()" title="Menu principal">☰</button>
+        <button class="hamburger-btn" onclick="toggleHubMenu()" title="Menu">☰</button>
     </div>
 
-    <!-- Le grand menu déroulant des 3 tirets (☰) -->
+    <!-- Menu Hub ☰ -->
     <div class="hub-menu" id="hub-menu">
         <div class="hub-menu-header">
-            <div id="nom-utilisateur" style="font-size: 14px; font-weight: bold; color: var(--primary);">Pseudo</div>
-            <div id="email-utilisateur" style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">email</div>
+            <div id="nom-utilisateur" style="font-size: 13px; font-weight: bold; color: var(--primary);">Pseudo</div>
+            <div id="email-utilisateur" style="font-size: 11px; color: var(--text-muted); margin-bottom: 6px;">email</div>
             <button class="theme-switch-btn" onclick="basculerTheme()">🌓 Mode Clair / Sombre</button>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Avatar :</div>
             <div class="avatar-grid">
@@ -950,16 +585,13 @@
             </div>
         </div>
 
-        <!-- Administration -->
-        <div class="hub-menu-section">👑 Gestion</div>
+        <div class="hub-menu-section">👑 Administration</div>
         <button class="btn-admin-hub" onclick="ouvrirAdmin()">Accès Panel Admin</button>
 
-        <!-- Cahier de cours (Les matières) -->
         <div class="hub-menu-section">📚 Matières & Cours</div>
 
         <button class="hub-menu-item" onclick="toggleSousMenu('sub-langues')">
-            <span>🌍 Langues vivantes</span>
-            <span>▾</span>
+            <span>🌍 Langues</span><span>▾</span>
         </button>
         <div class="hub-sub-list" id="sub-langues">
             <button class="hub-sub-btn" onclick="ouvrirMatiere('Anglais')">🇬🇧 Anglais</button>
@@ -969,8 +601,7 @@
         </div>
 
         <button class="hub-menu-item" onclick="toggleSousMenu('sub-sciences')">
-            <span>📐 Pôle Scientifique</span>
-            <span>▾</span>
+            <span>📐 Sciences</span><span>▾</span>
         </button>
         <div class="hub-sub-list" id="sub-sciences">
             <button class="hub-sub-btn" onclick="ouvrirMatiere('Maths')">📐 Maths</button>
@@ -980,8 +611,7 @@
         </div>
 
         <button class="hub-menu-item" onclick="toggleSousMenu('sub-culture')">
-            <span>🏛️ Sciences Humaines & Arts</span>
-            <span>▾</span>
+            <span>🏛️ Humanités & Arts</span><span>▾</span>
         </button>
         <div class="hub-sub-list" id="sub-culture">
             <button class="hub-sub-btn" onclick="ouvrirMatiere('Histoire')">📜 Histoire</button>
@@ -990,20 +620,18 @@
             <button class="hub-sub-btn" onclick="ouvrirMatiere('Arts')">🎨 Arts Plastiques</button>
         </div>
 
-        <!-- Déconnexion -->
-        <div style="margin-top: 14px; border-top: 1px solid var(--border-color); padding-top: 10px;">
-            <button class="btn-logout" onclick="seDeconnecter()">🚪 Se déconnecter</button>
+        <div style="margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 8px;">
+            <button class="btn-logout" onclick="seDeconnecter()">🚪 Déconnexion</button>
         </div>
     </div>
 
-    <!-- Barre Navigation (Gauche PC, Bas Mobile) -->
+    <!-- Barre Navigation (Scrolling horizontal sur Mobile) -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()"><span>💬</span><span>Chat</span></button>
             <button class="left-btn" onclick="ouvrirChatIA()"><span>🤖</span><span>IA</span></button>
             <button class="left-btn" onclick="ouvrirDevoirs()" style="color: var(--accent);"><span>📅</span><span>Agenda</span></button>
         </div>
-        
         <div class="bottom-left-group">
             <button class="tool-btn" title="Détente" onclick="ouvrirSnake()">🎮</button>
             <button class="tool-btn" title="Flashcards" onclick="ouvrirFlashcards()">🗂️</button>
@@ -1016,29 +644,30 @@
         </div>
     </div>
 
-    <!-- Contenu Principal -->
+    <!-- Contenu Central -->
     <div class="main-content" onclick="fermerHubMenu()">
-        <input type="text" class="search-bar" id="input-recherche" placeholder="🔍 Formule, leçon, devoir..." oninput="filtrerContenuRecherche()">
+        <!-- autocomplete="off" empêche le pop-up de mot de passe Google -->
+        <input type="search" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher un cours, devoir..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="filtrerContenuRecherche()">
         <div id="search-results-box"></div>
 
         <!-- Agenda -->
         <div id="devoirs-panel" class="modal-box">
             <div class="chat-header">
-                <span style="color: var(--accent);">📅 Agenda scolaire</span>
+                <span style="color: var(--accent);">📅 Agenda</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="agenda-tabs">
-                <button class="agenda-tab-btn active" id="tab-btn-public" onclick="changerOngletAgenda('public')">📢 Classe</button>
-                <button class="agenda-tab-btn" id="tab-btn-perso" onclick="changerOngletAgenda('perso')">🔒 Mes tâches</button>
+                <button class="agenda-tab-btn active" id="tab-btn-public" onclick="changerOngletAgenda('public')">Classe</button>
+                <button class="agenda-tab-btn" id="tab-btn-perso" onclick="changerOngletAgenda('perso')">Mes tâches</button>
             </div>
             <div class="devoirs-body">
                 <div id="form-ajout-perso" class="ajout-perso-box" style="display: none;">
                     <input type="text" id="perso-titre" placeholder="Tâche..." style="flex: 1;">
-                    <input type="text" id="perso-date" placeholder="Date (ex: Ven 18h)" style="width: 120px;">
-                    <button class="btn-send" style="padding: 6px 12px;" onclick="ajouterDevoirPerso()">Ajouter</button>
+                    <input type="text" id="perso-date" placeholder="Date" style="width: 100px;">
+                    <button class="btn-send" onclick="ajouterDevoirPerso()">+</button>
                 </div>
-                <div id="devoirs-liste" style="display: flex; flex-direction: column; gap: 8px;">
-                    <p style="color: var(--text-muted); font-size: 13px;">Chargement...</p>
+                <div id="devoirs-liste" style="display: flex; flex-direction: column; gap: 6px;">
+                    <p style="color: var(--text-muted); font-size: 12px;">Chargement...</p>
                 </div>
             </div>
         </div>
@@ -1056,14 +685,14 @@
                 <div class="discussion-zone">
                     <div class="chat-messages" id="group-messages">
                         <div class="msg msg-group-other" style="text-align: center; color: var(--text-muted);">
-                            👈 Choisis un contact pour chatter.
+                            👈 Choisis un contact.
                         </div>
                     </div>
                     <div class="chat-input-zone">
                         <input type="file" id="chat-photo-input" accept="image/*" style="display: none;" onchange="envoyerPhotoPrivee(event)">
-                        <button class="btn-chat-action" title="Photo" onclick="document.getElementById('chat-photo-input').click()">📷</button>
+                        <button class="btn-chat-action" onclick="document.getElementById('chat-photo-input').click()">📷</button>
                         <input type="text" id="group-input" placeholder="Message..." disabled onkeydown="if(event.key==='Enter') envoyerMessagePrive()">
-                        <button class="btn-send" id="btn-send-msg" disabled onclick="envoyerMessagePrive()">Envoyer</button>
+                        <button class="btn-send" id="btn-send-msg" disabled onclick="envoyerMessagePrive()">></button>
                     </div>
                 </div>
             </div>
@@ -1076,18 +705,18 @@
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="chat-messages" id="chat-messages">
-                <div class="msg msg-ia">Salut ! Une question sur ton cours ou un devoir ? Pose-la ici !</div>
+                <div class="msg msg-ia">Pose ta question de cours ici !</div>
             </div>
             <div class="chat-input-zone">
-                <input type="text" id="user-input" placeholder="Écris ta question..." onkeydown="if(event.key==='Enter') envoyerMessageIA()">
-                <button class="btn-send" style="background: var(--primary); color: white;" onclick="envoyerMessageIA()">Envoyer</button>
+                <input type="text" id="user-input" placeholder="Question..." onkeydown="if(event.key==='Enter') envoyerMessageIA()">
+                <button class="btn-send" style="background: var(--primary); color: white;" onclick="envoyerMessageIA()">></button>
             </div>
         </div>
 
         <!-- Snake -->
-        <div id="snake-panel" class="modal-box" style="max-width: 400px;">
+        <div id="snake-panel" class="modal-box" style="max-width: 380px;">
             <div class="chat-header">
-                <span style="color: var(--primary);">🎮 Snake Détente</span>
+                <span style="color: var(--primary);">🎮 Snake</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="snake-container">
@@ -1095,8 +724,8 @@
                     <span>Score : <strong id="snake-score" style="color:white;">0</strong></span>
                     <span>Record : <strong id="snake-highscore" style="color:white;">0</strong></span>
                 </div>
-                <canvas id="snake-canvas" width="270" height="270"></canvas>
-                <button class="btn-send" style="background: var(--primary); color: white; padding: 6px 14px;" onclick="demarrerSnake()">Rejouer</button>
+                <canvas id="snake-canvas" width="260" height="260"></canvas>
+                <button class="btn-send" style="background: var(--primary); color: white;" onclick="demarrerSnake()">Rejouer</button>
                 <div class="snake-touch-controls">
                     <div></div>
                     <button class="snake-btn" onclick="changerDirection('UP')">▲</button>
@@ -1111,22 +740,20 @@
         <!-- Flashcards -->
         <div id="flashcards-panel" class="modal-box">
             <div class="chat-header">
-                <span style="color: var(--primary);">🗂️ Flashcards IA</span>
+                <span style="color: var(--primary);">🗂️ Flashcards</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
-            <div class="flashcards-body">
+            <div class="devoirs-body">
                 <div style="display: flex; gap: 6px;">
-                    <input type="text" id="flashcard-sujet" placeholder="Thème (ex: Dates d'Histoire)..." style="flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-size: 14px;">
-                    <button class="btn-send" style="background: var(--primary); color: white;" onclick="genererFlashcards()">Créer</button>
+                    <input type="text" id="flashcard-sujet" placeholder="Thème de révision..." style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
+                    <button class="btn-send" style="background: var(--primary); color: white;" onclick="genererFlashcards()">Go</button>
                 </div>
-                <div class="flashcards-grid" id="flashcards-grid">
-                    <p style="color: var(--text-muted); font-size: 12px; grid-column: span 2; text-align: center;">Tape un thème ci-dessus pour réviser.</p>
-                </div>
+                <div id="flashcards-grid" style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px;"></div>
             </div>
         </div>
 
         <!-- Calculatrice -->
-        <div id="calc-panel" class="modal-box" style="max-width: 320px;">
+        <div id="calc-panel" class="modal-box" style="max-width: 300px;">
             <div class="chat-header">
                 <span style="color: var(--accent);">🧮 Calculatrice</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
@@ -1157,13 +784,13 @@
         </div>
 
         <!-- Pomodoro -->
-        <div id="pomodoro-panel" class="modal-box" style="max-width: 340px;">
+        <div id="pomodoro-panel" class="modal-box" style="max-width: 320px;">
             <div class="chat-header">
-                <span style="color: var(--primary);">⏱️ Focus Pomodoro</span>
+                <span style="color: var(--primary);">⏱️ Focus</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             <div class="pomodoro-container">
-                <div id="timer-type" style="font-size: 13px; font-weight: bold; color: var(--accent);">Travail (Concentration)</div>
+                <div id="timer-type" style="font-size: 12px; font-weight: bold; color: var(--accent);">Travail</div>
                 <div class="timer-display" id="timer-display">25:00</div>
                 <div style="display: flex; gap: 8px;">
                     <button class="btn-send" style="background: var(--primary); color: white;" onclick="toggleTimer()" id="btn-toggle-timer">Démarrer</button>
@@ -1175,30 +802,26 @@
         <!-- Amis -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
-                <span style="color: var(--success);">👥 Carnet d'amis</span>
+                <span style="color: var(--success);">👥 Amis</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
-            <div class="friends-body" style="padding: 12px; overflow-y: auto;">
-                <div style="display: flex; gap: 6px; margin-bottom: 10px;">
-                    <input type="text" id="friend-pseudo-input" placeholder="Pseudo exact..." style="flex: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main); font-size: 14px;">
-                    <button class="btn-send" style="background: var(--success); color: white;" onclick="envoyerDemandeAmi()">Ajouter</button>
+            <div style="padding: 10px; overflow-y: auto;">
+                <div style="display: flex; gap: 6px; margin-bottom: 8px;">
+                    <input type="text" id="friend-pseudo-input" placeholder="Pseudo..." style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text-main);">
+                    <button class="btn-send" style="background: var(--success); color: white;" onclick="envoyerDemandeAmi()">+</button>
                 </div>
-                <div style="font-size: 11px; color: var(--accent); font-weight: bold; margin-bottom: 4px;">📩 Demandes en attente</div>
-                <ul id="demandes-list" style="list-style: none; display: flex; flex-direction: column; gap: 6px;"></ul>
-                <div style="font-size: 11px; color: var(--accent); font-weight: bold; margin-top: 12px; margin-bottom: 4px;">🤝 Amis</div>
-                <ul id="friends-list" style="list-style: none; display: flex; flex-direction: column; gap: 6px;"></ul>
+                <ul id="friends-list" style="list-style: none; display: flex; flex-direction: column; gap: 4px;"></ul>
             </div>
         </div>
 
         <!-- Panel Admin PIN -->
-        <div id="admin-panel" style="display: none; background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px solid var(--accent); text-align: center; margin-top: 20px;">
-            <h3 style="color: var(--accent);">Panel Admin</h3>
-            <p style="font-size: 12px; color: var(--text-muted); margin: 6px 0;">Code d'accès :</p>
-            <input type="password" id="code-pin" maxlength="4" placeholder="••••" style="padding: 8px; font-size: 16px; width: 110px; text-align: center; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: white; letter-spacing: 3px;">
+        <div id="admin-panel" style="display: none; background: var(--card-bg); padding: 16px; border-radius: 10px; border: 1px solid var(--accent); text-align: center; margin-top: 14px;">
+            <h3 style="color: var(--accent); font-size: 14px;">Panel Admin</h3>
+            <input type="password" id="code-pin" maxlength="4" placeholder="••••" style="padding: 6px; font-size: 16px; width: 90px; text-align: center; border-radius: 6px; border: 1px solid var(--border-color); background: var(--input-bg); color: white; margin-top: 6px;">
             <br>
-            <button class="btn-send" style="margin-top: 10px;" onclick="validerPin()">Valider</button>
-            <p id="message-pin" style="margin-top: 8px; font-weight: bold; font-size: 13px;"></p>
-            <button id="btn-admin-secret" class="btn-send" style="display: none; width: 100%; margin-top: 10px; background: var(--success); color: white;" onclick="allerVersAdmin()">👑 Accéder au Panel</button>
+            <button class="btn-send" style="margin-top: 8px;" onclick="validerPin()">Valider</button>
+            <p id="message-pin" style="margin-top: 6px; font-size: 12px; font-weight: bold;"></p>
+            <button id="btn-admin-secret" class="btn-send" style="display: none; width: 100%; margin-top: 8px; background: var(--success); color: white;" onclick="allerVersAdmin()">👑 Accéder</button>
         </div>
 
         <div class="site-footer">
@@ -1220,7 +843,6 @@
         let amiActif = null;
         let modeAgenda = "public";
 
-        // Gestion du menu des 3 tirets (☰)
         function toggleHubMenu() {
             const menu = document.getElementById("hub-menu");
             menu.style.display = (menu.style.display === "block") ? "none" : "block";
@@ -1235,7 +857,6 @@
             el.style.display = (el.style.display === "flex") ? "none" : "flex";
         }
 
-        // Thème & Avatar
         function basculerTheme() {
             document.body.classList.toggle("light-theme");
             localStorage.setItem("theme_pref", document.body.classList.contains("light-theme") ? "light" : "dark");
@@ -1259,15 +880,13 @@
         document.getElementById("nom-utilisateur").textContent = monPseudo;
         document.getElementById("email-utilisateur").textContent = monEmail;
 
-        // Statut En Ligne
-        function signalerPresence() {
-            fetch(`${FIREBASE_URL}/en_ligne/${encodeURIComponent(monPseudo.toLowerCase())}.json`, {
-                method: "PUT",
-                body: JSON.stringify({ timestamp: Date.now() })
-            });
+        function fermerFenetres() {
+            if (snakeGameLoop) clearInterval(snakeGameLoop);
+            document.querySelectorAll(".modal-box").forEach(m => m.style.display = "none");
+            document.getElementById("admin-panel").style.display = "none";
+            document.getElementById("search-results-box").style.display = "none";
+            fermerHubMenu();
         }
-        signalerPresence();
-        setInterval(signalerPresence, 15000);
 
         // Snake
         let snakeCanvas, snakeCtx;
@@ -1278,7 +897,7 @@
         let snakeScore = 0;
         let snakeHighScore = localStorage.getItem("snake_high") || 0;
         let snakeGameLoop = null;
-        const GRID_SIZE = 15;
+        const GRID_SIZE = 13;
 
         function ouvrirSnake() {
             fermerFenetres();
@@ -1297,12 +916,12 @@
             snakeScore = 0;
             document.getElementById("snake-score").textContent = snakeScore;
             genererPomme();
-            snakeGameLoop = setInterval(actualiserSnake, 115);
+            snakeGameLoop = setInterval(actualiserSnake, 120);
         }
 
         function genererPomme() {
-            const cols = snakeCanvas.width / GRID_SIZE;
-            const rows = snakeCanvas.height / GRID_SIZE;
+            const cols = Math.floor(snakeCanvas.width / GRID_SIZE);
+            const rows = Math.floor(snakeCanvas.height / GRID_SIZE);
             food = {
                 x: Math.floor(Math.random() * cols),
                 y: Math.floor(Math.random() * rows)
@@ -1332,8 +951,8 @@
             if (snakeDirection === "LEFT") tete.x--;
             if (snakeDirection === "RIGHT") tete.x++;
 
-            const cols = snakeCanvas.width / GRID_SIZE;
-            const rows = snakeCanvas.height / GRID_SIZE;
+            const cols = Math.floor(snakeCanvas.width / GRID_SIZE);
+            const rows = Math.floor(snakeCanvas.height / GRID_SIZE);
 
             if (tete.x < 0 || tete.x >= cols || tete.y < 0 || tete.y >= rows || snake.some(s => s.x === tete.x && s.y === tete.y)) {
                 clearInterval(snakeGameLoop);
@@ -1358,10 +977,8 @@
 
             snakeCtx.fillStyle = "#050811";
             snakeCtx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
-
             snakeCtx.fillStyle = "#ef4444";
             snakeCtx.fillRect(food.x * GRID_SIZE, food.y * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1);
-
             snake.forEach((part, i) => {
                 snakeCtx.fillStyle = i === 0 ? "#38bdf8" : "#0284c7";
                 snakeCtx.fillRect(part.x * GRID_SIZE, part.y * GRID_SIZE, GRID_SIZE - 1, GRID_SIZE - 1);
@@ -1371,14 +988,8 @@
         // Calculatrice
         let calcExpr = "";
         function ouvrirCalculatrice() { fermerFenetres(); document.getElementById("calc-panel").style.display = "flex"; }
-        function calcInput(v) {
-            calcExpr += v;
-            document.getElementById("calc-screen").textContent = calcExpr;
-        }
-        function calcClear() {
-            calcExpr = "";
-            document.getElementById("calc-screen").textContent = "0";
-        }
+        function calcInput(v) { calcExpr += v; document.getElementById("calc-screen").textContent = calcExpr; }
+        function calcClear() { calcExpr = ""; document.getElementById("calc-screen").textContent = "0"; }
         function calcEval() {
             try {
                 const res = Function(`'use strict'; return (${calcExpr})`)();
@@ -1394,8 +1005,6 @@
         let timerSeconds = 25 * 60;
         let timerRunning = false;
         let timerInterval = null;
-        let isBreak = false;
-
         function ouvrirPomodoro() { fermerFenetres(); document.getElementById("pomodoro-panel").style.display = "flex"; }
         function updateTimerDisplay() {
             const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
@@ -1417,12 +1026,8 @@
                     } else {
                         clearInterval(timerInterval);
                         timerRunning = false;
-                        alert(isBreak ? "Fin de pause !" : "25 min écoulées ! Prends 5 min de pause.");
-                        isBreak = !isBreak;
-                        timerSeconds = isBreak ? 5 * 60 : 25 * 60;
-                        document.getElementById("timer-type").textContent = isBreak ? "Pause (5 min)" : "Travail";
-                        document.getElementById("btn-toggle-timer").textContent = "Démarrer";
-                        updateTimerDisplay();
+                        alert("Session terminée !");
+                        resetTimer();
                     }
                 }, 1000);
             }
@@ -1430,56 +1035,9 @@
         function resetTimer() {
             clearInterval(timerInterval);
             timerRunning = false;
-            isBreak = false;
             timerSeconds = 25 * 60;
-            document.getElementById("timer-type").textContent = "Travail";
             document.getElementById("btn-toggle-timer").textContent = "Démarrer";
             updateTimerDisplay();
-        }
-
-        // Flashcards
-        function ouvrirFlashcards() { fermerFenetres(); document.getElementById("flashcards-panel").style.display = "flex"; }
-        async function genererFlashcards() {
-            const sujet = document.getElementById("flashcard-sujet").value.trim();
-            const grid = document.getElementById("flashcards-grid");
-            if (!sujet) return;
-
-            grid.innerHTML = `<p style="color:var(--text-muted); text-align:center; grid-column:span 2;">⏳ Création des fiches en cours...</p>`;
-
-            const prompt = `Génère 4 flashcards sur "${sujet}". Réponds STRICTEMENT en JSON : [{"front": "Question", "back": "Réponse"}]`;
-
-            try {
-                const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "x-goog-api-key": CLE_API },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-                const data = await res.json();
-                let txt = data.candidates?.[0]?.content?.parts?.[0]?.text.replace(/```json/g, "").replace(/```/g, "").trim();
-                const cards = JSON.parse(txt);
-
-                grid.innerHTML = "";
-                cards.forEach(c => {
-                    const card = document.createElement("div");
-                    card.className = "flashcard";
-                    card.onclick = () => card.classList.toggle("is-flipped");
-                    card.innerHTML = `
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front">
-                                <span style="font-size: 10px; opacity: 0.7;">QUESTION</span>
-                                <strong style="font-size:13px; margin-top:4px;">${c.front}</strong>
-                            </div>
-                            <div class="flashcard-back">
-                                <span style="font-size: 10px; opacity: 0.8;">RÉPONSE</span>
-                                <div style="font-size:12px; margin-top:4px;">${c.back}</div>
-                            </div>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-            } catch(e) {
-                grid.innerHTML = `<p style="color:var(--danger); grid-column:span 2; text-align:center;">Erreur de génération.</p>`;
-            }
         }
 
         // Messagerie Privée
@@ -1487,13 +1045,7 @@
             const tri = [u1.toLowerCase(), u2.toLowerCase()].sort();
             return `${tri[0]}_${tri[1]}`;
         }
-
-        function ouvrirMessagerie() {
-            fermerFenetres();
-            document.getElementById("chat-entraide").style.display = "flex";
-            synchroniserDemandesEtAmis();
-        }
-
+        function ouvrirMessagerie() { fermerFenetres(); document.getElementById("chat-entraide").style.display = "flex"; synchroniserDemandesEtAmis(); }
         function selectionnerAmiChat(ami) {
             amiActif = ami;
             document.getElementById("titre-chat-prive").textContent = `💬 ${ami}`;
@@ -1502,20 +1054,17 @@
             input.disabled = false;
             btn.disabled = false;
             input.placeholder = `Écrire à ${ami}...`;
-            input.focus();
             chargerMessagesPrives(true);
         }
-
         async function chargerMessagesPrives(forcerScroll = false) {
             if (!amiActif) return;
             const roomId = identifiantDiscussion(monPseudo, amiActif);
             const conteneur = document.getElementById("group-messages");
-
             try {
-                const res = await fetch(`${FIREBASE_URL}/messages_prives/${roomId}.json?orderBy="$key"&limitToLast=40`);
+                const res = await fetch(`${FIREBASE_URL}/messages_prives/${roomId}.json?orderBy="$key"&limitToLast=30`);
                 const data = await res.json();
                 if (!data) {
-                    conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: var(--text-muted);">🔒 Début de discussion avec ${amiActif}.</div>`;
+                    conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: var(--text-muted);">🔒 Début de discussion.</div>`;
                     return;
                 }
                 conteneur.innerHTML = "";
@@ -1523,54 +1072,36 @@
                     const estMoi = (m.pseudo.toLowerCase() === monPseudo.toLowerCase());
                     const bulle = document.createElement("div");
                     bulle.className = "msg " + (estMoi ? "msg-group-me" : "msg-group-other");
-                    
-                    let contenuMsg = m.texte ? `<div>${m.texte}</div>` : "";
-                    if (m.image) {
-                        contenuMsg += `<img src="${m.image}" style="max-width:100%; max-height:180px; border-radius:6px; margin-top:4px; display:block;">`;
-                    }
-
-                    bulle.innerHTML = `
-                        <div style="font-size:10px; font-weight:bold; margin-bottom:2px; opacity:0.85;">${m.pseudo} <span style="font-size:9px; margin-left:4px;">${m.heure}</span></div>
-                        ${contenuMsg}
-                    `;
+                    let txt = m.texte ? `<div>${m.texte}</div>` : "";
+                    if (m.image) txt += `<img src="${m.image}" style="max-width:100%; border-radius:6px; margin-top:4px;">`;
+                    bulle.innerHTML = `<div style="font-size:10px; font-weight:bold; margin-bottom:2px;">${m.pseudo}</div>${txt}`;
                     conteneur.appendChild(bulle);
                 });
                 if (forcerScroll) conteneur.scrollTop = conteneur.scrollHeight;
             } catch(e) {}
         }
-
         async function envoyerMessagePrive() {
             if (!amiActif) return;
             const input = document.getElementById("group-input");
             const texte = input.value.trim();
             if (!texte) return;
-
-            const maintenant = new Date();
-            const heure = maintenant.getHours().toString().padStart(2, '0') + ":" + maintenant.getMinutes().toString().padStart(2, '0');
             const roomId = identifiantDiscussion(monPseudo, amiActif);
-
             await fetch(`${FIREBASE_URL}/messages_prives/${roomId}.json`, {
                 method: "POST",
-                body: JSON.stringify({ pseudo: monPseudo, texte, heure, timestamp: Date.now() })
+                body: JSON.stringify({ pseudo: monPseudo, texte, timestamp: Date.now() })
             });
-
             input.value = "";
             chargerMessagesPrives(true);
         }
-
         function envoyerPhotoPrivee(event) {
             const f = event.target.files[0];
             if (!f || !amiActif) return;
-
             const reader = new FileReader();
             reader.onload = async function(e) {
-                const maintenant = new Date();
-                const heure = maintenant.getHours().toString().padStart(2, '0') + ":" + maintenant.getMinutes().toString().padStart(2, '0');
                 const roomId = identifiantDiscussion(monPseudo, amiActif);
-
                 await fetch(`${FIREBASE_URL}/messages_prives/${roomId}.json`, {
                     method: "POST",
-                    body: JSON.stringify({ pseudo: monPseudo, image: e.target.result, heure, timestamp: Date.now() })
+                    body: JSON.stringify({ pseudo: monPseudo, image: e.target.result, timestamp: Date.now() })
                 });
                 chargerMessagesPrives(true);
             };
@@ -1582,71 +1113,55 @@
             try {
                 const resAmis = await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}.json`);
                 const dataAmis = await resAmis.json();
-                const resEnLigne = await fetch(`${FIREBASE_URL}/en_ligne.json`);
-                const dataEnLigne = await resEnLigne.json() || {};
-
                 const boxContacts = document.getElementById("contacts-list");
                 const boxAmis = document.getElementById("friends-list");
-
-                if (!dataAmis || Object.keys(dataAmis).length === 0) {
-                    boxContacts.innerHTML = `<li style="color:var(--text-muted); font-size:11px; padding:10px;">Aucun contact.</li>`;
-                    boxAmis.innerHTML = `<li style="color:var(--text-muted); font-size:12px; padding:6px;">Aucun ami confirmé.</li>`;
-                } else {
-                    boxContacts.innerHTML = "";
-                    boxAmis.innerHTML = "";
+                boxContacts.innerHTML = "";
+                boxAmis.innerHTML = "";
+                if (dataAmis) {
                     Object.keys(dataAmis).forEach(ami => {
-                        const presence = dataEnLigne[ami.toLowerCase()];
-                        const estEnLigne = presence && (Date.now() - presence.timestamp < 35000);
-
                         const li = document.createElement("li");
                         li.className = "contact-item" + (amiActif === ami ? " active" : "");
-                        li.innerHTML = `
-                            <span class="contact-dot ${estEnLigne ? 'online' : ''}"></span>
-                            <span>${ami}</span>
-                        `;
+                        li.innerHTML = `<span class="contact-dot online"></span><span>${ami}</span>`;
                         li.onclick = () => selectionnerAmiChat(ami);
                         boxContacts.appendChild(li);
 
                         const liAmi = document.createElement("li");
-                        liAmi.innerHTML = `<span style="padding: 4px 0; display:block; font-size:13px;">👤 <strong>${ami}</strong> ${estEnLigne ? '🟢' : '⚪'}</span>`;
+                        liAmi.innerHTML = `👤 <strong>${ami}</strong>`;
                         boxAmis.appendChild(liAmi);
                     });
                 }
             } catch(e) {}
         }
-
         function ouvrirGestionAmis() { fermerFenetres(); document.getElementById("friends-panel").style.display = "flex"; synchroniserDemandesEtAmis(); }
         async function envoyerDemandeAmi() {
             const cible = document.getElementById("friend-pseudo-input").value.trim();
             if (!cible || cible.toLowerCase() === monPseudo.toLowerCase()) return;
             await fetch(`${FIREBASE_URL}/demandes/${cible.toLowerCase()}/${monPseudo.toLowerCase()}.json`, {
                 method: "PUT",
-                body: JSON.stringify({ demandeur: monPseudo, destinataire: cible, date: new Date().toISOString() })
+                body: JSON.stringify({ demandeur: monPseudo, date: new Date().toISOString() })
             });
             alert("Demande envoyée !");
             document.getElementById("friend-pseudo-input").value = "";
         }
 
         // Meta IA
-        function ouvrirChatIA() { fermerFenetres(); document.getElementById("chat-ia").style.display = "flex"; document.getElementById("user-input").focus(); }
+        function ouvrirChatIA() { fermerFenetres(); document.getElementById("chat-ia").style.display = "flex"; }
         async function envoyerMessageIA() {
             const input = document.getElementById("user-input");
             const texte = input.value.trim();
             if (!texte) return;
             const box = document.getElementById("chat-messages");
-            
             box.innerHTML += `<div class="msg msg-user">${texte}</div><div class="msg msg-ia" id="ia-loading">⏳ Réflexion...</div>`;
             input.value = "";
             box.scrollTop = box.scrollHeight;
-
             try {
                 const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent", {
                     method: "POST",
                     headers: { "Content-Type": "application/json", "x-goog-api-key": CLE_API },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: "Tu es un tuteur scolaire pédagogue : " + texte }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: "Tuteur : " + texte }] }] })
                 });
                 const data = await res.json();
-                document.getElementById("ia-loading").textContent = data.candidates?.[0]?.content?.parts?.[0]?.text || "Erreur de réponse.";
+                document.getElementById("ia-loading").textContent = data.candidates?.[0]?.content?.parts?.[0]?.text || "Erreur.";
             } catch(e) {
                 document.getElementById("ia-loading").textContent = "Erreur de connexion.";
             }
@@ -1654,174 +1169,63 @@
         }
 
         // Agenda
-        function ouvrirDevoirs() {
-            fermerFenetres();
-            document.getElementById("devoirs-panel").style.display = "flex";
-            changerOngletAgenda("public");
-        }
-
+        function ouvrirDevoirs() { fermerFenetres(); document.getElementById("devoirs-panel").style.display = "flex"; changerOngletAgenda("public"); }
         function changerOngletAgenda(mode) {
             modeAgenda = mode;
-            const btnPublic = document.getElementById("tab-btn-public");
-            const btnPerso = document.getElementById("tab-btn-perso");
-            const formPerso = document.getElementById("form-ajout-perso");
-
-            if (mode === "public") {
-                btnPublic.classList.add("active");
-                btnPerso.classList.remove("active");
-                formPerso.style.display = "none";
-                chargerDevoirsPublics();
-            } else {
-                btnPerso.classList.add("active");
-                btnPublic.classList.remove("active");
-                formPerso.style.display = "flex";
-                chargerDevoirsPersos();
-            }
+            document.getElementById("tab-btn-public").classList.toggle("active", mode === "public");
+            document.getElementById("tab-btn-perso").classList.toggle("active", mode === "perso");
+            document.getElementById("form-ajout-perso").style.display = (mode === "perso") ? "flex" : "none";
+            if (mode === "public") chargerDevoirsPublics(); else chargerDevoirsPersos();
         }
-
         async function chargerDevoirsPublics() {
             const container = document.getElementById("devoirs-liste");
             try {
                 const res = await fetch(`${FIREBASE_URL}/devoirs.json`);
                 const data = await res.json();
-
-                if (!data || Object.keys(data).length === 0) {
-                    container.innerHTML = `<p style="color:var(--text-muted); font-size:12px;">🎉 Aucun devoir commun pour le moment.</p>`;
-                    return;
-                }
-
                 container.innerHTML = "";
+                if (!data) { container.innerHTML = `<p style="color:var(--text-muted); font-size:12px;">Aucun devoir commun.</p>`; return; }
                 Object.values(data).forEach(d => {
                     const div = document.createElement("div");
                     div.className = "devoir-item";
-                    div.innerHTML = `
-                        <div>
-                            <div class="devoir-matiere">${d.matiere}</div>
-                            <div class="devoir-titre">${d.titre}</div>
-                        </div>
-                        <div class="devoir-date">⏳ ${d.dateLimite}</div>
-                    `;
+                    div.innerHTML = `<div><div class="devoir-matiere">${d.matiere}</div><div class="devoir-titre">${d.titre}</div></div><div class="devoir-date">⏳ ${d.dateLimite}</div>`;
                     container.appendChild(div);
                 });
-            } catch (e) {
-                container.innerHTML = `<p style="color:var(--danger); font-size:12px;">Erreur de connexion.</p>`;
-            }
+            } catch(e) {}
         }
-
         async function chargerDevoirsPersos() {
             const container = document.getElementById("devoirs-liste");
-            const userKey = encodeURIComponent(monPseudo.toLowerCase());
-
             try {
-                const res = await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}.json`);
+                const res = await fetch(`${FIREBASE_URL}/devoirs_perso/${encodeURIComponent(monPseudo.toLowerCase())}.json`);
                 const data = await res.json();
-
-                if (!data || Object.keys(data).length === 0) {
-                    container.innerHTML = `<p style="color:var(--text-muted); font-size:12px;">Aucune tâche personnelle.</p>`;
-                    return;
-                }
-
                 container.innerHTML = "";
+                if (!data) { container.innerHTML = `<p style="color:var(--text-muted); font-size:12px;">Aucune tâche.</p>`; return; }
                 Object.keys(data).forEach(id => {
                     const d = data[id];
                     const div = document.createElement("div");
-                    div.className = "devoir-item perso";
-                    div.innerHTML = `
-                        <div>
-                            <div class="devoir-matiere perso">🔒 Tâche perso</div>
-                            <div class="devoir-titre">${d.titre}</div>
-                            <div class="devoir-date" style="color: var(--success);">⏳ ${d.dateLimite}</div>
-                        </div>
-                        <button class="btn-send" style="background:var(--danger); color:white; padding:3px 8px; font-size:10px;" onclick="supprimerDevoirPerso('${id}')">Fait ✓</button>
-                    `;
+                    div.className = "devoir-item";
+                    div.innerHTML = `<div><div class="devoir-titre">${d.titre}</div><div class="devoir-date">⏳ ${d.dateLimite}</div></div><button class="btn-send" style="background:var(--danger); color:white; padding:2px 6px; font-size:10px;" onclick="supprimerDevoirPerso('${id}')">✓</button>`;
                     container.appendChild(div);
                 });
-            } catch (e) {
-                container.innerHTML = `<p style="color:var(--danger); font-size:12px;">Erreur de connexion.</p>`;
-            }
+            } catch(e) {}
         }
-
         async function ajouterDevoirPerso() {
             const titre = document.getElementById("perso-titre").value.trim();
-            const dateLimite = document.getElementById("perso-date").value.trim();
-            const userKey = encodeURIComponent(monPseudo.toLowerCase());
-
+            const dateLimite = document.getElementById("perso-date").value.trim() || "Bientôt";
             if (!titre) return;
-
-            await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}.json`, {
+            await fetch(`${FIREBASE_URL}/devoirs_perso/${encodeURIComponent(monPseudo.toLowerCase())}.json`, {
                 method: "POST",
-                body: JSON.stringify({
-                    titre: titre,
-                    dateLimite: dateLimite || "Non spécifié"
-                })
+                body: JSON.stringify({ titre, dateLimite })
             });
-
             document.getElementById("perso-titre").value = "";
             document.getElementById("perso-date").value = "";
             chargerDevoirsPersos();
         }
-
         async function supprimerDevoirPerso(id) {
-            const userKey = encodeURIComponent(monPseudo.toLowerCase());
-            await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}/${id}.json`, { method: "DELETE" });
+            await fetch(`${FIREBASE_URL}/devoirs_perso/${encodeURIComponent(monPseudo.toLowerCase())}/${id}.json`, { method: "DELETE" });
             chargerDevoirsPersos();
         }
 
-        // Recherche
-        const matieresDispos = [
-            { nom: "Anglais", cat: "Langues" },
-            { nom: "Espagnol", cat: "Langues" },
-            { nom: "Français", cat: "Langues" },
-            { nom: "Latin-Grec", cat: "Langues" },
-            { nom: "Maths", cat: "Sciences" },
-            { nom: "Physique-Chimie", cat: "Sciences" },
-            { nom: "SVT", cat: "Sciences" },
-            { nom: "Technologie", cat: "Sciences" },
-            { nom: "Histoire", cat: "Culture" },
-            { nom: "Géographie", cat: "Culture" },
-            { nom: "EMC", cat: "Culture" },
-            { nom: "Arts", cat: "Culture" }
-        ];
-
-        async function filtrerContenuRecherche() {
-            const saisie = document.getElementById("input-recherche").value.trim().toLowerCase();
-            const box = document.getElementById("search-results-box");
-
-            if (saisie.length < 2) {
-                box.style.display = "none";
-                return;
-            }
-
-            box.innerHTML = "";
-            let resultatsTrouves = 0;
-
-            matieresDispos.forEach(m => {
-                if (m.nom.toLowerCase().includes(saisie) || m.cat.toLowerCase().includes(saisie)) {
-                    resultatsTrouves++;
-                    const div = document.createElement("div");
-                    div.className = "search-result-item";
-                    div.innerHTML = `📚 <strong>${m.nom}</strong> <span style="color:var(--text-muted);">(${m.cat})</span>`;
-                    div.onclick = () => ouvrirMatiere(m.nom);
-                    box.appendChild(div);
-                }
-            });
-
-            if (resultatsTrouves === 0) {
-                box.innerHTML = `<div style="color:var(--text-muted); font-size:11px; padding:6px;">Aucun élément trouvé.</div>`;
-            }
-
-            box.style.display = "block";
-        }
-
-        function fermerFenetres() {
-            if (snakeGameLoop) clearInterval(snakeGameLoop);
-            document.querySelectorAll(".modal-box").forEach(m => m.style.display = "none");
-            document.getElementById("admin-panel").style.display = "none";
-            document.getElementById("search-results-box").style.display = "none";
-            fermerHubMenu();
-        }
-
-        // Panel Admin PIN
+        // Admin & Navigation
         function ouvrirAdmin() {
             fermerFenetres();
             document.getElementById("admin-panel").style.display = "block";
@@ -1829,51 +1233,49 @@
             document.getElementById("message-pin").textContent = "";
             document.getElementById("code-pin").value = "";
         }
-
         function validerPin() {
             const code = document.getElementById("code-pin").value;
             const reponse = document.getElementById("message-pin");
-            const boutonSecret = document.getElementById("btn-admin-secret");
-            
-            const adminsAutorises = ["zeta|luffy", "nathan"];
-            const monPseudoMinuscule = (monPseudo || "").toLowerCase();
-            
-            if (code === "2107" && adminsAutorises.includes(monPseudoMinuscule)) {
+            const admins = ["zeta|luffy", "nathan"];
+            if (code === "2107" && admins.includes((monPseudo || "").toLowerCase())) {
                 reponse.style.color = "#10b981";
-                reponse.innerHTML = "✅ Accès débloqué :";
+                reponse.textContent = "✅ Identité validée :";
                 sessionStorage.setItem("admin_session", "active");
                 sessionStorage.setItem("admin_user", monPseudo);
-                boutonSecret.style.display = "block";
-            } else if (code === "2107") {
-                reponse.style.color = "#ef4444";
-                reponse.innerHTML = "⛔ Droits refusés.";
-                boutonSecret.style.display = "none";
+                document.getElementById("btn-admin-secret").style.display = "block";
             } else {
                 reponse.style.color = "#ef4444";
-                reponse.innerHTML = "❌ Code invalide.";
-                boutonSecret.style.display = "none";
+                reponse.textContent = "❌ Accès refusé.";
             }
         }
-
         function allerVersAdmin() { window.location.href = "admin.html"; }
-
-        function ouvrirMatiere(matiere) {
-            fermerHubMenu();
-            window.location.href = `cours.html?matiere=${encodeURIComponent(matiere)}`;
-        }
-
+        function ouvrirMatiere(m) { fermerHubMenu(); window.location.href = `cours.html?matiere=${encodeURIComponent(m)}`; }
         function seDeconnecter() {
             localStorage.removeItem("utilisateur_pseudo");
             localStorage.removeItem("utilisateur_email");
             window.location.href = "index.html";
         }
 
-        setInterval(() => {
-            if (document.getElementById("chat-entraide").style.display === "flex" && amiActif) {
-                chargerMessagesPrives(false);
-            }
-        }, 2000);
-        setInterval(synchroniserDemandesEtAmis, 4000);
+        // Recherche
+        function filtrerContenuRecherche() {
+            const val = document.getElementById("input-recherche").value.trim().toLowerCase();
+            const box = document.getElementById("search-results-box");
+            if (val.length < 2) { box.style.display = "none"; return; }
+            box.innerHTML = "";
+            const matieres = ["Anglais", "Espagnol", "Français", "Maths", "Physique-Chimie", "SVT", "Technologie", "Histoire", "Géographie", "EMC", "Arts"];
+            let trouv = false;
+            matieres.forEach(m => {
+                if (m.toLowerCase().includes(val)) {
+                    trouv = true;
+                    const d = document.createElement("div");
+                    d.className = "search-result-item";
+                    d.innerHTML = `📚 <strong>${m}</strong>`;
+                    d.onclick = () => ouvrirMatiere(m);
+                    box.appendChild(d);
+                }
+            });
+            box.style.display = trouv ? "block" : "none";
+        }
     </script>
 </body>
 </html>
