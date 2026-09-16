@@ -148,7 +148,6 @@
             border-color: #00d2d3;
         }
 
-        /* Résultats de la recherche */
         #search-results-box {
             display: none;
             width: 100%;
@@ -314,13 +313,59 @@
 
         .close-btn:hover { color: #ee5253; }
 
-        /* Agenda & Devoirs */
+        /* Agenda Tabs & Design */
+        .agenda-tabs {
+            display: flex;
+            background-color: #1e1e2e;
+            border-bottom: 1px solid #3d3f58;
+        }
+
+        .agenda-tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            color: #a4b0be;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .agenda-tab-btn.active {
+            color: #feca57;
+            border-bottom: 2px solid #feca57;
+            background-color: #26273b;
+        }
+
         .devoirs-body {
             padding: 15px;
             overflow-y: auto;
+            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+
+        .ajout-perso-box {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 10px;
+            background-color: #1e1e2e;
+            border: 1px solid #3d3f58;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .ajout-perso-box input {
+            background-color: #26273b;
+            border: 1px solid #484b6a;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
         }
 
         .devoir-item {
@@ -334,11 +379,19 @@
             align-items: center;
         }
 
+        .devoir-item.perso {
+            border-left-color: #1dd1a1;
+        }
+
         .devoir-matiere {
             font-size: 11px;
             text-transform: uppercase;
             color: #feca57;
             font-weight: bold;
+        }
+
+        .devoir-matiere.perso {
+            color: #1dd1a1;
         }
 
         .devoir-titre {
@@ -363,7 +416,7 @@
         }
 
         .contacts-panel {
-            width: 180px;
+            width: 190px;
             background-color: #1e1e2e;
             border-right: 1px solid #3d3f58;
             display: flex;
@@ -374,7 +427,7 @@
         }
 
         .contacts-panel-title {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             color: #ff9f43;
             font-weight: bold;
@@ -385,7 +438,7 @@
         .contacts-list { list-style: none; }
 
         .contact-item {
-            padding: 10px;
+            padding: 12px 10px;
             font-size: 13px;
             border-bottom: 1px solid #2b2c40;
             display: flex;
@@ -395,7 +448,11 @@
             transition: 0.2s;
         }
 
-        .contact-item:hover { background-color: #2b2c40; color: #00d2d3; }
+        .contact-item:hover, .contact-item.active {
+            background-color: #2b2c40;
+            color: #00d2d3;
+            border-left: 3px solid #00d2d3;
+        }
 
         .contact-dot {
             width: 8px;
@@ -464,6 +521,12 @@
             outline: none;
             font-size: 15px;
             min-width: 0;
+        }
+
+        .chat-input-zone input:disabled {
+            background-color: #1e1e2e;
+            cursor: not-allowed;
+            color: #718093;
         }
 
         .btn-send {
@@ -705,10 +768,8 @@
 </head>
 <body>
 
-    <!-- Bandeau Flash Admin -->
     <div id="bandeau-annonce" class="admin-banner"></div>
 
-    <!-- Barre Gauche (Haut sur mobile) -->
     <div class="sidebar-left">
         <div>
             <button class="left-btn" onclick="ouvrirMessagerie()">💬 Messagerie</button>
@@ -725,15 +786,11 @@
         </div>
     </div>
 
-    <!-- Centre de l'écran -->
     <div class="main-content">
-        <!-- Barre de recherche intelligente -->
         <input type="text" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher un cours, un devoir, une matière..." oninput="filtrerContenuRecherche()">
-        
-        <!-- Fenêtre de résultats de recherche -->
         <div id="search-results-box"></div>
 
-        <!-- Matières sur Mobile -->
+        <!-- Matières Mobile -->
         <div class="mobile-subjects">
             <div class="subject-card">
                 <div class="subject-card-header" onclick="toggleMobileCard('card-langues')" style="color: #00d2d3;">
@@ -775,18 +832,33 @@
             </div>
         </div>
 
-        <!-- Modal 1 : Agenda & Devoirs partagés -->
+        <!-- 📅 MODAL AGENDA (PUBLIC & PERSO) -->
         <div id="devoirs-panel" class="modal-box">
             <div class="chat-header">
-                <span style="color: #feca57;">📅 Agenda & Devoirs à venir</span>
+                <span style="color: #feca57;">📅 Agenda & Devoirs</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
-            <div class="devoirs-body" id="devoirs-liste">
-                <p style="color: #a4b0be; font-size: 13px;">Chargement de l'agenda...</p>
+            
+            <div class="agenda-tabs">
+                <button class="agenda-tab-btn active" id="tab-btn-public" onclick="changerOngletAgenda('public')">📢 Devoirs communs (Classe)</button>
+                <button class="agenda-tab-btn" id="tab-btn-perso" onclick="changerOngletAgenda('perso')">🔒 Mes devoirs perso</button>
+            </div>
+
+            <div class="devoirs-body">
+                <!-- Zone d'ajout uniquement pour l'agenda perso -->
+                <div id="form-ajout-perso" class="ajout-perso-box" style="display: none;">
+                    <input type="text" id="perso-titre" placeholder="Tâche perso (ex: Réviser Anglais)..." style="flex: 1;">
+                    <input type="text" id="perso-date" placeholder="Date (ex: Demain 18h)" style="width: 140px;">
+                    <button class="btn-add-submit" onclick="ajouterDevoirPerso()">Ajouter</button>
+                </div>
+
+                <div id="devoirs-liste" style="display: flex; flex-direction: column; gap: 10px;">
+                    <p style="color: #a4b0be; font-size: 13px;">Chargement...</p>
+                </div>
             </div>
         </div>
 
-        <!-- Modal 2 : Amis -->
+        <!-- Amis -->
         <div id="friends-panel" class="modal-box">
             <div class="chat-header">
                 <span style="color: #1dd1a1;">👥 Demandes d'amis & Contacts</span>
@@ -806,30 +878,34 @@
             </div>
         </div>
 
-        <!-- Modal 3 : Salon de Messagerie -->
+        <!-- Messagerie Privée -->
         <div id="chat-entraide" class="modal-box">
             <div class="chat-header">
-                <span style="color: #ff9f43;">💬 Salon de révision</span>
+                <span style="color: #ff9f43;" id="titre-chat-prive">💬 Messagerie Privée</span>
                 <button class="close-btn" onclick="fermerFenetres()">✕</button>
             </div>
             
             <div class="messagerie-body">
                 <div class="contacts-panel">
-                    <div class="contacts-panel-title">👥 Mes contacts</div>
+                    <div class="contacts-panel-title">🔒 Mes amis</div>
                     <ul class="contacts-list" id="contacts-list"></ul>
                 </div>
 
                 <div class="discussion-zone">
-                    <div class="chat-messages" id="group-messages"></div>
+                    <div class="chat-messages" id="group-messages">
+                        <div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
+                            👈 Choisis un ami dans la liste à gauche pour ouvrir votre discussion privée !
+                        </div>
+                    </div>
                     <div class="chat-input-zone">
-                        <input type="text" id="group-input" placeholder="Écris à tes amis..." onkeydown="if(event.key==='Enter') envoyerMessageGroupe()">
-                        <button class="btn-send" style="background-color: #ff9f43; color: #1e1e2e;" onclick="envoyerMessageGroupe()">Envoyer</button>
+                        <input type="text" id="group-input" placeholder="Sélectionne un ami pour écrire..." disabled onkeydown="if(event.key==='Enter') envoyerMessagePrive()">
+                        <button class="btn-send" id="btn-send-msg" style="background-color: #ff9f43; color: #1e1e2e;" disabled onclick="envoyerMessagePrive()">Envoyer</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Modal 4 : Meta IA -->
+        <!-- Meta IA -->
         <div id="chat-ia" class="modal-box">
             <div class="chat-header">
                 <span style="color: #00d2d3;">🤖 Meta IA - Assistant</span>
@@ -844,7 +920,7 @@
             </div>
         </div>
 
-        <!-- Modal 5 : Panel Admin (Code: 6767) -->
+        <!-- Admin -->
         <div id="admin-panel">
             <h3>Panel Admin</h3>
             <p style="font-size: 13px; color: #a4b0be; margin-top: 5px;">Code secret :</p>
@@ -856,7 +932,6 @@
         </div>
     </div>
 
-    <!-- Barre latérale Droite (PC) -->
     <div class="sidebar-right">
         <div class="top-icons">
             <div class="profile-badge" id="icone-profil" onclick="toggleMenuProfil()" title="Mon compte">Moi</div>
@@ -909,7 +984,9 @@
             window.location.href = "index.html";
         }
 
-        // Vérification de bannissement
+        let amiActif = null;
+        let modeAgenda = "public"; // "public" ou "perso"
+
         async function verifierSiBanni() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/comptes/${encodeURIComponent(monPseudo.toLowerCase())}/banni.json`);
@@ -922,7 +999,6 @@
         }
         verifierSiBanni();
 
-        // Annonce Flash
         async function afficherAnnonceGenerale() {
             try {
                 const res = await fetch(`${FIREBASE_URL}/annonce.json`);
@@ -979,7 +1055,7 @@
         }
 
         // =======================================================
-        // 🔍 FILTRE DE RECHERCHE INTELLIGENT
+        // 🔍 RECHERCHE
         // =======================================================
         const matieresDispos = [
             { nom: "Anglais", cat: "Langue" },
@@ -1008,7 +1084,6 @@
             box.innerHTML = "";
             let resultatsTrouves = 0;
 
-            // 1. Filtrer les matières
             matieresDispos.forEach(m => {
                 if (m.nom.toLowerCase().includes(saisie) || m.cat.toLowerCase().includes(saisie)) {
                     resultatsTrouves++;
@@ -1020,7 +1095,6 @@
                 }
             });
 
-            // 2. Filtrer dans les fiches de cours Firebase
             try {
                 const resLecons = await fetch(`${FIREBASE_URL}/lecons.json`);
                 const lecons = await resLecons.json();
@@ -1031,16 +1105,13 @@
                             const div = document.createElement("div");
                             div.className = "search-result-item";
                             div.innerHTML = `📝 <strong>Cours [${l.matiere}] :</strong> ${l.titre}`;
-                            div.onclick = () => {
-                                alert(`[${l.matiere}] ${l.titre}\n\n${l.contenu}`);
-                            };
+                            div.onclick = () => alert(`[${l.matiere}] ${l.titre}\n\n${l.contenu}`);
                             box.appendChild(div);
                         }
                     });
                 }
             } catch (e) {}
 
-            // 3. Filtrer dans les devoirs
             try {
                 const resDevoirs = await fetch(`${FIREBASE_URL}/devoirs.json`);
                 const devoirs = await resDevoirs.json();
@@ -1066,22 +1137,41 @@
         }
 
         // =======================================================
-        // 📅 AGENDA & DEVOIRS PARTAGÉS
+        // 📅 GESTION AGENDA (PUBLIC & PERSO SÉPARÉS)
         // =======================================================
         function ouvrirDevoirs() {
             fermerFenetres();
             document.getElementById("devoirs-panel").style.display = "flex";
-            chargerDevoirs();
+            changerOngletAgenda("public");
         }
 
-        async function chargerDevoirs() {
+        function changerOngletAgenda(mode) {
+            modeAgenda = mode;
+            const btnPublic = document.getElementById("tab-btn-public");
+            const btnPerso = document.getElementById("tab-btn-perso");
+            const formPerso = document.getElementById("form-ajout-perso");
+
+            if (mode === "public") {
+                btnPublic.classList.add("active");
+                btnPerso.classList.remove("active");
+                formPerso.style.display = "none";
+                chargerDevoirsPublics();
+            } else {
+                btnPerso.classList.add("active");
+                btnPublic.classList.remove("active");
+                formPerso.style.display = "flex";
+                chargerDevoirsPersos();
+            }
+        }
+
+        async function chargerDevoirsPublics() {
             const container = document.getElementById("devoirs-liste");
             try {
                 const res = await fetch(`${FIREBASE_URL}/devoirs.json`);
                 const data = await res.json();
 
                 if (!data || Object.keys(data).length === 0) {
-                    container.innerHTML = `<p style="color:#a4b0be; font-size:13px;">🎉 Aucun devoir ou contrôle programmé pour le moment !</p>`;
+                    container.innerHTML = `<p style="color:#a4b0be; font-size:13px;">🎉 Aucun devoir commun pour la classe en ce moment !</p>`;
                     return;
                 }
 
@@ -1100,8 +1190,172 @@
                     container.appendChild(div);
                 });
             } catch (e) {
-                container.innerHTML = `<p style="color:#ee5253; font-size:13px;">Erreur de connexion à l'agenda.</p>`;
+                container.innerHTML = `<p style="color:#ee5253; font-size:13px;">Erreur de chargement.</p>`;
             }
+        }
+
+        async function chargerDevoirsPersos() {
+            const container = document.getElementById("devoirs-liste");
+            const userKey = encodeURIComponent(monPseudo.toLowerCase());
+
+            try {
+                const res = await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}.json`);
+                const data = await res.json();
+
+                if (!data || Object.keys(data).length === 0) {
+                    container.innerHTML = `<p style="color:#a4b0be; font-size:13px;">Tu n'as aucune tâche perso en cours. Ajoute-en une ci-dessus !</p>`;
+                    return;
+                }
+
+                container.innerHTML = "";
+                Object.keys(data).forEach(id => {
+                    const d = data[id];
+                    const div = document.createElement("div");
+                    div.className = "devoir-item perso";
+                    div.innerHTML = `
+                        <div>
+                            <div class="devoir-matiere perso">🔒 Tâche personnelle</div>
+                            <div class="devoir-titre">${d.titre}</div>
+                            <div class="devoir-date" style="color: #1dd1a1;">⏳ ${d.dateLimite}</div>
+                        </div>
+                        <button class="btn-refuse" onclick="supprimerDevoirPerso('${id}')">Terminé ✓</button>
+                    `;
+                    container.appendChild(div);
+                });
+            } catch (e) {
+                container.innerHTML = `<p style="color:#ee5253; font-size:13px;">Erreur de chargement de ton agenda.</p>`;
+            }
+        }
+
+        async function ajouterDevoirPerso() {
+            const titre = document.getElementById("perso-titre").value.trim();
+            const dateLimite = document.getElementById("perso-date").value.trim();
+            const userKey = encodeURIComponent(monPseudo.toLowerCase());
+
+            if (!titre) {
+                alert("Entre un titre pour ta tâche personnelle.");
+                return;
+            }
+
+            await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}.json`, {
+                method: "POST",
+                body: JSON.stringify({
+                    titre: titre,
+                    dateLimite: dateLimite || "Non spécifié"
+                })
+            });
+
+            document.getElementById("perso-titre").value = "";
+            document.getElementById("perso-date").value = "";
+            chargerDevoirsPersos();
+        }
+
+        async function supprimerDevoirPerso(id) {
+            const userKey = encodeURIComponent(monPseudo.toLowerCase());
+            await fetch(`${FIREBASE_URL}/devoirs_perso/${userKey}/${id}.json`, { method: "DELETE" });
+            chargerDevoirsPersos();
+        }
+
+        // =======================================================
+        // 🔒 MESSAGERIE PRIVÉE
+        // =======================================================
+        function identifiantDiscussion(u1, u2) {
+            const tri = [u1.toLowerCase(), u2.toLowerCase()].sort();
+            return `${tri[0]}_${tri[1]}`;
+        }
+
+        function ouvrirMessagerie() {
+            fermerFenetres();
+            document.getElementById("chat-entraide").style.display = "flex";
+            synchroniserDemandesEtAmis();
+        }
+
+        function selectionnerAmiChat(ami) {
+            amiActif = ami;
+            document.getElementById("titre-chat-prive").textContent = `💬 Discussion privée avec ${ami}`;
+            
+            const input = document.getElementById("group-input");
+            const btn = document.getElementById("btn-send-msg");
+            input.disabled = false;
+            btn.disabled = false;
+            input.placeholder = `Écris en privé à ${ami}...`;
+            input.focus();
+
+            document.querySelectorAll(".contact-item").forEach(el => el.classList.remove("active"));
+            const contactEl = document.getElementById(`contact-${ami.toLowerCase()}`);
+            if (contactEl) contactEl.classList.add("active");
+
+            chargerMessagesPrives(true);
+        }
+
+        let dernierNombreMessagesPrives = 0;
+
+        async function chargerMessagesPrives(forcerScroll = false) {
+            if (!amiActif) return;
+
+            const roomId = identifiantDiscussion(monPseudo, amiActif);
+            const conteneur = document.getElementById("group-messages");
+
+            try {
+                const res = await fetch(`${FIREBASE_URL}/messages_prives/${roomId}.json?orderBy="$key"&limitToLast=40`);
+                const data = await res.json();
+
+                if (!data) {
+                    conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
+                        🔒 C'est le début de votre discussion privée avec ${amiActif}. Aucun message pour l'instant !
+                    </div>`;
+                    return;
+                }
+
+                const cles = Object.keys(data);
+                const nouveauMessageArrive = (cles.length !== dernierNombreMessagesPrives);
+                const estProcheDuBas = (conteneur.scrollHeight - conteneur.scrollTop - conteneur.clientHeight) < 140;
+
+                conteneur.innerHTML = "";
+                Object.values(data).forEach(m => {
+                    const estMoi = (m.pseudo.toLowerCase() === monPseudo.toLowerCase());
+                    const bulle = document.createElement("div");
+                    bulle.className = "msg " + (estMoi ? "msg-group-me" : "msg-group-other");
+                    bulle.innerHTML = `
+                        <div class="msg-author">${m.pseudo} <span class="msg-time">${m.heure}</span></div>
+                        <div>${m.texte}</div>
+                    `;
+                    conteneur.appendChild(bulle);
+                });
+
+                dernierNombreMessagesPrives = cles.length;
+
+                if (forcerScroll || (nouveauMessageArrive && estProcheDuBas)) {
+                    requestAnimationFrame(() => {
+                        conteneur.scrollTop = conteneur.scrollHeight;
+                    });
+                }
+            } catch (e) {}
+        }
+
+        async function envoyerMessagePrive() {
+            if (!amiActif) return;
+
+            const input = document.getElementById("group-input");
+            const texte = input.value.trim();
+            if (texte === "") return;
+
+            const maintenant = new Date();
+            const heure = maintenant.getHours().toString().padStart(2, '0') + ":" + maintenant.getMinutes().toString().padStart(2, '0');
+            const roomId = identifiantDiscussion(monPseudo, amiActif);
+
+            await fetch(`${FIREBASE_URL}/messages_prives/${roomId}.json`, {
+                method: "POST",
+                body: JSON.stringify({
+                    pseudo: monPseudo,
+                    texte: texte,
+                    heure: heure,
+                    timestamp: Date.now()
+                })
+            });
+
+            input.value = "";
+            chargerMessagesPrives(true);
         }
 
         // =======================================================
@@ -1176,7 +1430,7 @@
 
                 if (!dataAmis || Object.keys(dataAmis).length === 0) {
                     boxAmis.innerHTML = `<li style="color:#a4b0be; font-size:12px; padding:6px;">Aucun ami confirmé.</li>`;
-                    boxContacts.innerHTML = `<li style="color:#a4b0be; font-size:11px; padding:10px;">Aucun ami.</li>`;
+                    boxContacts.innerHTML = `<li style="color:#a4b0be; font-size:11px; padding:10px;">Ajoute un ami pour discuter.</li>`;
                 } else {
                     const amis = Object.keys(dataAmis);
                     boxAmis.innerHTML = "";
@@ -1192,12 +1446,10 @@
                         boxAmis.appendChild(liAmi);
 
                         const liContact = document.createElement("li");
-                        liContact.className = "contact-item";
+                        liContact.className = "contact-item" + (amiActif === ami ? " active" : "");
+                        liContact.id = `contact-${ami.toLowerCase()}`;
                         liContact.innerHTML = `<span class="contact-dot"></span><span>${ami}</span>`;
-                        liContact.onclick = () => {
-                            document.getElementById("group-input").value = `@${ami} `;
-                            document.getElementById("group-input").focus();
-                        };
+                        liContact.onclick = () => selectionnerAmiChat(ami);
                         boxContacts.appendChild(liContact);
                     });
                 }
@@ -1232,6 +1484,13 @@
         async function supprimerAmi(ami) {
             await fetch(`${FIREBASE_URL}/amis/${monPseudo.toLowerCase()}/${ami.toLowerCase()}.json`, { method: "DELETE" });
             await fetch(`${FIREBASE_URL}/amis/${ami.toLowerCase()}/${monPseudo.toLowerCase()}.json`, { method: "DELETE" });
+            if (amiActif === ami) {
+                amiActif = null;
+                document.getElementById("group-input").disabled = true;
+                document.getElementById("btn-send-msg").disabled = true;
+                document.getElementById("titre-chat-prive").textContent = "💬 Messagerie Privée";
+                document.getElementById("group-messages").innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">👈 Choisis un ami dans la liste à gauche !</div>`;
+            }
             synchroniserDemandesEtAmis();
         }
 
@@ -1239,85 +1498,6 @@
             fermerFenetres();
             document.getElementById("friends-panel").style.display = "flex";
             synchroniserDemandesEtAmis();
-        }
-
-        // =======================================================
-        // 💬 MESSAGERIE
-        // =======================================================
-        let dernierNombreMessages = 0;
-
-        function ouvrirMessagerie() {
-            fermerFenetres();
-            const modal = document.getElementById("chat-entraide");
-            modal.style.display = "flex";
-            synchroniserDemandesEtAmis();
-            chargerMessagesEnLigne(true);
-            
-            setTimeout(() => {
-                const zone = document.getElementById("group-messages");
-                zone.scrollTop = zone.scrollHeight;
-            }, 80);
-        }
-
-        async function chargerMessagesEnLigne(forcerScroll = false) {
-            try {
-                const res = await fetch(`${FIREBASE_URL}/messages.json?orderBy="$key"&limitToLast=40`);
-                const data = await res.json();
-                const conteneur = document.getElementById("group-messages");
-
-                if (!data) {
-                    conteneur.innerHTML = `<div class="msg msg-group-other" style="text-align: center; color: #a4b0be;">
-                        Aucun message. Discutez ici de vos révisions !
-                    </div>`;
-                    return;
-                }
-
-                const cles = Object.keys(data);
-                const nouveauMessageArrive = (cles.length !== dernierNombreMessages);
-                const estProcheDuBas = (conteneur.scrollHeight - conteneur.scrollTop - conteneur.clientHeight) < 140;
-
-                conteneur.innerHTML = "";
-                Object.values(data).forEach(m => {
-                    const estMoi = (m.pseudo.toLowerCase() === monPseudo.toLowerCase());
-                    const bulle = document.createElement("div");
-                    bulle.className = "msg " + (estMoi ? "msg-group-me" : "msg-group-other");
-                    bulle.innerHTML = `
-                        <div class="msg-author">${m.pseudo} <span class="msg-time">${m.heure}</span></div>
-                        <div>${m.texte}</div>
-                    `;
-                    conteneur.appendChild(bulle);
-                });
-
-                dernierNombreMessages = cles.length;
-
-                if (forcerScroll || (nouveauMessageArrive && estProcheDuBas)) {
-                    requestAnimationFrame(() => {
-                        conteneur.scrollTop = conteneur.scrollHeight;
-                    });
-                }
-            } catch (e) {}
-        }
-
-        async function envoyerMessageGroupe() {
-            const input = document.getElementById("group-input");
-            const texte = input.value.trim();
-            if (texte === "") return;
-
-            const maintenant = new Date();
-            const heure = maintenant.getHours().toString().padStart(2, '0') + ":" + maintenant.getMinutes().toString().padStart(2, '0');
-
-            await fetch(`${FIREBASE_URL}/messages.json`, {
-                method: "POST",
-                body: JSON.stringify({
-                    pseudo: monPseudo,
-                    texte: texte,
-                    heure: heure,
-                    timestamp: Date.now()
-                })
-            });
-
-            input.value = "";
-            chargerMessagesEnLigne(true);
         }
 
         // =======================================================
@@ -1436,8 +1616,8 @@
         setInterval(afficherAnnonceGenerale, 6000);
         setInterval(verifierSiBanni, 5000);
         setInterval(() => {
-            if (document.getElementById("chat-entraide").style.display === "flex") {
-                chargerMessagesEnLigne(false);
+            if (document.getElementById("chat-entraide").style.display === "flex" && amiActif) {
+                chargerMessagesPrives(false);
             }
         }, 2000);
     </script>
