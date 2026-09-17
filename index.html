@@ -146,9 +146,11 @@
             margin-top: 15px;
             padding: 10px 14px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             text-align: center;
             display: none;
+            line-height: 1.4;
+            word-break: break-word;
         }
 
         .status-error {
@@ -279,6 +281,7 @@
             </form>
         </div>
 
+        <!-- Zone d'affichage des messages et erreurs brutes -->
         <div id="boite-statut" class="status-msg"></div>
 
         <div class="footer-note">
@@ -292,14 +295,17 @@
         const EMAILJS_SERVICE_ID = "service_lc5s6yo";
         const EMAILJS_TEMPLATE_ID = "cf97ges";
 
-        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        try {
+            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        } catch (e) {
+            console.error("Erreur init EmailJS :", e);
+        }
 
         let actionEnCours = null;
         let codeAttendu = null;
         let expirationCode = 0;
         let donneesTemporaires = {};
 
-        // Hachage SHA-256 avec salage
         async function hacherMotDePasse(mdp) {
             const encoder = new TextEncoder();
             const data = encoder.encode(mdp + "_webnex_cour_halea_salt_99");
@@ -329,7 +335,7 @@
             return Math.floor(100000 + Math.random() * 900000).toString();
         }
 
-        // --- 1. CONNEXION AVEC VÉRIFICATION DU MAIL OBLIGATOIRE ---
+        // --- 1. CONNEXION ---
         async function traiterConnexion(e) {
             e.preventDefault();
             masquerMessage();
@@ -374,7 +380,6 @@
                     return;
                 }
 
-                // Si ancien mot de passe en clair, conversion immédiate en hash
                 if (compte.password === mdpSaisi) {
                     fetch(`${FIREBASE_URL}/comptes/${cleCompte}/password.json`, {
                         method: "PUT",
@@ -382,14 +387,13 @@
                     });
                 }
 
-                // Blocage si l'e-mail n'est pas lié ou pas vérifié
                 if (!compte.email || compte.emailVerifie !== true) {
                     donneesTemporaires = { cle: cleCompte, pseudo: compte.pseudo };
                     basculerVue("vue-lier-email");
                     if (compte.email) {
                         document.getElementById("lier-email-input").value = compte.email;
                     }
-                    afficherMessage("Tu dois valider ton e-mail pour continuer.", "error");
+                    afficherMessage("Tu dois valider ton adresse e-mail pour continuer.", "error");
                     return;
                 }
 
@@ -405,7 +409,7 @@
             }
         }
 
-        // --- 2. DEMANDE DU CODE POUR LIER L'E-MAIL ---
+        // --- 2. LIER L'E-MAIL ---
         async function demanderCodeLiaison(e) {
             e.preventDefault();
             masquerMessage();
@@ -446,7 +450,9 @@
                 basculerVue("vue-validation-code");
                 afficherMessage("Code envoyé par e-mail !", "success");
             } catch (err) {
-                afficherMessage("Échec de l'envoi. Vérifie ton adresse mail.");
+                console.error("Détail Erreur :", err);
+                const detail = err.text || err.message || JSON.stringify(err);
+                afficherMessage("Détail du rejet : " + detail);
             } finally {
                 btn.textContent = "Envoyer le code";
                 btn.disabled = false;
@@ -499,16 +505,18 @@
                 document.getElementById("champ-nouveau-mdp").style.display = "none";
                 document.getElementById("texte-info-code").textContent = `Code envoyé à ${email}`;
                 basculerVue("vue-validation-code");
-                afficherMessage("Code envoyé ! Pense à vérifier tes spams.", "success");
+                afficherMessage("Code envoyé ! Vérifie tes spams.", "success");
             } catch (err) {
-                afficherMessage("Erreur d'envoi du code. Vérifie l'adresse.");
+                console.error("Détail Erreur :", err);
+                const detail = err.text || err.message || JSON.stringify(err);
+                afficherMessage("Détail du rejet : " + detail);
             } finally {
                 btn.textContent = "Recevoir le code";
                 btn.disabled = false;
             }
         }
 
-        // --- 4. RÉCUPÉRATION ---
+        // --- 4. MOT DE PASSE OUBLIÉ ---
         async function demanderCodeRecuperation(e) {
             e.preventDefault();
             masquerMessage();
@@ -550,14 +558,16 @@
                 basculerVue("vue-validation-code");
                 afficherMessage("Code envoyé par e-mail !", "success");
             } catch (err) {
-                afficherMessage("Erreur d'envoi du code.");
+                console.error("Détail Erreur :", err);
+                const detail = err.text || err.message || JSON.stringify(err);
+                afficherMessage("Détail du rejet : " + detail);
             } finally {
                 btn.textContent = "Envoyer le code";
                 btn.disabled = false;
             }
         }
 
-        // --- 5. VALIDATION FINALE ---
+        // --- 5. VALIDATION DU CODE ---
         async function validerCodeRecu(e) {
             e.preventDefault();
             masquerMessage();
@@ -570,7 +580,7 @@
             }
 
             if (saisie !== codeAttendu) {
-                afficherMessage("Code incorrect. Vérifie bien les 6 chiffres.");
+                afficherMessage("Code incorrect. Vérifie tes 6 chiffres.");
                 return;
             }
 
@@ -587,7 +597,7 @@
                 localStorage.setItem("utilisateur_email", donneesTemporaires.email);
                 localStorage.setItem("utilisateur_verifie", "true");
 
-                alert("Adresse e-mail vérifiée avec succès ! Connexion en cours...");
+                alert("Adresse e-mail validée ! Connexion en cours...");
                 window.location.href = "accueil.html";
             }
             else if (actionEnCours === "inscription") {
