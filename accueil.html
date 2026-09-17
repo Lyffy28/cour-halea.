@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Cour-halea - Accueil</title>
+    <title>Cour-halea - Espace d'étude</title>
     <style>
         :root {
             --bg-main: #1e293b;
@@ -133,7 +133,7 @@
             overflow: hidden;
         }
 
-        /* Barre PC latérale */
+        /* Barre latérale PC */
         .sidebar-left {
             width: 86px;
             background: var(--sidebar-bg);
@@ -243,7 +243,7 @@
             font-size: 13px;
         }
 
-        /* Volet déroulant des 3 tirets (☰) */
+        /* Volet déroulant ☰ */
         .hub-menu {
             position: fixed;
             top: 56px;
@@ -411,7 +411,7 @@
             padding: 2px 6px;
         }
 
-        /* À propos / Versions */
+        /* À propos */
         .version-card {
             background: var(--input-bg);
             border: 1px solid var(--border-color);
@@ -509,7 +509,7 @@
             font-family: monospace;
         }
 
-        /* Responsive Mobile */
+        /* Mobile */
         @media (max-width: 768px) {
             .app-body {
                 flex-direction: column;
@@ -619,7 +619,7 @@
 </head>
 <body>
 
-    <!-- Barre d'en-tête (Toujours fixée et visible) -->
+    <!-- Barre d'en-tête -->
     <div class="top-navbar">
         <div class="brand-title">Cour-halea</div>
         <div class="top-actions">
@@ -629,7 +629,7 @@
     </div>
 
     <div class="app-body">
-        <!-- Barre de navigation (Gauche PC, Bas Mobile) -->
+        <!-- Barre de navigation -->
         <div class="sidebar-left">
             <div>
                 <button class="left-btn" onclick="ouvrirMessagerie()"><span>💬</span><span>Chat</span></button>
@@ -653,7 +653,7 @@
             <input type="search" class="search-bar" id="input-recherche" placeholder="🔍 Rechercher un cours, devoir..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" oninput="filtrerContenuRecherche()">
             <div id="search-results-box"></div>
 
-            <!-- Modal : À propos & Historique des versions -->
+            <!-- Modal : À propos -->
             <div id="apropos-panel" class="modal-box">
                 <div class="chat-header">
                     <span style="color: var(--primary);">ℹ️ À propos & Versions</span>
@@ -662,41 +662,33 @@
                 <div style="padding: 16px; overflow-y: auto;">
                     <div style="text-align: center; margin-bottom: 16px;">
                         <h2 style="color: var(--primary); font-size: 20px;">Cour-halea</h2>
-                        <p style="font-size: 13px; color: var(--text-muted);">Plateforme scolaire connectée — Développée par la team <strong>WEBNEX</strong></p>
+                        <p style="font-size: 13px; color: var(--text-muted);">Plateforme collaborative scolaire — Développée par la team <strong>WEBNEX</strong></p>
                     </div>
 
-                    <div class="hub-menu-section" style="margin-bottom: 10px;">📜 Versions & Cycle de mise à jour</div>
+                    <div class="hub-menu-section" style="margin-bottom: 10px;">📜 Versions & Synchronisation</div>
 
-                    <!-- Version active mise à jour toutes les heures -->
                     <div class="version-card">
                         <span class="version-badge latest" id="modal-version-badge">v2.00 (Actuelle)</span>
-                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Build automatique en temps réel</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);" id="modal-version-desc">Dernière synchronisation horaire active.</p>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Build horaire dynamique</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);" id="modal-version-desc">Synchronisation active.</p>
                     </div>
 
-                    <!-- Historique stable -->
                     <div class="version-card">
                         <span class="version-badge">v2.4</span>
-                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Menu Hub & Navigation tactile</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);">Intégration de toutes les matières dans les trois tirets (☰), barre mobile avec défilement fluide et correction de la visibilité sur smartphone.</p>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Sécurité globale et e-mail obligatoire</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);">Hachage SHA-256 des mots de passe et obligation de vérification e-mail pour tous les comptes.</p>
                     </div>
 
                     <div class="version-card">
                         <span class="version-badge">v2.3</span>
-                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Sécurité par e-mail EmailJS</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);">Code de sécurité à 6 chiffres envoyé directement par mail pour inscription et mot de passe oublié.</p>
-                    </div>
-
-                    <div class="version-card">
-                        <span class="version-badge">v2.2</span>
-                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Espace Arcade (Snake)</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);">Intégration du mini-jeu d'arcade avec gestion des scores et commandes tactiles.</p>
+                        <strong style="display: block; font-size: 13px; margin: 4px 0;">Menu Hub & Navigation tactile</strong>
+                        <p style="font-size: 12px; color: var(--text-muted);">Refonte responsive, volet déroulant (☰) et fluidité mobile.</p>
                     </div>
 
                     <div class="version-card">
                         <span class="version-badge">v1.0</span>
                         <strong style="display: block; font-size: 13px; margin: 4px 0;">Lancement initial</strong>
-                        <p style="font-size: 12px; color: var(--text-muted);">Création de la base de cours, agenda commun et tuteur d'étude IA.</p>
+                        <p style="font-size: 12px; color: var(--text-muted);">Création de la base de données, cours et agenda.</p>
                     </div>
                 </div>
             </div>
@@ -883,7 +875,7 @@
         </div>
     </div>
 
-    <!-- Volet coulissant des 3 tirets (☰) -->
+    <!-- Volet coulissant ☰ -->
     <div class="hub-menu" id="hub-menu">
         <div class="hub-menu-header">
             <div id="nom-utilisateur" style="font-size: 14px; font-weight: bold; color: var(--primary);">Pseudo</div>
@@ -946,36 +938,48 @@
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
         const CLE_API = "AQ.Ab8RN6JOyUF9wbanLDRGcIzzXnUpMzrLLYk75TLBPPHskY2VHg";
 
-        // --- GÉNÉRATION AUTOMATIQUE DE LA VERSION TOUTES LES HEURES ---
-        function actualiserVersionHoraire() {
-            const now = new Date();
-            const heure = now.getHours().toString().padStart(2, '0');
-            const jour = now.getDate().toString().padStart(2, '0');
-            const mois = (now.getMonth() + 1).toString().padStart(2, '0');
-
-            // Version formatée avec l'heure exacte (ex: v2.22 pour 22h)
-            const versionActuelle = `v2.${heure}`;
-
-            // Injection à côté du "Créé par"
-            const footerTag = document.getElementById("footer-version-tag");
-            if (footerTag) footerTag.textContent = versionActuelle;
-
-            // Injection dans la modal "À propos"
-            const modalBadge = document.getElementById("modal-version-badge");
-            const modalDesc = document.getElementById("modal-version-desc");
-            if (modalBadge) modalBadge.textContent = `${versionActuelle} (Actuelle)`;
-            if (modalDesc) modalDesc.textContent = `Synchronisée le ${jour}/${mois} à ${heure}h00 — Mise à jour automatique chaque heure.`;
-        }
-
-        actualiserVersionHoraire();
-        setInterval(actualiserVersionHoraire, 60000); // Vérifie chaque minute pour basculer à la nouvelle heure
-
         const monPseudo = localStorage.getItem("utilisateur_pseudo");
         const monEmail = localStorage.getItem("utilisateur_email") || "";
 
         if (!monPseudo) {
             window.location.href = "index.html";
         }
+
+        // Vérification de sécurité : expulsion si l'e-mail n'est pas vérifié
+        async function verifierSecuriteCompte() {
+            try {
+                const cle = encodeURIComponent(monPseudo.toLowerCase());
+                const res = await fetch(`${FIREBASE_URL}/comptes/${cle}.json`);
+                const compte = await res.json();
+
+                if (!compte || !compte.email || compte.emailVerifie !== true) {
+                    alert("Sécurité : tu dois lier et valider ton adresse e-mail pour accéder au site.");
+                    seDeconnecter();
+                }
+            } catch (e) {}
+        }
+
+        verifierSecuriteCompte();
+
+        // Actualisation automatique de la version horaire
+        function actualiserVersionHoraire() {
+            const now = new Date();
+            const heure = now.getHours().toString().padStart(2, '0');
+            const jour = now.getDate().toString().padStart(2, '0');
+            const mois = (now.getMonth() + 1).toString().padStart(2, '0');
+            const versionActuelle = `v2.${heure}`;
+
+            const footerTag = document.getElementById("footer-version-tag");
+            if (footerTag) footerTag.textContent = versionActuelle;
+
+            const modalBadge = document.getElementById("modal-version-badge");
+            const modalDesc = document.getElementById("modal-version-desc");
+            if (modalBadge) modalBadge.textContent = `${versionActuelle} (Actuelle)`;
+            if (modalDesc) modalDesc.textContent = `Synchronisée le ${jour}/${mois} à ${heure}h00 — Mise à jour horaire.`;
+        }
+
+        actualiserVersionHoraire();
+        setInterval(actualiserVersionHoraire, 60000);
 
         let amiActif = null;
         let modeAgenda = "public";
@@ -1394,6 +1398,7 @@
         function seDeconnecter() {
             localStorage.removeItem("utilisateur_pseudo");
             localStorage.removeItem("utilisateur_email");
+            localStorage.removeItem("utilisateur_verifie");
             window.location.href = "index.html";
         }
 
