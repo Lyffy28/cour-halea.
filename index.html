@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cour-halea - Authentification</title>
-    <!-- SDK EmailJS -->
+    <title>Cour-halea - Authentification Sécurisée</title>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         * {
@@ -31,7 +30,7 @@
         }
 
         .auth-card {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.92);
             border: 1px solid rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(16px);
             border-radius: 20px;
@@ -125,11 +124,6 @@
             margin-top: 8px;
         }
 
-        .btn-secondary:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
         .switch-links {
             display: flex;
             justify-content: space-between;
@@ -181,8 +175,7 @@
 <body>
 
     <div class="auth-card">
-
-        <!-- 1. VUE : CONNEXION -->
+        <!-- 1. CONNEXION -->
         <div id="vue-connexion">
             <h2 class="auth-title">Connexion</h2>
             <p class="auth-subtitle">Accède à ton espace d'étude Cour-halea</p>
@@ -205,10 +198,10 @@
             </div>
         </div>
 
-        <!-- 2. VUE : INSCRIPTION -->
+        <!-- 2. INSCRIPTION -->
         <div id="vue-inscription" style="display: none;">
             <h2 class="auth-title">Inscription</h2>
-            <p class="auth-subtitle">Un code de vérification te sera envoyé par e-mail</p>
+            <p class="auth-subtitle">Un code de sécurité te sera envoyé par e-mail</p>
 
             <form onsubmit="demanderCodeInscription(event)">
                 <div class="form-group">
@@ -220,8 +213,8 @@
                     <input type="email" id="inscr-email" required placeholder="nom@exemple.com">
                 </div>
                 <div class="form-group">
-                    <label>Mot de passe</label>
-                    <input type="password" id="inscr-mdp" required minlength="4" placeholder="Minimum 4 caractères">
+                    <label>Mot de passe (min. 6 caractères)</label>
+                    <input type="password" id="inscr-mdp" required minlength="6" placeholder="Au moins 6 caractères">
                 </div>
                 <button type="submit" class="btn-primary" id="btn-submit-inscr">Recevoir le code</button>
             </form>
@@ -231,10 +224,10 @@
             </div>
         </div>
 
-        <!-- 3. VUE : MOT DE PASSE OUBLIÉ -->
+        <!-- 3. MOT DE PASSE OUBLIÉ -->
         <div id="vue-oubli" style="display: none;">
             <h2 class="auth-title">Récupération</h2>
-            <p class="auth-subtitle">Reçois un code pour réinitialiser ton mot de passe</p>
+            <p class="auth-subtitle">Reçois un code pour modifier ton mot de passe</p>
 
             <form onsubmit="demanderCodeRecuperation(event)">
                 <div class="form-group">
@@ -249,20 +242,20 @@
             </div>
         </div>
 
-        <!-- 4. VUE : VALIDATION DU CODE -->
+        <!-- 4. VALIDATION DU CODE -->
         <div id="vue-validation-code" style="display: none;">
             <h2 class="auth-title">Vérification</h2>
             <p class="auth-subtitle" id="texte-info-code">Entre le code reçu par e-mail</p>
 
             <form onsubmit="validerCodeRecu(event)">
                 <div class="form-group">
-                    <label>Code reçu (6 chiffres)</label>
+                    <label>Code de sécurité (6 chiffres)</label>
                     <input type="text" id="input-code-verif" class="input-code" maxlength="6" required placeholder="••••••">
                 </div>
 
                 <div class="form-group" id="champ-nouveau-mdp" style="display: none;">
-                    <label>Nouveau mot de passe</label>
-                    <input type="password" id="input-nouveau-mdp" minlength="4" placeholder="Nouveau mot de passe">
+                    <label>Nouveau mot de passe (min. 6 caractères)</label>
+                    <input type="password" id="input-nouveau-mdp" minlength="6" placeholder="Nouveau mot de passe">
                 </div>
 
                 <button type="submit" class="btn-primary">Valider</button>
@@ -277,24 +270,26 @@
         </div>
     </div>
 
-<script>
+    <script>
         const FIREBASE_URL = "https://cour-halea-default-rtdb.firebaseio.com";
-
-        // Configuration EmailJS avec tes clés réelles
         const EMAILJS_PUBLIC_KEY = "vfjPplfwPgtt3bn10";
         const EMAILJS_SERVICE_ID = "service_lc5s6yo";
         const EMAILJS_TEMPLATE_ID = "cf97ges";
 
-        try {
-            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-        } catch (e) {
-            console.error("Erreur init EmailJS", e);
-        }
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
         let actionEnCours = null;
         let codeAttendu = null;
         let expirationCode = 0;
         let donneesTemporaires = {};
+
+        // Fonction de hachage SHA-256 avec salage
+        async function hacherMotDePasse(mdp) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(mdp + "_webnex_cour_halea_salt_99");
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
         function afficherMessage(texte, type = "error") {
             const boite = document.getElementById("boite-statut");
@@ -318,12 +313,13 @@
             return Math.floor(100000 + Math.random() * 900000).toString();
         }
 
-        // --- 1. CONNEXION NORMALE ---
+        // --- 1. CONNEXION SÉCURISÉE ---
         async function traiterConnexion(e) {
             e.preventDefault();
             masquerMessage();
+
             const identifiant = document.getElementById("connexion-identifiant").value.trim().toLowerCase();
-            const mdp = document.getElementById("connexion-mdp").value;
+            const mdpSaisi = document.getElementById("connexion-mdp").value;
             const btn = document.getElementById("btn-submit-connexion");
 
             btn.textContent = "Connexion...";
@@ -334,37 +330,56 @@
                 const comptes = await res.json();
 
                 if (!comptes) {
-                    afficherMessage("Aucun compte existant.");
+                    afficherMessage("Aucun compte enregistré.");
                     return;
                 }
 
-                const compteTrouve = Object.values(comptes).find(c => 
-                    (c.pseudo && c.pseudo.toLowerCase() === identifiant) || 
-                    (c.email && c.email.toLowerCase() === identifiant)
+                const cleCompte = Object.keys(comptes).find(k => 
+                    (comptes[k].pseudo && comptes[k].pseudo.toLowerCase() === identifiant) || 
+                    (comptes[k].email && comptes[k].email.toLowerCase() === identifiant)
                 );
 
-                if (!compteTrouve || compteTrouve.password !== mdp) {
-                    afficherMessage("Identifiant ou mot de passe incorrect.");
+                if (!cleCompte) {
+                    afficherMessage("Identifiant introuvable.");
                     return;
                 }
 
-                if (compteTrouve.banni === true) {
-                    afficherMessage("Ce compte a été suspendu.");
+                const compte = comptes[cleCompte];
+                const hashSaisi = await hacherMotDePasse(mdpSaisi);
+
+                // Vérifie le mot de passe haché ou l'ancien mot de passe en clair (migration auto)
+                const motDePasseValide = (compte.password === hashSaisi) || (compte.password === mdpSaisi);
+
+                if (!motDePasseValide) {
+                    afficherMessage("Mot de passe incorrect.");
                     return;
                 }
 
-                localStorage.setItem("utilisateur_pseudo", compteTrouve.pseudo);
-                localStorage.setItem("utilisateur_email", compteTrouve.email || "");
+                if (compte.banni === true) {
+                    afficherMessage("Ce compte est suspendu.");
+                    return;
+                }
+
+                // Si l'ancien compte avait son mot de passe en clair, on le sécurise maintenant
+                if (compte.password === mdpSaisi) {
+                    fetch(`${FIREBASE_URL}/comptes/${cleCompte}/password.json`, {
+                        method: "PUT",
+                        body: JSON.stringify(hashSaisi)
+                    });
+                }
+
+                localStorage.setItem("utilisateur_pseudo", compte.pseudo);
+                localStorage.setItem("utilisateur_email", compte.email || "");
                 window.location.href = "accueil.html";
             } catch (err) {
-                afficherMessage("Erreur de connexion à Firebase.");
+                afficherMessage("Erreur de connexion au serveur.");
             } finally {
                 btn.textContent = "Se connecter";
                 btn.disabled = false;
             }
         }
 
-        // --- 2. INSCRIPTION AVEC CODE ---
+        // --- 2. INSCRIPTION ---
         async function demanderCodeInscription(e) {
             e.preventDefault();
             masquerMessage();
@@ -381,46 +396,41 @@
                 const res = await fetch(`${FIREBASE_URL}/comptes.json`);
                 const comptes = await res.json() || {};
 
-                const existeDeja = Object.values(comptes).some(c => 
+                const existe = Object.values(comptes).some(c => 
                     (c.pseudo && c.pseudo.toLowerCase() === pseudo.toLowerCase()) || 
                     (c.email && c.email.toLowerCase() === email)
                 );
 
-                if (existeDeja) {
-                    afficherMessage("Ce pseudo ou cet e-mail est déjà utilisé.");
+                if (existe) {
+                    afficherMessage("Ce pseudo ou cette adresse mail est déjà utilisé.");
                     return;
                 }
 
                 codeAttendu = genererCodeAleatoire();
                 expirationCode = Date.now() + 10 * 60 * 1000;
                 actionEnCours = "inscription";
-                donneesTemporaires = { pseudo, email, password: mdp };
+                donneesTemporaires = { pseudo, email, passwordHash: await hacherMotDePasse(mdp) };
 
-                // On envoie à la fois to_email et email pour être 100% sûr que le template le reçoive
-                const reponseEmailJS = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
                     to_name: pseudo,
                     to_email: email,
                     email: email,
                     code: codeAttendu
                 });
 
-                console.log("Succès EmailJS :", reponseEmailJS);
-
                 document.getElementById("champ-nouveau-mdp").style.display = "none";
                 document.getElementById("texte-info-code").textContent = `Code envoyé à ${email}`;
                 basculerVue("vue-validation-code");
-                afficherMessage("Code envoyé avec succès ! Vérifie tes spams.", "success");
+                afficherMessage("Code envoyé par e-mail (vérifie tes spams) !", "success");
             } catch (err) {
-                console.error("Détail Erreur EmailJS :", err);
-                const detail = err.text || err.message || JSON.stringify(err);
-                afficherMessage(`Échec EmailJS : ${detail}`);
+                afficherMessage("Erreur d'envoi d'e-mail. Vérifie ton adresse.");
             } finally {
                 btn.textContent = "Recevoir le code";
                 btn.disabled = false;
             }
         }
 
-        // --- 3. MOT DE PASSE OUBLIÉ AVEC CODE ---
+        // --- 3. MOT DE PASSE OUBLIÉ ---
         async function demanderCodeRecuperation(e) {
             e.preventDefault();
             masquerMessage();
@@ -428,7 +438,7 @@
             const email = document.getElementById("oubli-email").value.trim().toLowerCase();
             const btn = document.getElementById("btn-submit-oubli");
 
-            btn.textContent = "Recherche du compte...";
+            btn.textContent = "Recherche...";
             btn.disabled = true;
 
             try {
@@ -440,7 +450,7 @@
                 );
 
                 if (!cleCompte) {
-                    afficherMessage("Aucun compte avec cette adresse mail. Crée d'abord un compte via 'Créer un compte'.");
+                    afficherMessage("Aucun compte associé à cette adresse e-mail.");
                     return;
                 }
 
@@ -460,11 +470,9 @@
                 document.getElementById("champ-nouveau-mdp").style.display = "block";
                 document.getElementById("texte-info-code").textContent = `Code envoyé à ${email}`;
                 basculerVue("vue-validation-code");
-                afficherMessage("Code envoyé par e-mail ! (Pense aux spams)", "success");
+                afficherMessage("Code envoyé ! Pense à vérifier tes spams.", "success");
             } catch (err) {
-                console.error("Détail Erreur EmailJS :", err);
-                const detail = err.text || err.message || JSON.stringify(err);
-                afficherMessage(`Échec EmailJS : ${detail}`);
+                afficherMessage("Échec de l'envoi du mail de réinitialisation.");
             } finally {
                 btn.textContent = "Envoyer le code";
                 btn.disabled = false;
@@ -479,12 +487,12 @@
             const saisie = document.getElementById("input-code-verif").value.trim();
 
             if (Date.now() > expirationCode) {
-                afficherMessage("Le code a expiré. Recommence l'opération.");
+                afficherMessage("Le code a expiré. Recommence la procédure.");
                 return;
             }
 
             if (saisie !== codeAttendu) {
-                afficherMessage("Code incorrect. Vérifie bien les 6 chiffres.");
+                afficherMessage("Code incorrect. Vérifie tes 6 chiffres.");
                 return;
             }
 
@@ -495,27 +503,28 @@
                     body: JSON.stringify({
                         pseudo: donneesTemporaires.pseudo,
                         email: donneesTemporaires.email,
-                        password: donneesTemporaires.password,
+                        password: donneesTemporaires.passwordHash,
                         dateCreation: new Date().toISOString()
                     })
                 });
 
-                alert("Compte validé avec succès ! Tu peux te connecter.");
+                alert("Compte créé en toute sécurité ! Connecte-toi.");
                 basculerVue("vue-connexion");
             } 
             else if (actionEnCours === "oubli") {
                 const nouveauMdp = document.getElementById("input-nouveau-mdp").value.trim();
-                if (nouveauMdp.length < 4) {
-                    afficherMessage("Le mot de passe doit faire au moins 4 caractères.");
+                if (nouveauMdp.length < 6) {
+                    afficherMessage("Le mot de passe doit comporter au moins 6 caractères.");
                     return;
                 }
 
+                const nouveauHash = await hacherMotDePasse(nouveauMdp);
                 await fetch(`${FIREBASE_URL}/comptes/${donneesTemporaires.cle}/password.json`, {
                     method: "PUT",
-                    body: JSON.stringify(nouveauMdp)
+                    body: JSON.stringify(nouveauHash)
                 });
 
-                alert("Mot de passe mis à jour ! Connecte-toi.");
+                alert("Mot de passe mis à jour de façon sécurisée !");
                 basculerVue("vue-connexion");
             }
         }
